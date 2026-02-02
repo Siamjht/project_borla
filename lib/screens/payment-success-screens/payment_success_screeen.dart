@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:project_borla/screens/rider-riview-screen/rider_review_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
-
 import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../role/garbageCollector/map/common_map.dart';
 import '../../widgets/gradient_button.dart';
+import '../rider-review-screen/rider_review_screen.dart';
 
 class PaymentSuccessScreeen extends StatefulWidget {
   const PaymentSuccessScreeen({super.key});
@@ -24,6 +23,7 @@ class _PaymentSuccessScreeenState extends State<PaymentSuccessScreeen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.dialog(
+        barrierDismissible: false,
         AlertDialog(
 
           insetPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -44,7 +44,7 @@ class _PaymentSuccessScreeenState extends State<PaymentSuccessScreeen> {
                     children: [
                       SizedBox(height: 24,),
 
-                      Image.asset('assets/images/wave_tick.png', scale: 0.2, height: 80, width: 80,),
+                      Image.asset('assets/images/wave_tick_amber.png', scale: 0.2, height: 85, width: 85,),
 
                       SizedBox(height: 24,),
 

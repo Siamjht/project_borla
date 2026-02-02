@@ -91,7 +91,9 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                     Container(
                       width: 160,
                       child: ElevatedButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          //Get.to(()=>CurrentLocation)
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           backgroundColor: Colors.white,
@@ -186,15 +188,6 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                 SizedBox(height: 26),
 
                 Image.asset('assets/images/not_found_2.png'),
-
-
-
-
-
-
-
-
-
 
               ],
             ),

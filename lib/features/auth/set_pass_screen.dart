@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
@@ -16,7 +17,14 @@ class SetPassScreen extends StatefulWidget {
 
 class _SetPassScreenState extends State<SetPassScreen> {
 
+  UserAuthController setPassScreenController = Get.put(UserAuthController());
+
+  final formKey = GlobalKey <FormState> () ;
+
   bool agree = false ;
+
+  // TextEditingController newPassController = TextEditingController();
+  // TextEditingController confirmPassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +79,7 @@ class _SetPassScreenState extends State<SetPassScreen> {
                       const SizedBox(height: 16),
 
                       CustomTextField(
+                        controller: setPassScreenController.newPassController,
                         hint: 'Password',
                         obscureText: true,
                         suffix: const Icon(Icons.visibility_off),
@@ -87,6 +96,7 @@ class _SetPassScreenState extends State<SetPassScreen> {
                       const SizedBox(height: 16),
 
                       CustomTextField(
+                        controller: setPassScreenController.confirmPassController,
                         hint: 'Password',
                         obscureText: true,
                         suffix: const Icon(Icons.visibility_off),

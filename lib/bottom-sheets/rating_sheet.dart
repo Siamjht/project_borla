@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/rating_sheet_controller.dart';
 import 'package:project_borla/screens/home-screens/thank_you_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
-
 import '../widgets/gradient_button.dart';
+import '../widgets/rating-sheet-widgets/rating_sheet_payment_widget.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class RatingSheet extends StatefulWidget {
   const RatingSheet({super.key});
-
   @override
   State<RatingSheet> createState() => _RatingSheetState();
 }
-
 class _RatingSheetState extends State<RatingSheet> {
-
-  int index1 = 1 ;
-  int index2 = 2 ;
-  int index3 = 3 ;
-  int index4 = 4 ;
-  int index5 = 5 ;
-
-  int selectedIndex1 = -1 ;
-  int selectedIndex2 = -1 ;
-  int selectedIndex3 = -1 ;
-  int selectedIndex4 = -1 ;
-  int selectedIndex5 = -1 ;
-
-
+  RatingSheetController starController = Get.put(RatingSheetController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,16 +21,11 @@ class _RatingSheetState extends State<RatingSheet> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: Colors.white,
-          //color: Color.fromRGBO(255, 237, 176, 1),
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-
         child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const SizedBox(height: 12),
-
             Container(
               width: 50,
               height: 4,
@@ -52,20 +34,11 @@ class _RatingSheetState extends State<RatingSheet> {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-
             const SizedBox(height: 16),
-
-
             Text('How was the rider?', style: TextStyle(
-
                 fontSize: 22,
-
                 fontWeight: FontWeight.w500
-
             ),),
-
-            //const SizedBox(height: 16),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(22,0,22,0),
               child: Divider(
@@ -73,102 +46,96 @@ class _RatingSheetState extends State<RatingSheet> {
                 thickness: 1,
               ),
             ),
-
-            //const SizedBox(height: 16),
-
-
             Padding(
               padding: const EdgeInsets.fromLTRB(22,6,22,6),
               child: Container(
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-
-
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.orange150,),
                   color: AppColors.orange20,
-
-
                 ),
                 width: 320,
                 height: 80,
-                child: Row(
-
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-
-                    InkWell(
-                      onTap: () {
-                        selectedIndex1 = index1 ;
-                        setState(() {
-
-                        });
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: selectedIndex1 == index1? Colors.amber : Colors.grey.shade300 ,
-                        size: 42,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        selectedIndex5 = index5 ;
-                        setState(() {
-
-                        });
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: selectedIndex5 == index5? Colors.amber : Colors.grey.shade300 ,
-                        size: 42,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-
-                        });
-                        selectedIndex2 = index2 ;
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: selectedIndex2 == index2? Colors.amber : Colors.grey.shade300 ,
-                        size: 42,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        selectedIndex3 = index3 ;
-                        setState(() {
-
-                        });
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: selectedIndex3 == index3? Colors.amber : Colors.grey.shade300 ,
-                        size: 42,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        selectedIndex4 = index4 ;
-                        setState(() {
-
-                        });
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: selectedIndex4 == index4? Colors.amber : Colors.grey.shade300 ,
-                        size: 42,
-                      ),
-                    ),
-
-                  ],
-
-
+                child: RatingBar.builder(
+                  initialRating: 3,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 5.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
                 ),
+
+                // child: Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     Obx(()=>InkWell(
+                //       onTap: () {
+                //         starController.isStarSelectedOne.toggle();
+                //         starController.ratingList['starOne'] = starController.isStarSelectedOne.value ;
+                //       },
+                //       child: Icon(
+                //         Icons.star,
+                //         color: starController.isStarSelectedOne.value? Colors.amber : Colors.grey.shade300 ,
+                //         size: 42,
+                //       ),
+                //     ),),
+                //     Obx(()=>InkWell(
+                //       onTap: () {
+                //         starController.isStarSelectedTwo.toggle();
+                //         starController.ratingList['starTwo'] = starController.isStarSelectedTwo.value ;
+                //       },
+                //       child: Icon(
+                //         Icons.star,
+                //         color: starController.isStarSelectedTwo.value? Colors.amber : Colors.grey.shade300 ,
+                //         size: 42,
+                //       ),
+                //     ),),
+                //     Obx(()=>InkWell(
+                //       onTap: () {
+                //         starController.isStarSelectedThree.toggle();
+                //         starController.ratingList['starThree'] = starController.isStarSelectedThree.value ;
+                //       },
+                //       child: Icon(
+                //         Icons.star,
+                //         color: starController.isStarSelectedThree.value? Colors.amber : Colors.grey.shade300 ,
+                //         size: 42,
+                //       ),
+                //     ),),
+                //     Obx(()=>InkWell(
+                //       onTap: () {
+                //         starController.isStarSelectedFour.toggle() ;
+                //         starController.ratingList['starFour'] = starController.isStarSelectedFour.value ;
+                //       },
+                //       child: Icon(
+                //         Icons.star,
+                //         color: starController.isStarSelectedFour.value? Colors.amber : Colors.grey.shade300 ,
+                //         size: 42,
+                //       ),
+                //     ),),
+                //     Obx(()=>InkWell(
+                //       onTap: () {
+                //         starController.isStarSelectedFive.toggle() ;
+                //         starController.ratingList['starFive'] = starController.isStarSelectedFive.value ;
+                //       },
+                //       child: Icon(
+                //         Icons.star,
+                //         color: starController.isStarSelectedFive.value? Colors.amber : Colors.grey.shade300 ,
+                //         size: 42,
+                //       ),
+                //     ),),
+                //   ],
+                // ),
+
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Great 5 star! Can't get any better than that!", style: TextStyle(
@@ -177,110 +144,24 @@ class _RatingSheetState extends State<RatingSheet> {
                   color: AppColors.gray300
               ),),
             ),
-
-
             SizedBox(height: 20,),
-
-            Container(
-              height: 160,
-              width: 360,
-              decoration: BoxDecoration(
-
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.black50)
-              ),
-              child: Column(
-                children: [
-                  Row(
-
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('Payment', style: TextStyle(
-                          color: AppColors.gray300,
-                          fontWeight: FontWeight.w400
-                        ),),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('MTN MoMo Pay', style: TextStyle(
-                        color: AppColors.gray400,
-                            fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('Price', style: TextStyle(
-                            color: AppColors.gray300,
-                            fontWeight: FontWeight.w400
-                        ),),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('GHC 50', style: TextStyle(
-                            color: AppColors.gray400,
-                            fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                    ],
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Divider(
-                      color: AppColors.black50,
-                      thickness: 1
-                    ),
-                  ),
-
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('Total Price', style: TextStyle(
-                            color: AppColors.gray300,
-                            fontWeight: FontWeight.w400
-                        ),),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text('GHC 50', style: TextStyle(
-                            color: AppColors.gray400,
-                            fontWeight: FontWeight.w500
-                        ),),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-
+            RatingSheetPaymentSection(),
             Padding(
               padding: const EdgeInsets.all(22.0),
               child: GradientButton(
                 text: 'Submit Now',
                 onPressed: () {
+                  final trueCount = starController.ratingList.values.where((v) => v == true ).length;
+                  print(trueCount);
+                  //print(rating);
                   Get.to(()=> ThankYouScreen());
                 },
               ),
             ),
-
-
-
-
-
           ],
         )
-
-
     );
   }
 }
+
+

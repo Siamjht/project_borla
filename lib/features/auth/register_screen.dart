@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:phone_form_field/phone_form_field.dart';
+import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
+import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/features/auth/otp_screen_two.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
@@ -8,6 +12,7 @@ import '../../role/components/commonTextField/phone_text_field.dart';
 import '../../theme/auth_header.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/register-screen-widgets/registration_section_widget.dart';
 import '../../widgets/social_login_button.dart';
 
 
@@ -20,7 +25,35 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  UserAuthController registerScreenController = Get.put(UserAuthController());
+
   bool agree = false ;
+
+  @override
+  void initState() {
+    super.initState();
+    registerScreenController.registerPhoneController = PhoneController(
+      initialValue: const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      ),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      registerScreenController.registerPhoneController.value = const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      );
+    });
+
+  }
+
+  @override
+  void dispose() {
+    registerScreenController.registerPhoneController.dispose();
+    //_passController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,187 +83,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   top: 0,
                   right: -60,
                   child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(34)
-                  ),
-                  color: Colors.white,
-                ),
-                height: 666,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: SingleChildScrollView(
-                    child: Column(
 
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 8),
-                        Text('Name', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-                        const SizedBox(height: 12),
-                        CustomTextField(
-                          hint: 'Enter your name',
-                          //prefix: const Icon(Icons.phone),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Text('Phone Number', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-
-                        const SizedBox(height: 12),
-
-                        phoneTextFormField(),
-
-                        const SizedBox(height: 24),
-
-                        Text('Email', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-
-                        const SizedBox(height: 12),
-
-                        CustomTextField(
-                          hint: 'Enter your email',
-                          prefix: const Icon(Icons.email),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Text('Location', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-
-                        const SizedBox(height: 12),
-
-                        CustomTextField(
-                          hint: 'Enter your location',
-                          prefix: const Icon(Icons.location_on_outlined),
-                        ),
-
-
-
-                        const SizedBox(height: 24),
-
-                        Text('Password', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-
-                        const SizedBox(height: 12),
-
-                        CustomTextField(
-                          hint: 'Password',
-                          obscureText: true,
-                          suffix: const Icon(Icons.visibility_off),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Text(' Confirm Password', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
-
-                        const SizedBox(height: 12),
-
-                        CustomTextField(
-                          hint: 'Password',
-                          obscureText: true,
-                          suffix: const Icon(Icons.visibility_off),
-                        ),
-
-
-
-                        const SizedBox(height: 32),
-
-                        GradientButton(
-                          text: 'Sign Up',
-                          onPressed: () {
-                            Get.to(()=> OtpScreen());
-                          },
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                'or continue with',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                          ],
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        SocialLoginButton(
-                          text: 'Continue with Google',
-                          asset: 'assets/images/google.png',
-                          onPressed: () {},
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        SocialLoginButton(
-                          text: 'Continue with Apple',
-                          asset: 'assets/images/apple_2.png',
-                          onPressed: () {},
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Row(
-
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: [
-                            Text("Already have an account?", style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),),
-                            //SizedBox(width: 2,),
-                            TextButton(
-                              onPressed: (){},
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    const LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(255, 214, 0, 1),
-                                        Color.fromRGBO(255, 149, 0, 1),
-                                      ],
-                                    ).createShader(bounds),
-                                child: const Text(
-                                  'Sign In',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),)
-                          ],
-                        ),
-
-                        const SizedBox(height: 70),
-
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              RegistrationSection(registerScreenController: registerScreenController)
 
             ]
         )
 
-
-
     );
   }
 }
+
+

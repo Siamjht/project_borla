@@ -43,13 +43,15 @@ dependencies:
   flutter_screenutil: ^5.9.3
   intl: ^0.20.2
   phone_form_field: ^10.0.16
-  google_fonts: ^6.3.3
+  google_fonts: ^8.0.0
   flutter_svg: ^2.2.3
   cached_network_image: ^3.4.1
   image_picker: ^1.2.1
   url_launcher: ^6.3.2
   dotted_border: ^3.1.0
   shared_preferences: ^2.5.4
+  flutter_rating_bar: ^4.0.1
+  cupertino_calendar_picker: ^2.2.6
 
 dev_dependencies:
   flutter_test:

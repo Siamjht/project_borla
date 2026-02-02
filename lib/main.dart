@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
 
            //initialRoute: '/notify',
           initialRoute: AppRoute.splashScreen,
-          // initialRoute: AppRoute.homeTwo,
+          //initialRoute: AppRoute.startChat,
           //initialRoute: AppRoute.riderSearch,
           //initialRoute: AppRoute.splashScreen,
           //initialRoute: AppRoute.homeTwo,

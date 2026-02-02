@@ -7,20 +7,18 @@ import 'package:project_borla/screens/scheduled-screens/schedule_ride_two.dart';
 import 'package:project_borla/theme/app_color.dart';
 import 'package:project_borla/theme/common_button_copy.dart';
 import '../gen/custom_assets/assets.gen.dart';
+import '../models/choose_ride_card_method.dart';
+import '../widgets/choose_ride_card_widget.dart';
 
 class ChooseRideSheet extends StatefulWidget {
   const ChooseRideSheet({super.key});
-
   @override
   State<ChooseRideSheet> createState() => _ChooseRideSheetState();
 }
-
 class _ChooseRideSheetState extends State<ChooseRideSheet> {
 
-  int selectedIndex = -1 ;
-
+  // final RxInt selectedIndex = (-1).obs ;
   final controller = Get.put(DateTimePickerController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +30,11 @@ class _ChooseRideSheetState extends State<ChooseRideSheet> {
           //color: Color.fromRGBO(255, 237, 176, 1),
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               const SizedBox(height: 12),
-
               Container(
                 width: 40,
                 height: 4,
@@ -49,108 +43,20 @@ class _ChooseRideSheetState extends State<ChooseRideSheet> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-
               const SizedBox(height: 16),
-
-
               Text('Choose a ride', style: TextStyle(
-
                   fontSize: 22,
-
                   fontWeight: FontWeight.w500
-
               ),),
-
-              //const SizedBox(height: 16),
-
               Divider(
                 color: Colors.grey.shade300,
                 thickness: 1,
               ),
-
-
               SizedBox(height: 16,),
               Expanded(
                 flex: 10,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-
-                      setState(() {
-
-                        selectedIndex = index ;
-
-                      });
-
-                    } ,
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 12),
-                      height: 80,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: selectedIndex == index? AppColors.orange300 : AppColors.gray200,
-                            width: selectedIndex == index? 2 : 1
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset('assets/images/tiles_icon.png'),
-                          ),
-                          Column(
-
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-
-                            children: [
-                              Text('Tri Cycle', style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600
-                              ),),
-                              Row(
-                                children: [
-                                  Image.asset('assets/images/clock.png'),
-                                  SizedBox(width: 3,),
-                                  Text('30-45 m', style: TextStyle(
-                                      fontWeight: FontWeight.w400
-                                  ),),
-                                  SizedBox(width: 10,),
-                                  Image.asset('assets/images/walk_2.png', scale: 3.3),
-                                  SizedBox(width: 3,),
-                                  Text('22 km', style: TextStyle(
-                                      fontWeight: FontWeight.w400
-                                  ),),
-                                  SizedBox(width: 10,),
-                                ],
-                              )
-                            ],
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 40),
-                            child: Text('GH₵ 50', style: TextStyle(
-                                color: AppColors.orange300,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500
-                            ),),
-                          )
-
-
-                        ],
-                      ),
-
-                    ),
-                  );
-                },),
+                child: chooseRideCards(),
               ),
-
               Obx(() => controller.isSetScheduled.value
                   ? CommonButton(
                 onTap: () {
@@ -192,17 +98,89 @@ class _ChooseRideSheetState extends State<ChooseRideSheet> {
                       ),
                     ),
                   ],
-
                 ),
               ),),
-              
               Obx(() => SizedBox(height: controller.isSetScheduled.value? 40 : 0,),)
-              
             ],
           ),
         )
-
-
     );
   }
+
+
+
+  // ListView chooseRideCards() {
+  //   return ListView.builder(
+  //     padding: EdgeInsets.zero,
+  //     itemCount: 7,
+  //     itemBuilder: (context, index) {
+  //       return Obx(()=>InkWell(
+  //         onTap: () {
+  //
+  //           selectedIndex.value = index ;
+  //           // setState(() {
+  //           //   selectedIndex = index ;
+  //           // });
+  //         } ,
+  //         child: Container(
+  //           margin: EdgeInsets.only(bottom: 12),
+  //           height: 80,
+  //           width: Get.width,
+  //           decoration: BoxDecoration(
+  //             border: Border.all(
+  //                 color: selectedIndex.value == index? AppColors.orange300 : AppColors.gray200,
+  //                 width: selectedIndex.value == index? 2 : 2
+  //             ),
+  //             borderRadius: BorderRadius.circular(12),
+  //           ),
+  //           child: Row(
+  //             children: [
+  //               Padding(
+  //                 padding: const EdgeInsets.all(12.0),
+  //                 child: Image.asset('assets/images/tiles_icon.png'),
+  //               ),
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text('Tri Cycle', style: TextStyle(
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.w600
+  //                   ),),
+  //                   Row(
+  //                     children: [
+  //                       Image.asset('assets/images/clock.png'),
+  //                       SizedBox(width: 3,),
+  //                       Text('30-45 m', style: TextStyle(
+  //                           fontWeight: FontWeight.w400
+  //                       ),),
+  //                       SizedBox(width: 10,),
+  //                       Image.asset('assets/images/walk_2.png', scale: 3.3),
+  //                       SizedBox(width: 3,),
+  //                       Text('22 km', style: TextStyle(
+  //                           fontWeight: FontWeight.w400
+  //                       ),),
+  //                       SizedBox(width: 10,),
+  //                     ],
+  //                   )
+  //                 ],
+  //               ),
+  //               Spacer(),
+  //               Padding(
+  //                 padding: const EdgeInsets.fromLTRB(0, 0, 20, 40),
+  //                 child: Text('GH₵ 50', style: TextStyle(
+  //                     color: AppColors.orange300,
+  //                     fontSize: 18,
+  //                     fontWeight: FontWeight.w500
+  //                 ),),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ));
+  //
+  //     },);
+  // }
+
+
 }

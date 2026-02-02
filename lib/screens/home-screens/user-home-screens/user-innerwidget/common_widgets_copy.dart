@@ -7,11 +7,15 @@ import 'package:project_borla/role/garbageCollector/call/outgoing_call_screen.da
 
 import '../../../../features/fragments/dotted_line_copy.dart';
 
+import '../../../../role/commonScreens/chat/chatting_screen.dart';
+import '../../../../role/garbageCollector/call/ongoing_call_screen.dart';
 import '../../../../theme/app_color.dart';
 import '../../../../theme/common_button_copy.dart';
 import '../../../../theme/common_text_two.dart';
 import '../../../../theme/custom_container_copy.dart';
+import '../../../../theme/user_outgoing_call_screen.dart';
 import '../../../../utils/custom-gen-assets/assets.gen.dart';
+import '../../../activity-screens/activity-controller/activity_controller_copy.dart';
 import '../../../chat-screen/chat_screen_copy.dart';
 
 import '../user-controller/user_home_controller.dart';
@@ -64,15 +68,33 @@ Widget userRow(UserHomeController controller, {role}) {
               fontWeight: FontWeight.w600,
             ),
             SizedBox(height: 4),
-            CommonText(
-              text: 'User',
-              fontSize: 14,
-              color: Colors.grey,
-            ),
+            Row(
+              children: [
+                Icon(Icons.star, color: Colors.amber, size: 20,),
+                SizedBox(width: 2,),
+                Text('5.0', style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey
+                ),),
+                SizedBox(width: 6,),
+                Text('(1.2k rides)', style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey
+                ),)
+              ],
+            )
+            // CommonText(
+            //   text: 'User',
+            //   fontSize: 14,
+            //   color: Colors.grey,
+            // ),
           ],
         ),
       ),
-      controller.isBottomSheet.value?
+
+      UserActivityController.instance.selectedIndex.value == 0?
       Row(
         children: [
           InkWell(
@@ -83,12 +105,53 @@ Widget userRow(UserHomeController controller, {role}) {
           const SizedBox(width: 12),
           InkWell(
               onTap: () {
-                Get.to(()=> OutgoingCallScreen());
+                Get.to(()=> UserOutgoingCallScreen());
               },
-              child: circleAction(Assets.icons.callIcon.image(height: 20, width: 20,  color: AppColors.orange300))),
+              child: circleAction(Assets.icons.callIcon.image(height: 20, width: 20, color: AppColors.orange300))),
         ],
+      ) : UserActivityController.instance.selectedIndex.value == 1?
+      Column(
+        children: [
+          CommonText(text: "Dec 23" , color: AppColors.orange300,),
+          CommonText(text: "10:00 PM", color: AppColors.orange300, fontSize: 14,),
+        ],
+      ) :
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.green500,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: AppColors.green100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(13),
+              blurRadius: 8,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: CommonText(text: "Completed", color: AppColors.white, fontSize: 12, fontWeight: FontWeight.w600,),
       )
-          : role == "rider" ? countdownRing(controller) : SizedBox.shrink(),
+
+
+
+      // controller.isBottomSheet.value?
+      // Row(
+      //   children: [
+      //     InkWell(
+      //         onTap: () {
+      //           Get.to(()=> UserChattingScreen());
+      //         },
+      //         child: circleAction(Assets.icons.messageIcon.image(height: 20, width: 20, color: AppColors.orange300))),
+      //     const SizedBox(width: 12),
+      //     InkWell(
+      //         onTap: () {
+      //           Get.to(()=> OutgoingCallScreen());
+      //         },
+      //         child: circleAction(Assets.icons.callIcon.image(height: 20, width: 20,  color: AppColors.orange300))),
+      //   ],
+      // )
+      //     : role == "rider" ? countdownRing(controller) : SizedBox.shrink(),
     ],
   );
 }

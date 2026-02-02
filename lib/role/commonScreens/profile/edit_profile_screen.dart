@@ -18,6 +18,35 @@ class EditProfileScreen extends StatelessWidget {
 
   final ProfileController controller = Get.put(ProfileController());
 
+  // late final PhoneController _phoneController;
+  // final TextEditingController _passController = TextEditingController();
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _phoneController = PhoneController(
+  //     initialValue: const PhoneNumber(
+  //       isoCode: IsoCode.GH,
+  //       nsn: '',
+  //     ),
+  //   );
+  //
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _phoneController.value = const PhoneNumber(
+  //       isoCode: IsoCode.GH,
+  //       nsn: '',
+  //     );
+  //   });
+  //
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   _phoneController.dispose();
+  //   _passController.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GradientScaffold(

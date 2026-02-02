@@ -29,9 +29,6 @@ class _ChoosePaymentScreenState extends State<ChoosePaymentScreen> {
 
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

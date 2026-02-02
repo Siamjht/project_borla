@@ -30,6 +30,7 @@ import 'package:project_borla/screens/search-place-screens/edit_place.dart';
 import 'package:project_borla/screens/search-place-screens/location_search_screen.dart';
 import 'package:project_borla/screens/search-place-screens/saved_places_screen.dart';
 import 'package:project_borla/screens/select_role_screen.dart';
+import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import 'package:project_borla/screens/track-screen/track_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_category_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_qty_screen.dart';
@@ -80,6 +81,7 @@ class AppRoute {
   static const String userTrack = "/userTrack";
   static const String driverInfo = "/driverInfo";
   static const String riderReview = "/riderReview";
+  static const String startChat = "/startChat";
 
 
 
@@ -108,10 +110,10 @@ class AppRoute {
         name: role,
         page: () => SelectRoleScreen(),
         transition: Transition.rightToLeftWithFade),
-    // GetPage(
-    //     name: home,
-    //     page: () => HomeScreenOne(),
-    //     transition: Transition.rightToLeftWithFade),
+    GetPage(
+        name: startChat,
+        page: () => StartChatScreen(),
+        transition: Transition.rightToLeftWithFade),
     GetPage(
         name: savedPlaces,
         page: () => SavedPlacesScreen(),
@@ -252,8 +254,6 @@ class AppRoute {
     //     transition: Transition.rightToLeftWithFade),
 
   ];
-
-
 
 }
 

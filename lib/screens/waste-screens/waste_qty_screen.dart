@@ -1,11 +1,23 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/screens/finding-driver-screens/finding_driver_screen.dart';
+import 'package:project_borla/screens/waste-screens/waste-controllers/waste_category_controller.dart';
+import 'package:project_borla/utils/app_dropdown.dart';
 
+import '../../role/components/text/common_text.dart';
+import '../../theme/app_color.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/waste-category-widgets/waste_header_widgets.dart';
+import '../../widgets/waste-category-widgets/waste_photo_widgets.dart';
 
 class WasteQtyScreen extends StatefulWidget {
   const WasteQtyScreen({super.key});
@@ -15,6 +27,9 @@ class WasteQtyScreen extends StatefulWidget {
 }
 
 class _WasteQtyScreenState extends State<WasteQtyScreen> {
+
+  WasteCategoryController amountController = Get.put(WasteCategoryController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +37,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
         body: Stack(
 
           children: [
+
             Positioned(
               top: 0,
               left: 0,
@@ -32,162 +48,128 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                 //alignment: Alignment.topRight,
               ),
             ),
-            Padding(
-              //padding: const EdgeInsets.all(20.0),
-              padding: const EdgeInsets.fromLTRB(22, 68, 22, 22),
-              child: Column(
-                children: [
 
-                  Padding(
-                    //padding: const EdgeInsets.fromLTRB(26, 70, 20, 20),
-                    padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
-                    child: Row(
-                      children: [
-                        Container(
-                          //padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
-                          width: 38,
-                          height: 38,
-                          decoration:  BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                                color: Colors.black.withAlpha(40),
-                              ),
-                            ],
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(22, 68, 22, 22),
+                child: Column(
+                  children: [
+
+                    WasteScreenHeader(),
+
+                    SizedBox(height: 34),
+
+                    WasteScreenSubHeader(),
+
+                    SizedBox(height: 20),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          WasteContainer(),
+
+                          WastePickPhoto(),
+
+                          Text('Bin Size', style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            color: Colors.grey.shade600
+                          ),),
+
+                          const SizedBox(height: 10),
+
+                          Obx(() => AppDropDownStyle(
+                            DropdownButton<String>(
+                              value: (["1", "2", "3", "4"].contains(amountController.FormValues["Size"]))
+                                  ? amountController.FormValues["Size"]
+                                  : null,
+                              hint: const Text("Select Bin Size"),
+                              items: const [
+                                DropdownMenuItem(value: "1", child: Text("Small (50 L)")),
+                                DropdownMenuItem(value: "2", child: Text("Medium (120 L)")),
+                                DropdownMenuItem(value: "3", child: Text("Large (240 L)")),
+                                DropdownMenuItem(value: "4", child: Text("Extra Large (360 L)")),
+                              ],
+                              onChanged: (value) {
+                                amountController.FormValues["Size"] = value ?? "";
+                              },
+                              underline: Container(),
+                              isExpanded: true,
+                            ),
+                          )),
+
+                          const SizedBox(height: 14),
+
+                          Text('Bin Quantity', style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                              color: Colors.grey.shade600
+                          ),),
+
+                          const SizedBox(height: 10),
+
+                          Obx(() => AppDropDownStyle(
+                            DropdownButton<String>(
+                              value: (["1", "2", "3", "4", "5", "6"].contains(amountController.FormValues["Qty"]))
+                                  ? amountController.FormValues["Qty"]
+                                  : null,
+                              hint: const Text("Select Bin Quantity"),
+                              items: const [
+                                DropdownMenuItem(value: "1", child: Text("0")),
+                                DropdownMenuItem(value: "2", child: Text("1")),
+                                DropdownMenuItem(value: "3", child: Text("2")),
+                                DropdownMenuItem(value: "4", child: Text("3")),
+                                DropdownMenuItem(value: "5", child: Text("4")),
+                                DropdownMenuItem(value: "6", child: Text("More than 5")),
+                              ],
+                              onChanged: (value) {
+                                amountController.FormValues["Qty"] = value ?? "";
+                              },
+                              underline: Container(),
+                              isExpanded: true,
+                            ),
+                          )),
+
+                          const SizedBox(height: 14),
+                          Text('Waste Size', style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                              color: Colors.grey.shade600
+                          ),),
+
+                          const SizedBox(height: 10),
+
+                          CustomTextField(
+                            hint: 'Waste Size',
+                            prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5),
                           ),
 
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
+                          SizedBox(height: 40),
 
-                            iconSize: 22,
-                            icon: const Icon(Icons.arrow_back),
+                          GradientButton(
+                            text: 'Continue',
                             onPressed: () {
-                              Get.back();
+                              print(amountController.FormValues["Size"]) ;
+                              print(amountController.FormValues["Qty"]) ;
+                              //prints values of dropdown options, not the texts on dropdowns
+                              Get.to(()=>FindingDriverScreen());
                             },
                           ),
-                        ),
 
-                        SizedBox(width: 70),
+                          SizedBox(height: 40),
 
-                        Text('Waste Quantity', style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w500
-                        ),)
-                      ],
+                        ]
+
                     ),
-                  ),
 
-                  SizedBox(height: 34),
-
-                  Row(
-                    children: [
-                      Text('Waste Image', style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade700
-                      )),
-                      Spacer(),
-                      Text('Helps estimate size accurately', style: TextStyle(
-
-                        letterSpacing: 0.0001,
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w500,
-
-                      ),),
-
-                    ],
-                  ),
-
-                  SizedBox(height: 20),
-
-
-
-                  Column(
-
-                    crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-
-                        InkWell(
-                          onTap: (){
-                            OtherHelper.openGallery();
-                          },
-                          child: Image.asset(
-                            'assets/images/camera_btn.png',
-                            scale: 0.8,
-                          ),
-                        ),
-
-                        const SizedBox(height: 40),
-
-                        Text('Bin Size', style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          color: Colors.grey.shade600
-                        ),),
-
-                        const SizedBox(height: 10),
-
-                        CustomTextField(
-                          hint: 'Bin Size',
-                          prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5),
-                        ),
-
-                        const SizedBox(height: 14),
-                        Text('Bin Quantity', style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            color: Colors.grey.shade600
-                        ),),
-
-                        const SizedBox(height: 10),
-
-                        CustomTextField(
-                          hint: 'Bin Quantity',
-                          prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5),
-                        ),
-
-                        const SizedBox(height: 14),
-                        Text('Waste Size', style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            color: Colors.grey.shade600
-                        ),),
-
-                        const SizedBox(height: 10),
-
-                        CustomTextField(
-                          hint: 'Waste Size',
-                          prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5),
-                        ),
-
-                        //const SizedBox(height: 14),
-
-                        SizedBox(height: 40),
-
-                        GradientButton(
-                          text: 'Continue',
-                          onPressed: () {
-                            Get.to(()=>FindingDriverScreen());
-                          },
-                        ),
-
-
-                      ]
-
-                  ),
-
-                ],
+                  ],
+                ),
               ),
             ),
 
-
           ],
         )
-
 
     );
   }

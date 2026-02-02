@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:project_borla/screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
+import '../../theme/app_color.dart';
 import '../../widgets/action_button_widget.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/search-screen-widgets/edit_place_text_field_widget.dart';
 
 class EditPlace extends StatefulWidget {
   const EditPlace({super.key});
@@ -15,12 +23,12 @@ class EditPlace extends StatefulWidget {
 class _EditPlaceState extends State<EditPlace> {
 
 
+  EditPlaceController editPlaceController = Get.put(EditPlaceController());
+
   bool isHome = false;
   bool isOffice = false;
   bool isShop = false;
   bool isHotel = false;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,9 @@ class _EditPlaceState extends State<EditPlace> {
                       padding: EdgeInsets.zero,
                       iconSize: 22,
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                     ),
                   ),
 
@@ -80,152 +90,67 @@ class _EditPlaceState extends State<EditPlace> {
 
             SizedBox(height: 20,),
 
-            Image.asset('assets/images/map_2.png'),
+            Image.asset('assets/images/map_2.png' , scale: 1.8),
 
             SizedBox(height: 40),
 
-            Row(
+            Obx(() => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconLabelAction(
+                      icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
+                      label: 'Home',
+                      selected: editPlaceController.selectedPlace.value == 'Home' ? true : false,
+                      onTap: (){
+                        editPlaceController.titleController.text = 'Home';
+                        editPlaceController.selectedPlace.value = 'Home';
+                      }
+                  ),
+                  IconLabelAction(
+                      icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
+                      label: 'Office',
+                      selected: editPlaceController.selectedPlace.value == 'Office' ? true : false,
+                      onTap: (){
+                        editPlaceController.titleController.text = 'Office';
+                        editPlaceController.selectedPlace.value = 'Office';
+                      }
+                  ),
+                  IconLabelAction(
+                      icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
+                      label: 'Shop',
+                      selected: editPlaceController.selectedPlace.value == 'Shop' ? true : false,
+                      onTap: (){
+                        editPlaceController.titleController.text = 'Shop';
+                        editPlaceController.selectedPlace.value = 'Shop';
+                      }
+                  ),
+                  IconLabelAction(
+                      icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
+                      label: 'Hotel',
+                      selected: editPlaceController.selectedPlace.value == 'Hotel' ? true : false,
+                      onTap: (){
+                        editPlaceController.titleController.text = 'Hotel';
+                        editPlaceController.selectedPlace.value = 'Hotel';
+                      }
+                  ),
 
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ],
 
-              children: [
-
-                SizedBox(width: 50,),
-
-                IconLabelAction(
-                    icon: Assets.icons.homeIcon.image(height: 20, width: 20),
-                    label: 'Home',
-                    selected: isHome,
-                    onTap: (){
-                      setState(() => isHome = !isHome);
-                    }
-                ),
-
-                SizedBox(width: 26,),
-
-
-                IconLabelAction(
-                    icon: Assets.icons.officeIcon.image(height: 20, width: 20),
-                    label: 'office',
-                    selected: isOffice,
-                    onTap: (){
-                      setState(() => isOffice = !isOffice);
-                    }
-                ),
-
-                SizedBox(width: 26,),
-
-                IconLabelAction(
-                    icon: Assets.icons.shopIcon.image(height: 20, width: 20),
-                    label: 'Shop',
-                    selected: isShop,
-                    onTap: (){
-                      setState(() => isShop = !isShop);
-                    }
-                ),
-
-                SizedBox(width: 26,),
-
-                IconLabelAction(
-                    icon: Assets.icons.hotelIcon.image(height: 20, width: 20),
-                    label: 'Hotel',
-                    selected: isHotel,
-                    onTap: (){
-                      setState(() => isHotel = !isHotel);
-                    }
-                ),
-
-              ],
-
-
-
-            ),
+              ),
+            ),),
 
             Padding(
               padding: const EdgeInsets.fromLTRB(22,20,22,20),
-              child: Column(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-
-                  const SizedBox(height: 6),
-
-                  Text('Place Title', style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14
-                  ),),
-
-                  const SizedBox(height: 6),
-
-                  CustomTextField(
-                    hint: 'Hotel',
-                    prefix: Image.asset('assets/images/second_pin_2.png'),
-                  ),
-
-                  const SizedBox(height: 14),
-
-                  Text('Place Name', style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14
-                  ),),
-
-                  const SizedBox(height: 6),
-
-                  CustomTextField(
-                    hint: 'Chittagong, Ghana',
-                    prefix: Image.asset('assets/images/second_pin_2.png'),
-                  ),
-
-                  const SizedBox(height: 14),
-
-                  Text('Address', style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14
-                  ),),
-
-                  const SizedBox(height: 6),
-
-                  CustomTextField(
-                    hint: 'Studio 08 Jake Stream',
-                    prefix: Image.asset('assets/images/third_pin.png'),
-                    //suffix: Image.asset('assets/images/third_pin.png'),
-                    suffix: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: Image.asset('assets/images/target_2.png',),
-                    ),
-                  ),
-
-
-
-                  const SizedBox(height: 16),
-
-
-                  const SizedBox(height: 8),
-
-
-                  const SizedBox(height: 16),
-
-                  GradientButton(
-                    text: 'Save Place',
-                    onPressed: () {
-                      //Get.to(OtpScreen());
-                    },
-                  ),
-
-
-                ],
-              ),
+              child: EditPlaceTextFields(editPlaceController: editPlaceController),
             ),
 
-
-
-
-
-            // Text("Content")
           ],
         ),
       ),
     );
   }
 }
+
+

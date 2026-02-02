@@ -9,6 +9,7 @@ import 'package:project_borla/screens/profile-screens/address_screen.dart';
 import 'package:project_borla/screens/profile-screens/change_password_screen_copy.dart';
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/logout_bottom_sheet_copy.dart';
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/settingsListItemsCopy.dart';
+import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../bottom-sheets/user_lang_sheet.dart';
 import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
@@ -115,6 +116,16 @@ class ProfileScreenCopy extends StatelessWidget {
                   showLanguageBottomSheet(context);
                 },
               ),
+
+              SettingsListItemTwo(
+                //icon: Icons.headphones,
+                img: 'assets/images/user_chat.png' ,
+                title: 'Customer Support',
+                onTap: () {
+                  Get.to(()=> StartChatScreen());
+                },
+              ),
+
               SettingsListItem(
                 icon: Icons.notifications_outlined,
                 title: 'Notifications',

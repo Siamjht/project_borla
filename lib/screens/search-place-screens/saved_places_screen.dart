@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_borla/screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
+import '../../theme/app_color.dart';
 import '../../widgets/action_button_widget.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/search-screen-widgets/saved_place_text_field_widget.dart';
 
 class SavedPlacesScreen extends StatefulWidget {
   const SavedPlacesScreen({super.key});
@@ -14,6 +22,8 @@ class SavedPlacesScreen extends StatefulWidget {
 }
 
 class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
+
+  SavedPlaceController savedPlaceController = Get.put(SavedPlaceController());
 
   bool isHome = false;
   bool isOffice = false;
@@ -40,7 +50,7 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
               children: [
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(26, 70, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
                   child: Row(
                     children: [
                       Container(
@@ -62,13 +72,15 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                           padding: EdgeInsets.zero,
                           iconSize: 22,
                           icon: const Icon(Icons.arrow_back),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                          },
                         ),
                       ),
 
-                      SizedBox(width: 90),
+                      SizedBox(width: 74),
 
-                      Text('Saved Places', style: TextStyle(
+                      Text('Saved Address', style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500
                       ),)
@@ -78,149 +90,64 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
 
                 SizedBox(height: 20,),
 
-                Image.asset('assets/images/map_2.png'),
+                Image.asset('assets/images/map_2.png', scale: 1.8,),
 
                 SizedBox(height: 40),
 
-                Row(
+                Obx(() => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconLabelAction(
+                          icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: savedPlaceController.selectedPlace.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
+                          label: 'Home',
+                          selected: savedPlaceController.selectedPlace.value == 'Home' ? true : false,
+                          onTap: (){
+                            savedPlaceController.titleController.text = 'Home';
+                            savedPlaceController.selectedPlace.value = 'Home';
+                          }
+                      ),
+                      IconLabelAction(
+                          icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: savedPlaceController.selectedPlace.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
+                          label: 'Office',
+                          selected: savedPlaceController.selectedPlace.value == 'Office' ? true : false,
+                          onTap: (){
+                            savedPlaceController.titleController.text = 'Office';
+                            savedPlaceController.selectedPlace.value = 'Office';
+                          }
+                      ),
+                      IconLabelAction(
+                          icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: savedPlaceController.selectedPlace.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
+                          label: 'Shop',
+                          selected: savedPlaceController.selectedPlace.value == 'Shop' ? true : false,
+                          onTap: (){
+                            savedPlaceController.titleController.text = 'Shop';
+                            savedPlaceController.selectedPlace.value = 'Shop';
+                          }
+                      ),
+                      IconLabelAction(
+                          icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: savedPlaceController.selectedPlace.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
+                          label: 'Hotel',
+                          selected: savedPlaceController.selectedPlace.value == 'Hotel' ? true : false,
+                          onTap: (){
+                            savedPlaceController.titleController.text = 'Hotel';
+                            savedPlaceController.selectedPlace.value = 'Hotel';
+                          }
+                      ),
 
-                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                  children: [
-
-                    SizedBox(width: 50,),
-
-                    IconLabelAction(
-                        icon: Assets.icons.homeIcon.image(height: 20, width: 20),
-                      label: 'Home',
-                        selected: isHome,
-                      onTap: (){
-                        setState(() => isHome = !isHome);
-                      }
-                    ),
-
-                    SizedBox(width: 26,),
-
-
-                    IconLabelAction(
-                        icon: Assets.icons.officeIcon.image(height: 20, width: 20),
-                        label: 'office',
-                        selected: isOffice,
-                        onTap: (){
-                          setState(() => isOffice = !isOffice);
-                        }
-                    ),
-
-                    SizedBox(width: 26,),
-
-                    IconLabelAction(
-                        icon: Assets.icons.shopIcon.image(height: 20, width: 20),
-                        label: 'Shop',
-                        selected: isShop,
-                        onTap: (){
-                          setState(() => isShop = !isShop);
-                        }
-                    ),
-
-                    SizedBox(width: 26,),
-
-                    IconLabelAction(
-                        icon: Assets.icons.hotelIcon.image(height: 20, width: 20),
-                        label: 'Hotel',
-                        selected: isHotel,
-                        onTap: (){
-                          setState(() => isHotel = !isHotel);
-                        }
-                    ),
-
-                  ],
+                    ],
 
 
 
-                ),
+                  ),
+                ),),
 
                 Padding(
                   padding: const EdgeInsets.fromLTRB(22,20,22,20),
-                  child: Column(
-
-                    crossAxisAlignment: CrossAxisAlignment.start,
-
-                    children: [
-
-                      const SizedBox(height: 6),
-
-                      Text('Place Title', style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14
-                      ),),
-
-                      const SizedBox(height: 6),
-
-                      CustomTextField(
-                        hint: 'Hotel',
-                        prefix: Image.asset('assets/images/second_pin_2.png'),
-                      ),
-
-                      const SizedBox(height: 14),
-
-                      Text('Place Name', style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14
-                      ),),
-
-                      const SizedBox(height: 6),
-
-                      CustomTextField(
-                        hint: 'Chittagong, Ghana',
-                        prefix: Image.asset('assets/images/second_pin_2.png'),
-                      ),
-
-                      const SizedBox(height: 14),
-
-                      Text('Address', style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14
-                      ),),
-
-                      const SizedBox(height: 6),
-
-                      CustomTextField(
-                        hint: 'Studio 08 Jake Stream',
-                        prefix: Image.asset('assets/images/third_pin.png'),
-                        //suffix: Image.asset('assets/images/third_pin.png'),
-                        suffix: Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: Image.asset('assets/images/target_2.png',),
-                        ),
-                      ),
-
-
-
-                      const SizedBox(height: 16),
-
-
-                      const SizedBox(height: 8),
-
-
-                      const SizedBox(height: 16),
-
-                      GradientButton(
-                        text: 'Save Place',
-                        onPressed: () {
-                          //Get.to(OtpScreen());
-                        },
-                      ),
-
-
-                    ],
-                  ),
+                  child: SavedPlaceTextFields(savedPlaceController: savedPlaceController),
                 ),
-                
-                
-                
 
-
-                // Text("Content")
               ],
           ),
       ),
@@ -228,3 +155,5 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
 
   }
 }
+
+

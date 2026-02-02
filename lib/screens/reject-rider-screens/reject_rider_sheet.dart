@@ -7,6 +7,7 @@ import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../widgets/gradient_button.dart';
+import '../../widgets/reject-rider-sheet-widget/reject_rider_sheet_buttons.dart';
 
 class RejectRiderSheet extends StatefulWidget {
   const RejectRiderSheet({super.key});
@@ -33,7 +34,6 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
             ),
 
             child: Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
                 const SizedBox(height: 12),
@@ -58,8 +58,6 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
 
                 ),),
 
-                //const SizedBox(height: 16),
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(22,0,22,0),
                   child: Divider(
@@ -67,7 +65,6 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
                     thickness: 1,
                   ),
                 ),
-
 
                 Text("We're sorry, your booking request was", style: TextStyle(
                     fontSize: 18,
@@ -87,125 +84,13 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
                     color: AppColors.gray300
                 ),),
 
-
-                // Padding(
-                //   padding: const EdgeInsets.all(22.0),
-                //   child: GradientButton(
-                //     text: 'Confirm Location',
-                //     onPressed: () {
-                //       //Get.to(OtpScreen());
-                //       //Get.to(()=>WasteCategoryScreen());
-                //     },
-                //   ),
-                // ),
-
                 Padding(
                   padding: const EdgeInsets.all(18.0),
-                  child: Row(
-
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                    children: [
-
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromRGBO(255, 214, 0, 1),
-                              Color.fromRGBO(255,149,0, 1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        padding: const EdgeInsets.all(2), // border thickness
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(100, 50),
-                            backgroundColor: Colors.white, // white button
-                            shadowColor: Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14), // inner radius
-                            ),
-                          ),
-                          onPressed: () {
-                            Get.to(()=> RiderArrivedScreen());
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(40, 14,40, 14),
-
-                            child: ShaderMask(
-                              shaderCallback: (bounds) => LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 214, 0, 1),
-                                  Color.fromRGBO(255,149,0, 1),
-                                ],
-                              ).createShader(bounds),
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 17
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-
-
-                      ElevatedButton(
-                        onPressed: () {
-                         Get.to(()=>ChooseRideScreen());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero, // important
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          minimumSize: const Size(100, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color.fromRGBO(255, 214, 0, 1),
-                                Color.fromRGBO(255,149,0, 1),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.fromLTRB(23, 16, 23, 16),
-                            child: const Text(
-                              'Find Another One',
-                              style: TextStyle(
-                                color: Colors.white,
-                                  fontSize: 17
-                                //fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-
-
-                    ],
-
-                  ),
+                  child: RejectRiderSheetButtons(),
                 ),
-
-
-
-
 
               ],
             )
-
 
         ),
         Positioned(
@@ -219,3 +104,5 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
     );
   }
 }
+
+

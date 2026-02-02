@@ -18,6 +18,8 @@ class DriverOtpScreen extends StatefulWidget {
 
 class _DriverOtpScreenState extends State<DriverOtpScreen> {
 
+  TextEditingController otpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +73,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 26.0),
                         child: PinCodeTextField(
+                          controller: otpController,
                           cursorColor: AppColors.black100,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             appContext: context,

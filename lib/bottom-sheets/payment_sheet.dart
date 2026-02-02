@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/controllers/date_time_picker_controller.dart';
+import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/choose_payment_sheet_controllers.dart';
 import 'package:project_borla/screens/ride-schedule-screens/ride_schedule_screen.dart';
+import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/screens/rider-searching-screen/rider_searching_screen.dart';
 
 import '../screens/waste-screens/waste_category_screen.dart';
@@ -18,9 +20,9 @@ class PaymentSheet extends StatefulWidget {
 
 class _PaymentSheetState extends State<PaymentSheet> {
 
-  int selectedIndex = -1 ;
-  int index1 = 1 ;
-  int index2 = 2 ;
+
+  ChoosePaymentSheetControllers paymentController = Get.put(ChoosePaymentSheetControllers());
+
 
   final controller = Get.put(DateTimePickerController());
 
@@ -80,49 +82,43 @@ class _PaymentSheetState extends State<PaymentSheet> {
 
                   children: [
 
-                    InkWell(
+                    Obx(()=>InkWell(
                       onTap: () {
-                        setState(() {
-                          selectedIndex = index1 ;
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: selectedIndex == index1 ? Colors.amber : Colors.grey.shade300,
-                              width: 1.5
-                          )
-                        ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(36, 10, 36, 10),
-                            child: Image.asset('assets/images/momo_2.png', scale: 5,),
-                          )
-                      ),
-                    ),
 
-                    // buildCategoryCard(
-                    //     index: 0, image: 'assets/images/momo.png',
-                    // ),
+                        paymentController.selectedIndex.value = 1 ;
 
-
-
-
-                    SizedBox(width: 16,),
-
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index2 ;
-                        });
                       },
                       child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: selectedIndex == index2 ? Colors.amber : Colors.grey.shade300,
+                                  color: paymentController.selectedIndex.value == 1 ? Colors.amber : Colors.grey.shade300,
+                                  width: 1.5
+                              )
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(36, 10, 36, 10),
+                            child: Image.asset('assets/images/momo_2.png', scale: 5,),
+                          )
+                      ),
+                    ),),
+
+
+                    SizedBox(width: 16,),
+
+                    Obx(()=>InkWell(
+                      onTap: () {
+
+                        paymentController.selectedIndex.value = 2 ;
+
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                                color: paymentController.selectedIndex.value == 2 ? Colors.amber : Colors.grey.shade300,
                                 width: 1.5
-                              ),
+                            ),
 
                           ),
                           child: Padding(
@@ -132,19 +128,17 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                 Image.asset('assets/images/cash_2.png', scale: 0.9,),
                                 SizedBox(width: 8,),
                                 Text('Cash', style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600
+                                    color: Colors.grey.shade500,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600
                                 ),)
                               ],
                             ),
                           )
                       ),
-                    ),
-
+                    ),),
 
                   ],
-
 
                 ),
               ),
@@ -154,7 +148,11 @@ class _PaymentSheetState extends State<PaymentSheet> {
               child: GradientButton(
                 text: 'Continue',
                 onPressed: () {
-                  if(controller.isSetScheduled.value){
+                  if(paymentController.isPaymentPicked.value==true) {
+                    //Get.back();
+                    Get.to(()=>RiderArrivedScreen());
+                  }
+                  else if(controller.isSetScheduled.value){
                     Get.to(()=> RideScheduleScreen());
                   }else{
                     Get.to(()=> RiderSearchingScreen());
@@ -163,13 +161,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
               ),
             ),
 
-
-
-
-
           ],
         )
-
 
     );
   }

@@ -50,7 +50,7 @@ class ScheduleDetailScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CommonText(text: "Ride scheduled!", color: AppColors.green500, fontSize: 20,),
+                              CommonText(text: "Ride scheduled!",  fontSize: 20,),
                               CommonText(text: "Monday, Dec 23 - 16:00 PM", color: AppColors.gray300,),
                             ],
                           ),
@@ -58,11 +58,11 @@ class ScheduleDetailScreen extends StatelessWidget {
                         Positioned(
                             left: 0,
                             top: 0,
-                            child: CommonImage(imageSrc: "assets/images/patternLeft.png", imageType: ImageType.png, size: 70, imageColor: AppColors.orange300,)),
+                            child: CommonImage(imageSrc: "assets/images/amber_left_2.png", imageType: ImageType.png, size: 70, imageColor: AppColors.orange300,)),
                         Positioned(
                             right: 0,
                             top: 0,
-                            child: CommonImage(imageSrc: "assets/images/patternRight.png", imageType: ImageType.png, size: 80, imageColor: AppColors.orange300)),
+                            child: CommonImage(imageSrc: "assets/images/amber_right_2.png", imageType: ImageType.png, size: 80, imageColor: AppColors.orange300)),
                       ],
                     ),
                   ),

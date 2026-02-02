@@ -16,10 +16,6 @@ class ConfirmAddressSheet extends StatefulWidget {
 class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,7 +73,7 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
 
                   Image.asset('assets/images/location_pin_two.png', scale: 0.8,),
 
-                  SizedBox(width: 8,),
+                  SizedBox(width: 14,),
 
                   Text('Location', style: TextStyle(
 
@@ -86,10 +82,9 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
 
 
                   ),),
-                  Spacer(),
+                  //Spacer(),
 
                   //Image.asset('assets/images/add_button.png'),
-
 
 
                 ],
@@ -101,7 +96,7 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
             Text('1901 Thornridge Cir. Shiloh, Hawaii 81063 ', style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: Colors.grey
+              color: Colors.grey,
             ),),
 
 
@@ -116,13 +111,8 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
               ),
             ),
 
-
-
-
-
           ],
         )
-
 
     );
   }

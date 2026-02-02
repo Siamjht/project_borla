@@ -10,7 +10,9 @@ import '../../../components/text/common_text.dart';
 
 
 class WithdrawDialog extends StatelessWidget {
-  const WithdrawDialog({super.key});
+  WithdrawDialog({super.key});
+
+  TextEditingController withdrawController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +63,7 @@ class WithdrawDialog extends StatelessWidget {
 
             /// Input
             CommonTextField(
+              controller: withdrawController,
               hintText: 'Enter Amount',
               keyboardType: TextInputType.number,
               borderRadius: 4,

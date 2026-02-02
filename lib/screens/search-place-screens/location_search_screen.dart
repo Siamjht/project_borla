@@ -91,7 +91,9 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                     Container(
                       width: 160,
                       child: ElevatedButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          //Get.to(()=>CurrentLocation)
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           backgroundColor: Colors.white,
@@ -109,7 +111,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
                         child: Row(
                           children: [
-                            Image.asset('assets/images/tab_icon_one.png', scale: 0.9,),
+                            Image.asset('assets/images/tab_icon_one_2.png', scale: 3,),
                             SizedBox(width: 6,),
                             Text('Select from map', style: TextStyle(
 
@@ -143,7 +145,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                         ),
                         child: Row(
                           children: [
-                            Image.asset('assets/images/saved_icon.png', scale: 0.9,),
+                            Image.asset('assets/images/saved_icon_2.png', scale: 3,),
                             SizedBox(width: 6,),
                             Text('Saved Places', style: TextStyle(
 
@@ -185,16 +187,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
                 SizedBox(height: 26),
 
-                Image.asset('assets/images/not_found.png'),
-
-
-
-
-
-
-
-
-
+                Image.asset('assets/images/not_found_2.png'),
 
               ],
             ),

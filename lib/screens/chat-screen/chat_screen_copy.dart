@@ -11,6 +11,7 @@ import 'package:project_borla/theme/app_color.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
+import '../../theme/user_outgoing_call_screen.dart';
 import 'chat_screen_controller.dart';
 
 
@@ -41,7 +42,7 @@ class UserChattingScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                         Get.to(()=> OutgoingCallScreen());
+                         Get.to(()=> UserOutgoingCallScreen());
                       },
                       child: _circleAction(Icons.phone)),
                 ],

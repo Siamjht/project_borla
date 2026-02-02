@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:project_borla/role/components/commonTextField/phone_text_field.dart';
 import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
 import 'package:project_borla/theme/app_color.dart';
 
@@ -14,10 +15,46 @@ import '../../theme/gradient_scaffold_copy.dart';
 import '../../utils/custom-gen-assets/assets.gen.dart';
 
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({super.key});
 
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final ProfileControllerCopy controller = Get.put(ProfileControllerCopy());
+
+  late PhoneController _phoneController = PhoneController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController = PhoneController(
+      initialValue: const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      ),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _phoneController.value = const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      );
+    });
+
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    //_passController.dispose();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,37 +174,41 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8.h),
-                    PhoneFormField(
+                    // PhoneFormField(
+                    //   //controller: _phoneController,
+                    //   initialValue: PhoneNumber.parse('+233'),
+                    //   // initialCountryCode: 'GH',
+                    //   decoration: InputDecoration(
+                    //     filled: true,
+                    //     fillColor: Colors.transparent,
+                    //     hintText: 'Enter phone number',
+                    //     hintStyle: TextStyle(color: Colors.grey[500]),
+                    //     contentPadding: EdgeInsets.symmetric(
+                    //         vertical: 16.h, horizontal: 16.w),
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12.r),
+                    //       borderSide: BorderSide(color: Colors.grey[300]!),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12.r),
+                    //       borderSide: BorderSide(color: Colors.grey[300]!),
+                    //     ),
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12.r),
+                    //       borderSide: const BorderSide(color: Colors.amber,
+                    //           width: 2),
+                    //     ),
+                    //   ),
+                    //   countryButtonStyle: const CountryButtonStyle(
+                    //     showFlag: true,
+                    //     showDialCode: true,
+                    //     showIsoCode: false,
+                    //     flagSize: 20,
+                    //   ),
+                    // ),
 
-                      initialValue: PhoneNumber.parse('+233'),
-                      // initialCountryCode: 'GH',
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        hintText: 'Enter phone number',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16.h, horizontal: 16.w),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: const BorderSide(color: Colors.amber,
-                              width: 2),
-                        ),
-                      ),
-                      countryButtonStyle: const CountryButtonStyle(
-                        showFlag: true,
-                        showDialCode: true,
-                        showIsoCode: false,
-                        flagSize: 20,
-                      ),
+                    userPhoneTextFormField(
+                      controller: _phoneController,
                     ),
 
                     SizedBox(height: 20.h),

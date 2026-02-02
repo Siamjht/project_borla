@@ -10,7 +10,9 @@ import '../../../components/text/common_text.dart';
 
 
 class TopUpDialog extends StatelessWidget {
-  const TopUpDialog({super.key});
+  TopUpDialog({super.key});
+
+  TextEditingController topUpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +63,7 @@ class TopUpDialog extends StatelessWidget {
 
             /// Input
             CommonTextField(
+              controller: topUpController,
               hintText: 'Enter Amount',
               keyboardType: TextInputType.number,
               borderRadius: 4,

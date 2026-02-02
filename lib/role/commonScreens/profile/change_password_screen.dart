@@ -7,7 +7,11 @@ import '../../components/gradient_scafold.dart';
 import '../../components/text/common_text.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
-  const ChangePasswordScreen({super.key});
+  ChangePasswordScreen({super.key});
+
+  final TextEditingController _currentPassController = TextEditingController();
+  final TextEditingController _newPassController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +41,15 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Current Password
-                    PasswordField(label: 'Current Password'),
+                    PasswordField(label: 'Current Password', passController: _currentPassController ,),
                     SizedBox(height: 20.h),
 
                     // New Password
-                    PasswordField(label: 'New Password'),
+                    PasswordField(label: 'New Password',  passController: _newPassController),
                     SizedBox(height: 20.h),
 
                     // Confirm Password
-                    PasswordField(label: 'Confirm Password'),
+                    PasswordField(label: 'Confirm Password',  passController: _confirmPassController),
                     SizedBox(height: 40,),
 
                     // Save Button
@@ -92,14 +96,17 @@ class ChangePasswordScreen extends StatelessWidget {
 
 /// Reusable Password Field using CommonTextField
 class PasswordField extends StatefulWidget {
-  const PasswordField({super.key, required this.label});
+  const PasswordField({super.key, required this.label, required this.passController});
   final String label;
 
+  final dynamic passController;
   @override
   State<PasswordField> createState() => _PasswordFieldState();
 }
 
 class _PasswordFieldState extends State<PasswordField> {
+
+  TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +121,7 @@ class _PasswordFieldState extends State<PasswordField> {
         ),
         SizedBox(height: 8.h),
         CommonTextField(
+          controller: passController,
           hintText: '••••••••',
           isPassword: true,
         ),

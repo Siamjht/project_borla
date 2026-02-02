@@ -18,7 +18,6 @@ class ThankYouScreen extends StatefulWidget {
 
 class _ThankYouScreenState extends State<ThankYouScreen> {
 
-
   void ShowSearchLocationSheet (BuildContext context) {
 
     showModalBottomSheet(
@@ -31,7 +30,6 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
         builder: (context) => SearchLocationSheet(),
 
     );
-
 
   }
 
@@ -48,7 +46,6 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
     );
 
-
   }
 
   void ShowRatingSheet (BuildContext context) {
@@ -64,7 +61,6 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
     );
 
-
   }
 
   void ShowChooseRideSheet (BuildContext context) {
@@ -79,7 +75,6 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
       builder: (context) => ChooseRideSheet(),
 
     );
-
 
   }
 
@@ -101,12 +96,9 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
   final navbarController = Get.put(UserNavBarController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: const LinearGradient(
@@ -127,12 +119,23 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
             Padding(
               padding:  const EdgeInsets.fromLTRB(20, 240, 20, 20),
               
-              child: Image.asset('assets/images/thanks.png'),
+              child: Image.asset('assets/images/thanks_2.png', scale: 2,),
 
             ),
 
+           Text('Thank you for your review!', style: TextStyle(
+             fontSize: 24,
+             fontWeight: FontWeight.w600,
+             color: Colors.grey.shade700
+           ),),
 
+            SizedBox(height: 16,),
 
+            Text("You help fellow users find what's good out \n there in discovering the best experience.", style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade500
+            ),),
            Padding(
               padding:  EdgeInsets.fromLTRB(20,140,20,0),
               child: GradientButton(
@@ -143,14 +146,9 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                 },
               ),
             ),
-
-            // Text("Content")
           ],
         ),
       ),
-
-
-
     );
   }
 }

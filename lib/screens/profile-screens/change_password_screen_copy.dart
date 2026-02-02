@@ -2,13 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_field_copy.dart';
 import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 
 class UserChangePasswordScreen extends StatelessWidget {
-  const UserChangePasswordScreen({super.key});
+  UserChangePasswordScreen({super.key});
+
+  ProfileControllerCopy profileControllerCopy = Get.put(ProfileControllerCopy());
+
+  // final TextEditingController _passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +41,15 @@ class UserChangePasswordScreen extends StatelessWidget {
               ),
               SizedBox(height: 40,),
               // Current Password
-              PasswordField(label: 'Current Password'),
+              PasswordField(label: 'Current Password', passController: profileControllerCopy.passController ),
               SizedBox(height: 20.h),
 
               // New Password
-              PasswordField(label: 'New Password'),
+              PasswordField(label: 'New Password', passController: profileControllerCopy.passController ),
               SizedBox(height: 20.h),
 
               // Confirm Password
-              PasswordField(label: 'Confirm Password'),
+              PasswordField(label: 'Confirm Password', passController: profileControllerCopy.passController ),
               const Spacer(),
 
               // Save Button
@@ -86,14 +93,18 @@ class UserChangePasswordScreen extends StatelessWidget {
 
 /// Reusable Password Field using CommonTextField
 class PasswordField extends StatefulWidget {
-  const PasswordField({super.key, required this.label});
+  const PasswordField({super.key, required this.label, required this.passController});
   final String label;
+
+  final dynamic passController;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
 }
 
 class _PasswordFieldState extends State<PasswordField> {
+
+  TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +119,7 @@ class _PasswordFieldState extends State<PasswordField> {
         ),
         SizedBox(height: 8.h),
         CommonTextField(
+          controller: passController,
           hintText: '••••••••',
           isPassword: true,
         ),

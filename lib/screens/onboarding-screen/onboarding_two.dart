@@ -3,7 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/screens/select_role_screen.dart';
-
+import '../../widgets/onboarding-widgets/onboarding_image_page_widget.dart';
 import 'onboarding_one.dart';
 
 class OnboardingTwo extends StatelessWidget {
@@ -152,8 +152,6 @@ class OnboardingTwo extends StatelessWidget {
                     ),
                   ),
 
-
-
                 ),
 
               ],
@@ -164,9 +162,6 @@ class OnboardingTwo extends StatelessWidget {
           ],
         ),
       ),
-
-
-
     );
   }
 }

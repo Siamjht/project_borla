@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/bottom-sheets/delete_address_sheet.dart';
+import 'package:project_borla/screens/profile-screens/ps-inner-widgets/address_menu.dart';
+import 'package:project_borla/screens/search-place-screens/add_place_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 import 'package:project_borla/theme/gradient_scaffold_copy.dart';
 
@@ -15,23 +17,6 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
-
-  void ShowDeleteAddressSheet (BuildContext context) {
-
-    showModalBottomSheet(
-
-      context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      //showDragHandle: true,
-      useSafeArea: true,
-      builder: (context) => DeleteAddressSheet(),
-
-    );
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +65,7 @@ class _AddressScreenState extends State<AddressScreen> {
               SizedBox(height: 16,),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                   return addressCard();
                 },),
@@ -93,28 +78,28 @@ class _AddressScreenState extends State<AddressScreen> {
                 child: GradientButton(
                   text: 'Add Address',
                   onPressed: () {
-                    //Get.to(OtpScreen());
+                    Get.to(()=>AddPlaceScreen());
                     //Navigator.pop(context);
                     //ShowPaymentSheet(context);
           
                   },
                 ),
               ),
-          
-          
-          
-          
-          
-          
+
             ],
-          
-          
+
           ),
         )
     );
   }
 
   Widget addressCard() {
+
+    ///adding a menuKey (Global Key) to calculate screen position of the dots icon at runtime
+
+    final GlobalKey menuKey = GlobalKey();
+
+
     return Container(
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             height: 140,
@@ -141,8 +126,11 @@ class _AddressScreenState extends State<AddressScreen> {
                       ),),
                       Spacer(),
                       InkWell(
-                        onTap: (){},
-                        child: Image.asset('assets/images/dots.png'),
+                        key: menuKey,
+                        onTap: (){
+                          showAddressMenu(context, menuKey);
+                        },
+                        child: Image.asset('assets/images/dots_2.png' , scale: 3.5,),
                       )
 
                     ],
@@ -166,8 +154,6 @@ class _AddressScreenState extends State<AddressScreen> {
                 )
               ],
             ),
-
-
 
           );
   }

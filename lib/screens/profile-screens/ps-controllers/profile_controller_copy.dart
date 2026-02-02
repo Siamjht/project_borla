@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 class ProfileControllerCopy extends GetxController {
   final ImagePicker _picker = ImagePicker();
 
+  //change password controller
+
+  final TextEditingController passController = TextEditingController();
+
   /// Text Controllers
   final nameController = TextEditingController(text: 'Cleopas Owusu');
   final phoneController = TextEditingController();

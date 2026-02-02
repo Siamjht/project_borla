@@ -112,7 +112,7 @@ class _CurrentLocationSheetTwoState extends State<CurrentLocationSheetTwo> {
 
                 children: [
 
-                  Image.asset('assets/images/saved_icon.png', scale: 0.8,),
+                  Image.asset('assets/images/saved_icon_2.png', scale: 0.8,),
 
                   SizedBox(width: 8,),
 

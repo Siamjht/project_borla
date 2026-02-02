@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 import 'package:project_borla/theme/app_color.dart';
 import 'package:project_borla/theme/gradient_scaffold_copy.dart';
 
@@ -9,6 +10,7 @@ import '../../gen/custom_assets/assets.gen.dart';
 import '../../widgets/action_button_widget.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/search-screen-widgets/add_place_text_field_widget.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   const AddPlaceScreen({super.key});
@@ -19,12 +21,8 @@ class AddPlaceScreen extends StatefulWidget {
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
-  RxString selectedPlace = "".obs;
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController placeNameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-
+  AddPlaceController addPlaceController = Get.put(AddPlaceController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +69,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
         SizedBox(height: 20,),
 
-        Image.asset('assets/images/map.png'),
+        Image.asset('assets/images/map_2.png', scale: 1.8,),
 
         SizedBox(height: 40),
 
@@ -81,134 +79,55 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconLabelAction(
-                  icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: selectedPlace.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
+                  icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: addPlaceController.selectedPlace.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
                   label: 'Home',
-                  selected: selectedPlace.value == 'Home' ? true : false,
+                  selected: addPlaceController.selectedPlace.value == 'Home' ? true : false,
                   onTap: (){
-                    titleController.text = 'Home';
-                    selectedPlace.value = 'Home';
+                    addPlaceController.titleController.text = 'Home';
+                    addPlaceController.selectedPlace.value = 'Home';
                   }
               ),
               IconLabelAction(
-                  icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: selectedPlace.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
+                  icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: addPlaceController.selectedPlace.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
                   label: 'Office',
-                  selected: selectedPlace.value == 'Office' ? true : false,
+                  selected: addPlaceController.selectedPlace.value == 'Office' ? true : false,
                   onTap: (){
-                    titleController.text = 'Office';
-                    selectedPlace.value = 'Office';
+                    addPlaceController.titleController.text = 'Office';
+                    addPlaceController.selectedPlace.value = 'Office';
                   }
               ),
               IconLabelAction(
-                  icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: selectedPlace.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
+                  icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: addPlaceController.selectedPlace.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
                   label: 'Shop',
-                  selected: selectedPlace.value == 'Shop' ? true : false,
+                  selected: addPlaceController.selectedPlace.value == 'Shop' ? true : false,
                   onTap: (){
-                    titleController.text = 'Shop';
-                    selectedPlace.value = 'Shop';
+                    addPlaceController.titleController.text = 'Shop';
+                    addPlaceController.selectedPlace.value = 'Shop';
                   }
               ),
               IconLabelAction(
-                  icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: selectedPlace.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
+                  icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: addPlaceController.selectedPlace.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
                   label: 'Hotel',
-                  selected: selectedPlace.value == 'Hotel' ? true : false,
+                  selected: addPlaceController.selectedPlace.value == 'Hotel' ? true : false,
                   onTap: (){
-                    titleController.text = 'Hotel';
-                    selectedPlace.value = 'Hotel';
+                    addPlaceController.titleController.text = 'Hotel';
+                    addPlaceController.selectedPlace.value = 'Hotel';
                   }
               ),
 
             ],
-
-
 
           ),
         ),),
 
         Padding(
           padding: const EdgeInsets.fromLTRB(22,20,22,20),
-          child: Column(
-
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: [
-
-              const SizedBox(height: 6),
-
-              Text('Place Title', style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14
-              ),),
-
-              const SizedBox(height: 6),
-
-              CustomTextField(
-                controller: titleController,
-                hint: 'Hotel',
-                prefix: Image.asset('assets/images/second_pin.png'),
-              ),
-
-              const SizedBox(height: 14),
-
-              Text('Place Name', style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14
-              ),),
-
-              const SizedBox(height: 6),
-
-              CustomTextField(
-                hint: 'Chittagong, Ghana',
-                prefix: Image.asset('assets/images/second_pin.png'),
-              ),
-
-              const SizedBox(height: 14),
-
-              Text('Address', style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14
-              ),),
-
-              const SizedBox(height: 6),
-
-              CustomTextField(
-                hint: 'Studio 08 Jake Stream',
-                prefix: Image.asset('assets/images/third_pin.png'),
-                //suffix: Image.asset('assets/images/third_pin.png'),
-                suffix: Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Image.asset('assets/images/target_icon.png',),
-                ),
-              ),
-
-
-
-              const SizedBox(height: 16),
-
-
-              const SizedBox(height: 8),
-
-
-              const SizedBox(height: 16),
-
-              GradientButton(
-                text: 'Save Place',
-                onPressed: () {
-                  Navigator.pop(context);
-                  //Get.to(OtpScreen());
-                },
-              ),
-
-
-            ],
-          ),
+          child: AddPlaceTextFields(addPlaceController: addPlaceController),
         ),
 
-
-
-
-
-        // Text("Content")
       ],
     ));
   }
 }
+
+

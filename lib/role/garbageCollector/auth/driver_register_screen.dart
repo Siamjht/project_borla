@@ -131,7 +131,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
                         SocialLoginButton(
                           text: 'Continue with Apple',
-                          asset: 'assets/images/apple.png',
+                          asset: 'assets/images/apple_2.png',
                           onPressed: () {},
                         ),
 

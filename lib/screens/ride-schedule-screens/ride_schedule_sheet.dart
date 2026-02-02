@@ -112,7 +112,7 @@ class _RideScheduleSheetState extends State<RideScheduleSheet> {
             width: 90,
             top: -50,
             right: 160,
-            child: Image.asset('assets/images/calender_icon.png')
+            child: Image.asset('assets/images/calender_icon_2.png', scale: 6.2,)
         ),
       ],
     );

@@ -25,7 +25,8 @@ Widget profileItems(BuildContext context, controller) {
       SizedBox(height: 8.h),
       CommonTextField(
         hintText: 'Enter Name',
-        // controller: controller.nameController,
+        //controller: controller.nameController,
+        controller: controller.nameController,
       ),
       SizedBox(height: 20.h),
 
@@ -40,7 +41,9 @@ Widget profileItems(BuildContext context, controller) {
         ),
       ),
       SizedBox(height: 8.h),
-      phoneTextFormField(),
+      //phoneTextFormField(controller: _phoneController),
+
+      driverPhoneTextFormField(),
 
       SizedBox(height: 20.h),
 

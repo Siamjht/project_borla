@@ -20,31 +20,31 @@ class _ConfirmLocationScreenState extends State<ConfirmLocationScreen> {
   // final DriverHomeController controller =
   // Get.put(DriverHomeController());
 
-  void ShowConfirmAddressSheet (BuildContext context) {
+  // void ShowConfirmAddressSheet (BuildContext context) {
+  //
+  //   showModalBottomSheet(
+  //
+  //     context: context,
+  //     barrierColor: Colors.transparent,
+  //     backgroundColor: Colors.transparent,
+  //     isScrollControlled: true,
+  //     //showDragHandle: true,
+  //     useSafeArea: true,
+  //     builder: (context) => ConfirmAddressSheet(),
+  //
+  //   );
+  //
+  // }
 
-    showModalBottomSheet(
-
-      context: context,
-      barrierColor: Colors.transparent,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      //showDragHandle: true,
-      useSafeArea: true,
-      builder: (context) => ConfirmAddressSheet(),
-
-    );
-
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Future.microtask(() {
-      ShowConfirmAddressSheet(context);
-    },);
-
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   Future.microtask(() {
+  //     ShowConfirmAddressSheet(context);
+  //   },);
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +79,10 @@ class _ConfirmLocationScreenState extends State<ConfirmLocationScreen> {
                   },
                 ),
               ),
+          ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: ConfirmAddressSheet()
           )
         ],
       )

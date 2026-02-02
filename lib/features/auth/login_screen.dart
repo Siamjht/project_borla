@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:phone_form_field/phone_form_field.dart';
+import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import 'package:project_borla/features/auth/forget_pass_screen.dart';
 import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
+import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/screens/select_role_screen.dart';
 import 'package:project_borla/theme/auth_header.dart';
 
@@ -10,6 +15,7 @@ import '../../gen/custom_assets/assets.gen.dart';
 import '../../role/components/commonTextField/phone_text_field.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
+import '../../widgets/login-screen-widgets/login_screen_widgets.dart';
 import '../../widgets/social_login_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,18 +27,52 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  UserAuthController authController2 = Get.put(UserAuthController());
+
+  final formKey = GlobalKey<FormState>() ;
+
   bool agree = false ;
+
+  @override
+  void initState() {
+    super.initState();
+    authController2.phoneController = PhoneController(
+      initialValue: const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      ),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      authController2.phoneController.value = const PhoneNumber(
+        isoCode: IsoCode.GH,
+        nsn: '',
+      );
+    });
+  }
+  @override
+  void dispose() {
+    authController2.phoneController.dispose();
+    authController2.passController.dispose();
+    super.dispose();
+  }
+
+  void formOnSubmit() {
+    if(formKey.currentState!.validate()) {
+      print ('Form is valid');
+      Get.to(()=>UserNavBar());
+    }
+    else {
+      print ('Form is Invalid');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body: Stack(
-
         alignment: AlignmentDirectional.bottomStart,
-
         children: [
-
           Container(
             decoration: BoxDecoration(
              gradient: const LinearGradient(
@@ -44,228 +84,113 @@ class _LoginScreenState extends State<LoginScreen> {
            ),
             child: AuthHeader(title: 'Welcome Back!', subtitle: 'Sign in to continue your journey with Borla Borla'),
           ),
-
           Positioned(
               top: 0,
               right: -60,
               child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
-          Container(
-
-            //alignment: Alignment.center,
-
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(34)
+          SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(34)
+                ),
+                color: Colors.white,
               ),
-              color: Colors.white,
-            ),
-            height: 666,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-
-                  const SizedBox(height: 4),
-
-                  Text('Phone Number', style: TextStyle(
-                    fontWeight: FontWeight.w700
-                  ),),
-
-                  const SizedBox(height: 8),
-
-                  phoneTextFormField(),
-
-                  const SizedBox(height: 16),
-
-                  Text('Password', style: TextStyle(
-                      fontWeight: FontWeight.w700
-                  ),),
-
-                  const SizedBox(height: 8),
-                  CommonTextField(
-                    hintText: 'Password',
-                    isPassword: true,
-                  ),
-
-                  Row(
+              height: 666,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 4),
+                      Text('Phone Number', style: TextStyle(
+                        fontWeight: FontWeight.w700
+                      ),),
+                      const SizedBox(height: 8),
+                      userPhoneTextFormField(
+                        controller: authController2.phoneController,
+                      ),
+                      const SizedBox(height: 16),
+                      Text('Password', style: TextStyle(
+                          fontWeight: FontWeight.w700
+                      ),),
+                      const SizedBox(height: 8),
+                      CommonTextField(
+                        controller: authController2.passController,
+                        validator: (value) {
+                          if(value == null || value.isEmpty ) {
+                            return 'Please Enter your Password';
+                          } else {
+                            return null;
+                          }
+                        },
+                        hintText: 'Password',
+                        isPassword: true,
+                      ),
 
-
-                      GradientCheckbox(
+                      CheckboxSection(
                         value: agree,
                         onChanged: (val) {
-                          setState(() => agree = val);
+                          setState(() {
+                            agree = val;
+                          });
                         },
                       ),
 
+                      const SizedBox(height: 16),
 
-                      const SizedBox(width: 10),
-                      const Text("Keep me logged in"),
-
-
-
-                      Spacer(),
-
-
-
-                      TextButton(
+                      GradientButton(
+                        text: 'Log In',
                         onPressed: () {
-                          Get.to(ForgetPassScreen());
+                          //Get.to(()=>UserNavBar());
+                          formOnSubmit();
                         },
-                        child: ShaderMask(
-                          shaderCallback: (bounds) =>
-                              const LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 214, 0, 1),
-                                  Color.fromRGBO(255, 149, 0, 1),
-                                ],
-                              ).createShader(bounds),
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey.shade300)),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              'or continue with',
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
-                        ),
+                          Expanded(child: Divider(color: Colors.grey.shade300)),
+                        ],
                       ),
-                    ],
-                  ),
 
-                  const SizedBox(height: 16),
+                      const SizedBox(height: 24),
 
-                  GradientButton(
-                    text: 'Log In',
-                    onPressed: () {
-
-                    },
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  Row(
-                    children: [
-                      Expanded(child: Divider(color: Colors.grey.shade300)),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'or continue with',
-                          style: TextStyle(color: Colors.grey),
-                        ),
+                      SocialLoginButton(
+                        text: 'Continue with Google',
+                        asset: 'assets/images/google.png',
+                        onPressed: () {},
                       ),
-                      Expanded(child: Divider(color: Colors.grey.shade300)),
+
+                      const SizedBox(height: 16),
+
+                      SocialLoginButton(
+                        text: 'Continue with Apple',
+                        asset: 'assets/images/apple_2.png',
+                        onPressed: () {},
+                      ),
+
+                      DontHaveAccountSection()
+
                     ],
                   ),
-
-                  const SizedBox(height: 24),
-
-                  SocialLoginButton(
-                    text: 'Continue with Google',
-                    asset: 'assets/images/google.png',
-                    onPressed: () {},
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  SocialLoginButton(
-                    text: 'Continue with Apple',
-                    asset: 'assets/images/apple.png',
-                    onPressed: () {},
-                  ),
-
-                  Row(
-
-                    mainAxisAlignment: MainAxisAlignment.center,
-
-                    children: [
-                      Text("Don't have an account?", style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
-                      ),),
-                      //SizedBox(width: 2,),
-                      TextButton(
-                        onPressed: (){
-                          Get.to(()=> SelectRoleScreen());
-                        },
-                        child: ShaderMask(
-                          shaderCallback: (bounds) =>
-                            const LinearGradient(
-                              colors: [
-                                Color.fromRGBO(255, 214, 0, 1),
-                                Color.fromRGBO(255, 149, 0, 1),
-                              ],
-                            ).createShader(bounds),
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),)
-                    ],
-                  )
-
-                ],
+                ),
               ),
             ),
           )
-
         ]
       )
-
     );
   }
 }
-
-
-class GradientCheckbox extends StatelessWidget {
-  final bool value;
-  final ValueChanged<bool> onChanged;
-  final double size;
-
-  const GradientCheckbox({
-    super.key,
-    required this.value,
-    required this.onChanged,
-    this.size = 16,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onChanged(!value),
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          gradient: value
-              ? const LinearGradient(
-            colors: [
-              Color.fromRGBO(255, 214, 0, 1),
-              Color.fromRGBO(255, 149, 0, 1),
-            ],
-          )
-              : null,
-          border: Border.all(
-            color: value ? Colors.transparent : Colors.grey,
-            width: 2,
-          ),
-        ),
-        child: value
-            ? const Icon(
-          Icons.check,
-          size: 12,
-          color: Colors.white,
-        )
-            : null,
-      ),
-    );
-  }
-}
-

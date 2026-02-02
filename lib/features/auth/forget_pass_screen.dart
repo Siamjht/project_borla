@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import '../../theme/auth_header.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
@@ -17,7 +19,23 @@ class ForgetPassScreen extends StatefulWidget {
 
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
+  UserAuthController authController = Get.put(UserAuthController());
+
+  final formKey = GlobalKey <FormState>() ;
+
   bool agree = false ;
+
+  //TextEditingController emailController = TextEditingController();
+
+  void formOnSubmit() {
+    if(formKey.currentState!.validate()) {
+      print ('Form is valid');
+      Get.to(()=> OtpScreen(isSignup: false,));
+    }
+    else {
+      print ('Form is Invalid');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,46 +73,54 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 height: 630,
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Column(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
 
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                  children: [
+                    children: [
 
-                    const SizedBox(height: 26),
+                      const SizedBox(height: 26),
 
-                    Text('Email ID', style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
-                    ),),
+                      Text('Email ID', style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                      ),),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    CustomTextField(
-                      hint: 'Enter your email',
-                      prefix: const Icon(Icons.email),
-                    ),
+                      CustomTextField(
 
-
-
-                    const SizedBox(height: 16),
-
-
-                    const SizedBox(height: 8),
+                        controller: authController.emailController,
+                        hint: 'Enter your email',
+                        prefix: const Icon(Icons.email),
 
 
-                    const SizedBox(height: 16),
-
-                    GradientButton(
-                      text: 'Send Code',
-                      onPressed: () {
-                        Get.to(()=> OtpScreen(isSignup: false,));
-                      },
-                    ),
+                      ),
 
 
-                  ],
-                ),
+
+                      const SizedBox(height: 16),
+
+
+                      const SizedBox(height: 8),
+
+
+                      const SizedBox(height: 16),
+
+                      GradientButton(
+                        text: 'Send Code',
+                        onPressed: () {
+                          //Get.to(()=> OtpScreen(isSignup: false,));
+                          formOnSubmit();
+                        },
+                      ),
+
+
+                    ],
+                                    ),
+                  ),
                 ),
               )
 

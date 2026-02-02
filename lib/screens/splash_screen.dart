@@ -75,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Transform.translate(
               offset: const Offset(0, 0),
               child: Image.asset(
-                'assets/images/logo.png',
+                'assets/images/logo_2.png',
                 width: 180,
               ),
             ),

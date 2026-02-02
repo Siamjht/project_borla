@@ -5,6 +5,7 @@ import 'package:project_borla/role/garbageCollector/activity/activity_screen.dar
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
 import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
 import 'package:project_borla/screens/choose-ride-screens/choose_ride_screen.dart';
+import 'package:project_borla/screens/driver-information-screens/driver_information_screen.dart';
 import 'package:project_borla/screens/home-screens/home_map_screen.dart';
 import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/screens/home-screens/payment_screen.dart';
@@ -20,6 +21,7 @@ import 'package:project_borla/screens/profile-screens/address_screen.dart';
 import 'package:project_borla/screens/profile-screens/change_password_screen_copy.dart';
 import 'package:project_borla/screens/profile-screens/edit_profile_screen_copy.dart';
 import 'package:project_borla/screens/profile-screens/profile_screen_copy.dart';
+// import 'package:project_borla/screens/rider-review-screen/rider_review_screen.dart';
 import 'package:project_borla/screens/rider-searching-screen/rider_searching_screen.dart';
 import 'package:project_borla/screens/scheduled-screens/cancel_ride_screen.dart';
 import 'package:project_borla/screens/scheduled-screens/schedule_ride_two.dart';
@@ -28,6 +30,7 @@ import 'package:project_borla/screens/search-place-screens/edit_place.dart';
 import 'package:project_borla/screens/search-place-screens/location_search_screen.dart';
 import 'package:project_borla/screens/search-place-screens/saved_places_screen.dart';
 import 'package:project_borla/screens/select_role_screen.dart';
+import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import 'package:project_borla/screens/track-screen/track_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_category_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_qty_screen.dart';
@@ -76,6 +79,9 @@ class AppRoute {
   static const String paymentSuccess = "/paymentSuccess";
   static const String chooseRide = "/chooseRide";
   static const String userTrack = "/userTrack";
+  static const String driverInfo = "/driverInfo";
+  static const String riderReview = "/riderReview";
+  static const String startChat = "/startChat";
 
 
 
@@ -104,10 +110,10 @@ class AppRoute {
         name: role,
         page: () => SelectRoleScreen(),
         transition: Transition.rightToLeftWithFade),
-    // GetPage(
-    //     name: home,
-    //     page: () => HomeScreenOne(),
-    //     transition: Transition.rightToLeftWithFade),
+    GetPage(
+        name: startChat,
+        page: () => StartChatScreen(),
+        transition: Transition.rightToLeftWithFade),
     GetPage(
         name: savedPlaces,
         page: () => SavedPlacesScreen(),
@@ -237,9 +243,17 @@ class AppRoute {
         page: () => UserTrackScreen(),
         transition: Transition.rightToLeftWithFade),
 
+    GetPage(
+        name: driverInfo,
+        page: () => DriverInformationScreen(),
+        transition: Transition.rightToLeftWithFade),
+
+    // GetPage(
+    //     name: riderReview,
+    //     page: () => RiderReviewScreen(),
+    //     transition: Transition.rightToLeftWithFade),
+
   ];
-
-
 
 }
 

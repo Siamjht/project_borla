@@ -16,6 +16,7 @@ class MapScreenTwo extends StatefulWidget {
 class _MapScreenTwoState extends State<MapScreenTwo> {
 
   //double _bottomSheetHeight = 0;
+//  late ScrollController controller ;
 
   int tabIndex = 0;
 
@@ -48,7 +49,10 @@ class _MapScreenTwoState extends State<MapScreenTwo> {
 
   void ShowCurrentLocationSheet (BuildContext context) {
 
+    //ScrollController controller ;
+
     showModalBottomSheet(
+
 
       context: context,
       barrierColor: Colors.transparent,
@@ -93,11 +97,6 @@ class _MapScreenTwoState extends State<MapScreenTwo> {
     );
 
   }
-
-
-
-
-
 
 
   @override

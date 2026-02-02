@@ -4,6 +4,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/screens/onboarding-screen/onboarding_two.dart';
 
+import '../../widgets/onboarding-widgets/onboarding_data.dart';
+import '../../widgets/onboarding-widgets/onboarding_image_page_widget.dart';
+
 class OnboardingOne extends StatefulWidget {
   const OnboardingOne({super.key});
 
@@ -15,34 +18,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
 
   final PageController _pageController = PageController();
   int _currentPage = 0;
-
-  final List<Map<String, String>> onboardingData = [
-    {
-      "image": "assets/images/onboard1.png",
-      "title1": "Schedule and Track your",
-      "title2": "Pickup With Ease!",
-      "subtitle1": "Instantly book your garbage pick-up or schedule it",
-      "subtitle2": "for later, and track your tricycle rider’s real-time",
-      "subtitle3": "location until collection."
-    },
-    {
-      "image": "assets/images/onboard2.png",
-      "title1": "Pay Securely And Rate",
-      "title2": "Your Rider Every Time",
-      "subtitle1": "Make hassle-free payments via MOMO or cash,",
-      "subtitle2": "and share feedback to help improve service",
-      "subtitle3": "quality."
-    },
-    {
-      "image": "assets/images/onboard3.png",
-      "title1": "Choose Your Waste Type",
-      "title2": "And Quantity Easily!",
-      "subtitle1": "From household to commercial or recyclable",
-      "subtitle2": "waste, select exactly what you want collected and",
-      "subtitle3": "let Borla Borla handle the rest."
-    },
-  ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +31,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
             colors: [
               Color(0xFFFFF8E8),  // Much closer to the screenshot
               Colors.white,
-              // Color.fromRGBO(255, 246, 217, 1),
-              // Color.fromRGBO(255, 255, 255, 1),
             ],
           ),
         ),
@@ -92,7 +65,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
                         (index) => buildDot(index),
                   ),
                 ),
-
 
                 const SizedBox(height: 46),
 
@@ -140,7 +112,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
                             ),
                           ),
                         )
-
 
                       ],
 
@@ -250,25 +221,7 @@ class _OnboardingOneState extends State<OnboardingOne> {
                 const SizedBox(height: 80),
               ],
             ),
-            // Positioned(
-            //   top: 50,
-            //   right: 20,
-            //   child: _currentPage != onboardingData.length - 1
-            //       ? TextButton(
-            //     onPressed: () {
-            //       _pageController.animateToPage(
-            //         onboardingData.length - 1,
-            //         duration: const Duration(milliseconds: 500),
-            //         curve: Curves.easeInOut,
-            //       );
-            //     },
-            //     child: const Text(
-            //       "Skip",
-            //       style: TextStyle(fontSize: 16, color: Colors.white),
-            //     ),
-            //   )
-            //       : const SizedBox(),
-            // ),
+
           ],
         ),
       ),
@@ -302,106 +255,7 @@ class _OnboardingOneState extends State<OnboardingOne> {
 
 }
 
-class VideoOnboardingPage extends StatefulWidget {
-  final String imagePath;
-  final String titlePath1;
-  final String titlePath2;
-  final String subtitlePath1;
-  final String subtitlePath2;
-  final String subtitlePath3;
 
-  const VideoOnboardingPage({
-    Key? key,
-    required this.imagePath,
-    required this.titlePath1,
-    required this.titlePath2,
-    required this.subtitlePath1,
-    required this.subtitlePath2,
-    required this.subtitlePath3,
-  }) : super(key: key);
-
-  @override
-  State<VideoOnboardingPage> createState() => _VideoOnboardingPageState();
-}
-
-class _VideoOnboardingPageState extends State<VideoOnboardingPage> {
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return SingleChildScrollView(
-      child: Column(
-      
-        children: [
-      
-      
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SizedBox(
-              width: Get.width,
-                height: 489.h,
-                child: Image.asset(widget.imagePath, fit: BoxFit.cover,)
-            ),
-          ),
-      
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20,10,20,10),
-            child: Column(
-              children: [
-                Text(
-                  widget.titlePath1,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  widget.titlePath2,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-      
-                //const SizedBox(height: 20),
-                Text(
-                  widget.subtitlePath1,
-                  //textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  widget.subtitlePath2,
-                  //textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  widget.subtitlePath3,
-                  //textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 
 

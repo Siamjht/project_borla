@@ -9,7 +9,10 @@
 // ignore_for_file: type=lint
 // ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart' as _svg;
+import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
 class $AssetsIconCopyGen {
   const $AssetsIconCopyGen();
@@ -64,6 +67,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/creditCardIcon.png
   AssetGenImage get creditCardIcon =>
       const AssetGenImage('assets/icons/creditCardIcon.png');
+
+  /// File path: assets/icons/customerSupportIcon.png
+  AssetGenImage get customerSupportIcon =>
+      const AssetGenImage('assets/icons/customerSupportIcon.png');
 
   /// File path: assets/icons/daySunIcon.png
   AssetGenImage get daySunIcon =>
@@ -208,6 +215,7 @@ class $AssetsIconsGen {
     callIcon,
     clockIcon,
     creditCardIcon,
+    customerSupportIcon,
     daySunIcon,
     dobCalenderIcon,
     driverIcon,
@@ -251,16 +259,16 @@ class $AssetsImagesGen {
   AssetGenImage get addButton =>
       const AssetGenImage('assets/images/add_button.png');
 
-  /// File path: assets/images/amber_left.png
-  AssetGenImage get amberLeft =>
-      const AssetGenImage('assets/images/amber_left.png');
+  /// File path: assets/images/amber_left_2.png
+  AssetGenImage get amberLeft2 =>
+      const AssetGenImage('assets/images/amber_left_2.png');
 
-  /// File path: assets/images/amber_right.png
-  AssetGenImage get amberRight =>
-      const AssetGenImage('assets/images/amber_right.png');
+  /// File path: assets/images/amber_right_2.png
+  AssetGenImage get amberRight2 =>
+      const AssetGenImage('assets/images/amber_right_2.png');
 
-  /// File path: assets/images/apple.png
-  AssetGenImage get apple => const AssetGenImage('assets/images/apple.png');
+  /// File path: assets/images/apple_2.png
+  AssetGenImage get apple2 => const AssetGenImage('assets/images/apple_2.png');
 
   /// File path: assets/images/background.png
   AssetGenImage get background =>
@@ -270,16 +278,23 @@ class $AssetsImagesGen {
   AssetGenImage get backgroundShadow =>
       const AssetGenImage('assets/images/backgroundShadow.png');
 
-  /// File path: assets/images/calender_icon.png
-  AssetGenImage get calenderIcon =>
-      const AssetGenImage('assets/images/calender_icon.png');
+  /// File path: assets/images/bin_camera.png
+  AssetGenImage get binCamera =>
+      const AssetGenImage('assets/images/bin_camera.png');
+
+  /// File path: assets/images/bin_img.png
+  AssetGenImage get binImg => const AssetGenImage('assets/images/bin_img.png');
+
+  /// File path: assets/images/calender_icon_2.png
+  AssetGenImage get calenderIcon2 =>
+      const AssetGenImage('assets/images/calender_icon_2.png');
 
   /// File path: assets/images/camera_btn.png
   AssetGenImage get cameraBtn =>
       const AssetGenImage('assets/images/camera_btn.png');
 
-  /// File path: assets/images/cash.png
-  AssetGenImage get cash => const AssetGenImage('assets/images/cash.png');
+  /// File path: assets/images/cash_2.png
+  AssetGenImage get cash2 => const AssetGenImage('assets/images/cash_2.png');
 
   /// File path: assets/images/circle_image.png
   AssetGenImage get circleImage =>
@@ -291,8 +306,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/cross.png
   AssetGenImage get cross => const AssetGenImage('assets/images/cross.png');
 
-  /// File path: assets/images/dots.png
-  AssetGenImage get dots => const AssetGenImage('assets/images/dots.png');
+  /// File path: assets/images/dots_2.png
+  AssetGenImage get dots2 => const AssetGenImage('assets/images/dots_2.png');
 
   /// File path: assets/images/emptyProfile.png
   AssetGenImage get emptyProfile =>
@@ -306,17 +321,20 @@ class $AssetsImagesGen {
   AssetGenImage get fourthPin =>
       const AssetGenImage('assets/images/fourth_pin.png');
 
-  /// File path: assets/images/general.png
-  AssetGenImage get general => const AssetGenImage('assets/images/general.png');
+  /// File path: assets/images/general_2.png
+  AssetGenImage get general2 =>
+      const AssetGenImage('assets/images/general_2.png');
 
   /// File path: assets/images/google.png
   AssetGenImage get google => const AssetGenImage('assets/images/google.png');
 
-  /// File path: assets/images/home.png
-  AssetGenImage get home => const AssetGenImage('assets/images/home.png');
+  /// File path: assets/images/home_one.png
+  AssetGenImage get homeOne =>
+      const AssetGenImage('assets/images/home_one.png');
 
-  /// File path: assets/images/home2.png
-  AssetGenImage get home2 => const AssetGenImage('assets/images/home2.png');
+  /// File path: assets/images/home_two.png
+  AssetGenImage get homeTwo =>
+      const AssetGenImage('assets/images/home_two.png');
 
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
@@ -333,11 +351,11 @@ class $AssetsImagesGen {
   AssetGenImage get locationPinTwo =>
       const AssetGenImage('assets/images/location_pin_two.png');
 
-  /// File path: assets/images/logo.png
-  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+  /// File path: assets/images/logo_2.png
+  AssetGenImage get logo2 => const AssetGenImage('assets/images/logo_2.png');
 
-  /// File path: assets/images/map.png
-  AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+  /// File path: assets/images/map_2.png
+  AssetGenImage get map2 => const AssetGenImage('assets/images/map_2.png');
 
   /// File path: assets/images/map_home.png
   AssetGenImage get mapHome =>
@@ -355,11 +373,11 @@ class $AssetsImagesGen {
   AssetGenImage get mapShop =>
       const AssetGenImage('assets/images/map_shop.png');
 
-  /// File path: assets/images/metal.png
-  AssetGenImage get metal => const AssetGenImage('assets/images/metal.png');
+  /// File path: assets/images/metal_2.png
+  AssetGenImage get metal2 => const AssetGenImage('assets/images/metal_2.png');
 
-  /// File path: assets/images/momo.png
-  AssetGenImage get momo => const AssetGenImage('assets/images/momo.png');
+  /// File path: assets/images/momo_2.png
+  AssetGenImage get momo2 => const AssetGenImage('assets/images/momo_2.png');
 
   /// File path: assets/images/noImage.jpg
   AssetGenImage get noImage => const AssetGenImage('assets/images/noImage.jpg');
@@ -368,15 +386,17 @@ class $AssetsImagesGen {
   AssetGenImage get noProfile =>
       const AssetGenImage('assets/images/noProfile.jpg');
 
-  /// File path: assets/images/not_found.png
-  AssetGenImage get notFound =>
-      const AssetGenImage('assets/images/not_found.png');
+  /// File path: assets/images/not_found_2.png
+  AssetGenImage get notFound2 =>
+      const AssetGenImage('assets/images/not_found_2.png');
 
-  /// File path: assets/images/notify.png
-  AssetGenImage get notify => const AssetGenImage('assets/images/notify.png');
+  /// File path: assets/images/notify_one.png
+  AssetGenImage get notifyOne =>
+      const AssetGenImage('assets/images/notify_one.png');
 
-  /// File path: assets/images/notify2.png
-  AssetGenImage get notify2 => const AssetGenImage('assets/images/notify2.png');
+  /// File path: assets/images/notify_two.png
+  AssetGenImage get notifyTwo =>
+      const AssetGenImage('assets/images/notify_two.png');
 
   /// File path: assets/images/onboard1.png
   AssetGenImage get onboard1 =>
@@ -394,15 +414,16 @@ class $AssetsImagesGen {
   AssetGenImage get onboard4 =>
       const AssetGenImage('assets/images/onboard4.png');
 
-  /// File path: assets/images/orange_tick.png
-  AssetGenImage get orangeTick =>
-      const AssetGenImage('assets/images/orange_tick.png');
+  /// File path: assets/images/orange_tick_2.png
+  AssetGenImage get orangeTick2 =>
+      const AssetGenImage('assets/images/orange_tick_2.png');
 
-  /// File path: assets/images/organic.png
-  AssetGenImage get organic => const AssetGenImage('assets/images/organic.png');
+  /// File path: assets/images/organic_2.png
+  AssetGenImage get organic2 =>
+      const AssetGenImage('assets/images/organic_2.png');
 
-  /// File path: assets/images/paper.png
-  AssetGenImage get paper => const AssetGenImage('assets/images/paper.png');
+  /// File path: assets/images/paper_2.png
+  AssetGenImage get paper2 => const AssetGenImage('assets/images/paper_2.png');
 
   /// File path: assets/images/patternLeft.png
   AssetGenImage get patternLeft =>
@@ -412,44 +433,56 @@ class $AssetsImagesGen {
   AssetGenImage get patternRight =>
       const AssetGenImage('assets/images/patternRight.png');
 
-  /// File path: assets/images/payment.png
-  AssetGenImage get payment => const AssetGenImage('assets/images/payment.png');
+  /// File path: assets/images/payment_2.png
+  AssetGenImage get payment2 =>
+      const AssetGenImage('assets/images/payment_2.png');
 
-  /// File path: assets/images/plastic.png
-  AssetGenImage get plastic => const AssetGenImage('assets/images/plastic.png');
+  /// File path: assets/images/plastic_2.png
+  AssetGenImage get plastic2 =>
+      const AssetGenImage('assets/images/plastic_2.png');
 
   /// File path: assets/images/rider.png
   AssetGenImage get rider => const AssetGenImage('assets/images/rider.png');
+
+  /// File path: assets/images/rider_support.svg
+  SvgGenImage get riderSupport =>
+      const SvgGenImage('assets/images/rider_support.svg');
 
   /// File path: assets/images/rightPatternHighDense.png
   AssetGenImage get rightPatternHighDense =>
       const AssetGenImage('assets/images/rightPatternHighDense.png');
 
-  /// File path: assets/images/saved_icon.png
-  AssetGenImage get savedIcon =>
-      const AssetGenImage('assets/images/saved_icon.png');
+  /// File path: assets/images/saved_icon_2.png
+  AssetGenImage get savedIcon2 =>
+      const AssetGenImage('assets/images/saved_icon_2.png');
 
   /// File path: assets/images/scheduleImg.png
   AssetGenImage get scheduleImg =>
       const AssetGenImage('assets/images/scheduleImg.png');
 
-  /// File path: assets/images/second_pin.png
-  AssetGenImage get secondPin =>
-      const AssetGenImage('assets/images/second_pin.png');
+  /// File path: assets/images/second_pin_2.png
+  AssetGenImage get secondPin2 =>
+      const AssetGenImage('assets/images/second_pin_2.png');
 
-  /// File path: assets/images/tab_icon_one.png
-  AssetGenImage get tabIconOne =>
-      const AssetGenImage('assets/images/tab_icon_one.png');
+  /// File path: assets/images/send_iconn.png
+  AssetGenImage get sendIconn =>
+      const AssetGenImage('assets/images/send_iconn.png');
 
-  /// File path: assets/images/target.png
-  AssetGenImage get target => const AssetGenImage('assets/images/target.png');
+  /// File path: assets/images/tab_icon_one_2.png
+  AssetGenImage get tabIconOne2 =>
+      const AssetGenImage('assets/images/tab_icon_one_2.png');
+
+  /// File path: assets/images/target_2.png
+  AssetGenImage get target2 =>
+      const AssetGenImage('assets/images/target_2.png');
 
   /// File path: assets/images/target_icon.png
   AssetGenImage get targetIcon =>
       const AssetGenImage('assets/images/target_icon.png');
 
-  /// File path: assets/images/thanks.png
-  AssetGenImage get thanks => const AssetGenImage('assets/images/thanks.png');
+  /// File path: assets/images/thanks_2.png
+  AssetGenImage get thanks2 =>
+      const AssetGenImage('assets/images/thanks_2.png');
 
   /// File path: assets/images/third_pin.png
   AssetGenImage get thirdPin =>
@@ -459,116 +492,139 @@ class $AssetsImagesGen {
   AssetGenImage get tilesIcon =>
       const AssetGenImage('assets/images/tiles_icon.png');
 
-  /// File path: assets/images/user.png
-  AssetGenImage get user => const AssetGenImage('assets/images/user.png');
-
   /// File path: assets/images/user1.png
   AssetGenImage get user1 => const AssetGenImage('assets/images/user1.png');
-
-  /// File path: assets/images/user2.png
-  AssetGenImage get user2 => const AssetGenImage('assets/images/user2.png');
 
   /// File path: assets/images/user_call.png
   AssetGenImage get userCall =>
       const AssetGenImage('assets/images/user_call.png');
 
-  /// File path: assets/images/user_cross.png
-  AssetGenImage get userCross =>
-      const AssetGenImage('assets/images/user_cross.png');
+  /// File path: assets/images/user_chat.png
+  AssetGenImage get userChat =>
+      const AssetGenImage('assets/images/user_chat.png');
 
-  /// File path: assets/images/user_large_pin.png
-  AssetGenImage get userLargePin =>
-      const AssetGenImage('assets/images/user_large_pin.png');
+  /// File path: assets/images/user_cross_2.png
+  AssetGenImage get userCross2 =>
+      const AssetGenImage('assets/images/user_cross_2.png');
+
+  /// File path: assets/images/user_large_pin_2.png
+  AssetGenImage get userLargePin2 =>
+      const AssetGenImage('assets/images/user_large_pin_2.png');
 
   /// File path: assets/images/user_msg.png
   AssetGenImage get userMsg =>
       const AssetGenImage('assets/images/user_msg.png');
 
-  /// File path: assets/images/walk.png
-  AssetGenImage get walk => const AssetGenImage('assets/images/walk.png');
+  /// File path: assets/images/user_one.png
+  AssetGenImage get userOne =>
+      const AssetGenImage('assets/images/user_one.png');
 
-  /// File path: assets/images/wallet.png
-  AssetGenImage get wallet => const AssetGenImage('assets/images/wallet.png');
+  /// File path: assets/images/user_support.svg
+  SvgGenImage get userSupport =>
+      const SvgGenImage('assets/images/user_support.svg');
 
-  /// File path: assets/images/wallet2.png
-  AssetGenImage get wallet2 => const AssetGenImage('assets/images/wallet2.png');
+  /// File path: assets/images/user_two.png
+  AssetGenImage get userTwo =>
+      const AssetGenImage('assets/images/user_two.png');
+
+  /// File path: assets/images/walk_2.png
+  AssetGenImage get walk2 => const AssetGenImage('assets/images/walk_2.png');
+
+  /// File path: assets/images/wallet_one.png
+  AssetGenImage get walletOne =>
+      const AssetGenImage('assets/images/wallet_one.png');
+
+  /// File path: assets/images/wallet_two.png
+  AssetGenImage get walletTwo =>
+      const AssetGenImage('assets/images/wallet_two.png');
 
   /// File path: assets/images/wave_tick.png
   AssetGenImage get waveTick =>
       const AssetGenImage('assets/images/wave_tick.png');
 
+  /// File path: assets/images/wave_tick_amber.png
+  AssetGenImage get waveTickAmber =>
+      const AssetGenImage('assets/images/wave_tick_amber.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<dynamic> get values => [
     addButton,
-    amberLeft,
-    amberRight,
-    apple,
+    amberLeft2,
+    amberRight2,
+    apple2,
     background,
     backgroundShadow,
-    calenderIcon,
+    binCamera,
+    binImg,
+    calenderIcon2,
     cameraBtn,
-    cash,
+    cash2,
     circleImage,
     clock,
     cross,
-    dots,
+    dots2,
     emptyProfile,
     emptyProfilePic,
     fourthPin,
-    general,
+    general2,
     google,
-    home,
-    home2,
+    homeOne,
+    homeTwo,
     icon,
     leftPatterHighDense,
     locationPin,
     locationPinTwo,
-    logo,
-    map,
+    logo2,
+    map2,
     mapHome,
     mapHotel,
     mapOffice,
     mapShop,
-    metal,
-    momo,
+    metal2,
+    momo2,
     noImage,
     noProfile,
-    notFound,
-    notify,
-    notify2,
+    notFound2,
+    notifyOne,
+    notifyTwo,
     onboard1,
     onboard2,
     onboard3,
     onboard4,
-    orangeTick,
-    organic,
-    paper,
+    orangeTick2,
+    organic2,
+    paper2,
     patternLeft,
     patternRight,
-    payment,
-    plastic,
+    payment2,
+    plastic2,
     rider,
+    riderSupport,
     rightPatternHighDense,
-    savedIcon,
+    savedIcon2,
     scheduleImg,
-    secondPin,
-    tabIconOne,
-    target,
+    secondPin2,
+    sendIconn,
+    tabIconOne2,
+    target2,
     targetIcon,
-    thanks,
+    thanks2,
     thirdPin,
     tilesIcon,
-    user,
     user1,
-    user2,
     userCall,
-    userCross,
-    userLargePin,
+    userChat,
+    userCross2,
+    userLargePin2,
     userMsg,
-    walk,
-    wallet,
-    wallet2,
+    userOne,
+    userSupport,
+    userTwo,
+    walk2,
+    walletOne,
+    walletTwo,
     waveTick,
+    waveTickAmber,
   ];
 }
 
@@ -670,4 +726,78 @@ class AssetGenImageAnimation {
   final bool isAnimation;
   final Duration duration;
   final int frames;
+}
+
+class SvgGenImage {
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = false;
+
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
+
+  final String _assetName;
+  final Size? size;
+  final Set<String> flavors;
+  final bool _isVecFormat;
+
+  _svg.SvgPicture svg({
+    Key? key,
+    bool matchTextDirection = false,
+    AssetBundle? bundle,
+    String? package,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.contain,
+    AlignmentGeometry alignment = Alignment.center,
+    bool allowDrawingOutsideViewBox = false,
+    WidgetBuilder? placeholderBuilder,
+    String? semanticsLabel,
+    bool excludeFromSemantics = false,
+    _svg.SvgTheme? theme,
+    _svg.ColorMapper? colorMapper,
+    ColorFilter? colorFilter,
+    Clip clipBehavior = Clip.hardEdge,
+    @deprecated Color? color,
+    @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
+    @deprecated bool cacheColorFilter = false,
+  }) {
+    final _svg.BytesLoader loader;
+    if (_isVecFormat) {
+      loader = _vg.AssetBytesLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+      );
+    } else {
+      loader = _svg.SvgAssetLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+        theme: theme,
+        colorMapper: colorMapper,
+      );
+    }
+    return _svg.SvgPicture(
+      loader,
+      key: key,
+      matchTextDirection: matchTextDirection,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+      placeholderBuilder: placeholderBuilder,
+      semanticsLabel: semanticsLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      colorFilter:
+          colorFilter ??
+          (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
+      clipBehavior: clipBehavior,
+      cacheColorFilter: cacheColorFilter,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
 }

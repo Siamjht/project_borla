@@ -10,6 +10,7 @@ import 'package:project_borla/role/commonScreens/termsOfConditions/terms_of_cond
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../../screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../components/gradient_scafold.dart';
 import '../aboutUs/about_us.dart';
 import 'innerWidget/language_bottom_sheet.dart';
@@ -41,116 +42,180 @@ class ProfileScreen extends StatelessWidget {
               color: AppColors.textDark,
             ),
             SizedBox(height: 20,),
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Profile Header
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFFE6E6E6)),
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 32,
-                          backgroundImage: NetworkImage(
-                            'https://shorturl.at/WSMrn',
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Profile Header
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE6E6E6)),
+                      ),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 32,
+                            backgroundImage: NetworkImage(
+                              'https://shorturl.at/WSMrn',
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
+                          const SizedBox(width: 16),
 
-                        const CommonText(
-                          text: 'Borla Ghana',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                        ),
+                          const CommonText(
+                            text: 'Borla Ghana',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.left,
+                            maxLines: 1,
+                          ),
 
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Get.to(()=> EditProfileScreen());
-                          },
-                            child: Icon(Icons.chevron_right, color: Colors.grey[600])),
-                      ],
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              Get.to(()=> EditProfileScreen());
+                            },
+                              child: Icon(Icons.chevron_right, color: Colors.grey[600])),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  const CommonText(
-                    text: 'Others',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                  ),
+                    const CommonText(
+                      text: 'Others',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black87,
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                    ),
 
-                  const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                  // Settings items
-                  SettingsListItem(
-                    icon: Icons.lock_outline,
-                    title: 'Change Password',
-                    onTap: () {
-                      Get.to(()=> ChangePasswordScreen());
-                    },
-                  ),
-                  SettingsListItem(
-                    icon: Icons.language,
-                    title: 'Change Language',
-                    onTap: () {
-                      showLanguageBottomSheet(context);
-                    },
-                  ),
-                  SettingsListItem(
-                    icon: Icons.notifications_outlined,
-                    title: 'Notifications',
-                    onTap: () {
-                      Get.to(()=> NotificationsScreen());
-                    },
-                  ),
-                  SettingsListItem(
-                    onTap: () {
-                      Get.to(()=> AboutUs());
-                    },
-                    icon: Icons.info_outline,
-                    title: 'About Us',
-                  ),
-                  SettingsListItem(
-                    onTap: () {
-                      Get.to(()=> PrivacyPolicyScreen());
-                    },
-                    icon: Icons.privacy_tip_outlined,
-                    title: 'Privacy policy',
-                  ),
-                  SettingsListItem(
-                    onTap: () {
-                      Get.to(()=> TermsOfConditions());
-                    },
-                    icon: Icons.description_outlined,
-                    title: 'Terms & Conditions',
-                  ),
-                  SettingsListItem(
-                    icon: Icons.logout,
-                    title: 'Logout',
-                    titleColor: Colors.red,
-                    iconColor: Colors.red,
-                    onTap: () {
-                      showLogoutBottomSheet(context);
-                    },
-                  ),
-                ],
+                    // Settings items
+                    SettingsListItem(
+                      icon: Icons.lock_outline,
+                      title: 'Change Password',
+                      onTap: () {
+                        Get.to(()=> ChangePasswordScreen());
+                      },
+                    ),
+                    SettingsListItem(
+                      icon: Icons.language,
+                      title: 'Change Language',
+                      onTap: () {
+                        showLanguageBottomSheet(context);
+                      },
+                    ),
+                    SettingsListItemTwo(
+                      //icon: Icons.headphones,
+                      img: 'assets/images/user_chat.png' ,
+                      title: 'Customer Support',
+                      onTap: () {
+                        Get.to(()=> StartChatScreen());
+                      },
+                    ),
+                    SettingsListItem(
+                      icon: Icons.notifications_outlined,
+                      title: 'Notifications',
+                      onTap: () {
+                        Get.to(()=> NotificationsScreen());
+                      },
+                    ),
+                    SettingsListItem(
+                      onTap: () {
+                        Get.to(()=> AboutUs());
+                      },
+                      icon: Icons.info_outline,
+                      title: 'About Us',
+                    ),
+                    SettingsListItem(
+                      onTap: () {
+                        Get.to(()=> PrivacyPolicyScreen());
+                      },
+                      icon: Icons.privacy_tip_outlined,
+                      title: 'Privacy policy',
+                    ),
+                    SettingsListItem(
+                      onTap: () {
+                        Get.to(()=> TermsOfConditions());
+                      },
+                      icon: Icons.description_outlined,
+                      title: 'Terms & Conditions',
+                    ),
+                    SettingsListItem(
+                      icon: Icons.logout,
+                      title: 'Logout',
+                      titleColor: Colors.red,
+                      iconColor: Colors.red,
+                      onTap: () {
+                        showLogoutBottomSheet(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsListItemTwo extends StatelessWidget {
+  //final IconData icon;
+  final String img;
+  final String title;
+  //final Color? iconColor;
+  final Color? titleColor;
+  final VoidCallback? onTap; // already declared
+
+  const SettingsListItemTwo({
+    super.key,
+    required this.img,
+    required this.title,
+    //this.iconColor = Colors.amber, // Green accent
+    this.titleColor = AppColors.textColor,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: InkWell(
+        onTap: onTap, // handle tap
+        borderRadius: BorderRadius.circular(10), // ripple respects corners
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: const Color(0xFFE6E6E6)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              //Icon(icon, color: iconColor, size: 26),
+              Image.asset( img , height: 26, width: 26, color: AppColors.green500,),
+              const SizedBox(width: 16),
+              CommonText(
+                text: title,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: titleColor!,
+                textAlign: TextAlign.left,
+                maxLines: 1,
+              ),
+              const Spacer(),
+              Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
+            ],
+          ),
         ),
       ),
     );

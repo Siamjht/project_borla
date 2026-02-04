@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
@@ -10,6 +12,7 @@ import 'package:project_borla/role/commonScreens/termsOfConditions/terms_of_cond
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../components/gradient_scafold.dart';
 import '../aboutUs/about_us.dart';
@@ -114,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SettingsListItemTwo(
                       //icon: Icons.headphones,
-                      img: 'assets/images/user_chat.png' ,
+                      img: Assets.icons.customerSupportIcon.image(height: 26, width: 26, color: AppColors.green500,),
                       title: 'Customer Support',
                       onTap: () {
                         Get.to(()=> StartChatScreen());
@@ -170,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
 
 class SettingsListItemTwo extends StatelessWidget {
   //final IconData icon;
-  final String img;
+  final Image img;
   final String title;
   //final Color? iconColor;
   final Color? titleColor;
@@ -202,7 +205,7 @@ class SettingsListItemTwo extends StatelessWidget {
           child: Row(
             children: [
               //Icon(icon, color: iconColor, size: 26),
-              Image.asset( img , height: 26, width: 26, color: AppColors.green500,),
+              img,
               const SizedBox(width: 16),
               CommonText(
                 text: title,

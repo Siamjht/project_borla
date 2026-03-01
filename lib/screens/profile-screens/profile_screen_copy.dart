@@ -161,6 +161,7 @@ class ProfileScreenCopy extends StatelessWidget {
                 iconColor: Colors.red,
                 onTap: () {
                   showUserLogoutBottomSheet(context);
+
                 },
               ),
             ],

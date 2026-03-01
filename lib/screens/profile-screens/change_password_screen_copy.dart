@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
+import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_field_copy.dart';
 import '../../theme/common_text_two.dart';
@@ -22,26 +23,30 @@ class UserChangePasswordScreen extends StatelessWidget {
     return UserGradientScaffold(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CommonBackButton(),
-                  CommonText(
-                    text: 'Change Password',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 50,)
-                ],
+              SizedBox(height: 34,),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CommonBackButton(),
+                    SizedBox(width: 60,),
+                    CommonText(
+                      text: 'Change Password',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                    //SizedBox(width: 50,)
+                  ],
+                ),
               ),
               SizedBox(height: 40,),
               // Current Password
-              PasswordField(label: 'Current Password', passController: profileControllerCopy.passController ),
+              PasswordField(label: 'Current Password', passController: profileControllerCopy.passController, ),
               SizedBox(height: 20.h),
 
               // New Password
@@ -50,7 +55,8 @@ class UserChangePasswordScreen extends StatelessWidget {
 
               // Confirm Password
               PasswordField(label: 'Confirm Password', passController: profileControllerCopy.passController ),
-              const Spacer(),
+              //const Spacer(),
+              SizedBox(height: 40,),
 
               // Save Button
               SizedBox(
@@ -71,7 +77,8 @@ class UserChangePasswordScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.r),
+                      //borderRadius: BorderRadius.circular(28.r),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 0,
                   ),
@@ -122,6 +129,7 @@ class _PasswordFieldState extends State<PasswordField> {
           controller: passController,
           hintText: '••••••••',
           isPassword: true,
+
         ),
       ],
     );

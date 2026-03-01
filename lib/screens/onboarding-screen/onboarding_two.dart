@@ -100,10 +100,11 @@ class OnboardingTwo extends StatelessWidget {
                 SizedBox( height: 15),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
 
 
                   child: Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
@@ -128,7 +129,8 @@ class OnboardingTwo extends StatelessWidget {
                         Get.to(SelectRoleScreen());
                       },
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(134, 14, 134, 14),
+                        //padding: EdgeInsets.fromLTRB(134, 14, 134, 14),
+                        padding: EdgeInsets.fromLTRB(0,0,0,0),
 
                         child: ShaderMask(
                           shaderCallback: (bounds) => LinearGradient(
@@ -146,7 +148,6 @@ class OnboardingTwo extends StatelessWidget {
                             ),
                           ),
                         ),
-
 
                       ),
                     ),

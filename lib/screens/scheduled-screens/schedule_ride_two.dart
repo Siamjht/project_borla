@@ -494,7 +494,7 @@ class TimePickerBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _Header(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             _Tabs(controller),
             const SizedBox(height: 24),
@@ -519,7 +519,7 @@ class TimePickerBottomSheet extends StatelessWidget {
 
             const SizedBox(height: 30),
             _Buttons(controller),
-            const SizedBox(height: 24),
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -564,6 +564,7 @@ class _Header extends StatelessWidget {
             color: AppColors.textDark,
             fontWeight: FontWeight.w500,
           ),
+          const SizedBox(height: 12),
           Divider(color: AppColors.gray200,)
         ],
       ),

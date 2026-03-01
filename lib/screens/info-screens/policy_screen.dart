@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
+import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../theme/app_color.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_two.dart';
@@ -14,10 +15,12 @@ class PolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return UserGradientScaffold(
       child: SafeArea(child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 22.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 36,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -26,15 +29,17 @@ class PolicyScreen extends StatelessWidget {
                 SizedBox(width: 50,)
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            CommonText(text: "Privacy Policy", color: AppColors.textDark,),
+            SizedBox(height: 40,),
+            CommonText(text: "Privacy Policy", color: AppColors.textDark, fontSize: 16.5 , fontWeight: FontWeight.w600,),
             SizedBox(height: 20,),
             CommonText(
               textAlign: TextAlign.start,
               text: "Lorem ipsum dolor sit amet consectetur. Ultrices id feugiat venenatis habitant mattis viverra elementum purus volutpat. Lacus eu molestie pulvinar rhoncus integer proin elementum. Pretium sit fringilla massa tristique aenean commodo leo. Aliquet viverra amet sit porta elementum et pellentesque posuere. Ullamcorper viverra tortor lobortis viverra auctor egestas. Nulla condimentum ac metus quam turpis gravida ut velit. Porta justo lacus consequat sed platea. Ut dui massa quam elit faucibus consectetur sapien aenean auctor. Felis ipsum amet justo in. Netus amet in egestas sed auctor lorem. ",
-              color: AppColors.gray400,)
+              color: AppColors.gray400,
+              lineHeight: 1.5,
+              fontSize: 14.5,
+
+            )
           ],
         ),
       )),

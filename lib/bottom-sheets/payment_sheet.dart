@@ -77,7 +77,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
 
 
            Padding(
-                padding: const EdgeInsets.fromLTRB(22,6,22,6),
+                //padding: const EdgeInsets.fromLTRB(22,6,22,6),
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
                 child: Row(
 
                   children: [
@@ -104,7 +105,8 @@ class _PaymentSheetState extends State<PaymentSheet> {
                     ),),
 
 
-                    SizedBox(width: 16,),
+                    //SizedBox(width: 16,),
+                    Spacer(),
 
                     Obx(()=>InkWell(
                       onTap: () {

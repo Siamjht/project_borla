@@ -31,7 +31,7 @@ class _ChooseRideSheetState extends State<ChooseRideSheet> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
               const SizedBox(height: 12),
@@ -100,13 +100,12 @@ class _ChooseRideSheetState extends State<ChooseRideSheet> {
                   ],
                 ),
               ),),
-              Obx(() => SizedBox(height: controller.isSetScheduled.value? 40 : 0,),)
+              Obx(() => SizedBox(height: controller.isSetScheduled.value? 60 : 0,),)
             ],
           ),
         )
     );
   }
-
 
 
   // ListView chooseRideCards() {

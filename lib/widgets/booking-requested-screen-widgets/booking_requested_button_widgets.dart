@@ -17,6 +17,7 @@ class BackHomeButton extends StatelessWidget {
 
 
       child: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [
@@ -24,9 +25,9 @@ class BackHomeButton extends StatelessWidget {
               Color.fromRGBO(255,149,0, 1),
             ],
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.all(2), // border thickness
+        padding: const EdgeInsets.all(1), // border thickness
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(50, 30),
@@ -42,7 +43,8 @@ class BackHomeButton extends StatelessWidget {
             //Get.to(()=>HomeScreenOne());
           },
           child: Padding(
-            padding: EdgeInsets.fromLTRB(58, 14, 58, 14),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            //padding: EdgeInsets.fromLTRB(58, 14, 58, 14),
 
             child: ShaderMask(
               shaderCallback: (bounds) => LinearGradient(
@@ -51,12 +53,15 @@ class BackHomeButton extends StatelessWidget {
                   Color.fromRGBO(255,149,0, 1),
                 ],
               ).createShader(bounds),
-              child: Text(
-                'Back To Home',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 14),
+                child: Text(
+                  'Back To Home',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 17
+                  ),
                 ),
               ),
             ),
@@ -78,7 +83,7 @@ class ViewRidesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: ElevatedButton(
         onPressed: () {
           navbarController.tabIndex.value = 1;

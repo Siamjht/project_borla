@@ -171,7 +171,7 @@ class LanguageOption extends StatelessWidget {
                       ? AppColors.orange100
                       :  Colors.transparent,
                   border: Border.all(
-                    color: !isSelected ? AppColors.green100 : Colors.transparent,
+                    color: !isSelected ? AppColors.orange150 : Colors.transparent,
                     width: 2,
                   ),
                 ),

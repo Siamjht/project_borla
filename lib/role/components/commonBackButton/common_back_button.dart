@@ -13,11 +13,19 @@ class CommonBackButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(100),
       onTap: onPressed ?? () => Navigator.pop(context),
       child: Container(
-        height: kToolbarHeight * 0.8, // 80% of AppBar height
-        width: kToolbarHeight * 0.8,
+        height: kToolbarHeight * 0.7, // 80% of AppBar height
+        width: kToolbarHeight * 0.7,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 1,
+              spreadRadius: 0.2,
+              offset: Offset(0, 1),
+            ),
+          ],
         ),
         alignment: Alignment.center,
         child: Icon(

@@ -32,53 +32,58 @@ class _SupportChatScreenState extends State<SupportChatScreen> {
     return Scaffold(
       body: UserGradientScaffold(
         child: SafeArea(
-          child: Column(
-            children: [
-              /// Header
-              SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    CommonBackButton(),
-                    SizedBox(width: 54,),
-                    CommonText(
-                      text: 'Customer Support',
-                      fontSize: 19 ,
-                      fontWeight: FontWeight.w600,
-                    )
-                  ],
-                ),
-              ),
-
-              /// Messages
-              Expanded(
-                child: Obx(
-                      () => ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: controller.messages.length,
-                    itemBuilder: (context, index) {
-                      final msg = controller.messages[index];
-                      final bool isMe = msg['isMe'];
-
-                      return Align(
-                        alignment:
-                        isMe ? Alignment.centerRight : Alignment.centerLeft,
-                        child: _MessageBubble(message: msg),
-                      );
-                    },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 10),
+            child: Column(
+              children: [
+                /// Header
+                SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      CommonBackButton(),
+                      SizedBox(width: 60,),
+                      CommonText(
+                        text: 'Customer Support',
+                        fontSize: 19 ,
+                        fontWeight: FontWeight.w600,
+                      )
+                    ],
                   ),
                 ),
-              ),
 
-              Divider(
-                height: 20,
-                color: Color.fromRGBO(232, 232, 232, 1),
-              ),
+                SizedBox(height: 20,),
 
-              /// Input Bar
-              ChatInputBar(controller: controller),
-            ],
+                /// Messages
+                Expanded(
+                  child: Obx(
+                        () => ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, index) {
+                        final msg = controller.messages[index];
+                        final bool isMe = msg['isMe'];
+
+                        return Align(
+                          alignment:
+                          isMe ? Alignment.centerRight : Alignment.centerLeft,
+                          child: _MessageBubble(message: msg),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+                Divider(
+                  height: 20,
+                  color: Color.fromRGBO(232, 232, 232, 1),
+                ),
+
+                /// Input Bar
+                ChatInputBar(controller: controller),
+              ],
+            ),
           ),
         ),
       ),
@@ -168,11 +173,6 @@ class _MessageBubble extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          // CommonText(
-          //   text: message['time'],
-          //   fontSize: 12,
-          //   color: Colors.grey,
-          // ),
         ],
       ),
     );

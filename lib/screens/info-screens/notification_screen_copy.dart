@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project_borla/theme/gradient_scaffold_copy.dart';
 
+import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_two.dart';
 
@@ -15,8 +16,10 @@ class NotificationsScreenCopy extends StatelessWidget {
         child: SafeArea(
       child: Column(
         children: [
+          SizedBox(height: 36,),
+
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -35,7 +38,7 @@ class NotificationsScreenCopy extends StatelessWidget {
           ),
           // Mark all as read link
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -53,9 +56,13 @@ class NotificationsScreenCopy extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               children: [
-                const SectionHeader(title: 'TODAY'),
+               Align(
+                   alignment: Alignment.topLeft,
+                   child: SectionHeader(title: 'TODAY')
+               ),
+                SizedBox(height: 14,),
                 NotificationItem(
                   title:
                   'Your account has been verified. You can now go online and accept Borla pick ups.',
@@ -76,8 +83,21 @@ class NotificationsScreenCopy extends StatelessWidget {
                   'Job completed successfully. Earnings have been added to your wallet.',
                   time: '11:00 AM',
                 ),
-                SizedBox(height: 24.h),
-                const SectionHeader(title: 'Yesterday'),
+                SizedBox(height: 6.h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: Divider(
+                    height: 1,
+                    color: Color.fromRGBO(232, 232, 232, 1),
+                  ),
+                ),
+                SizedBox(height: 6.h),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: SectionHeader(title: 'Yesterday'),
+                ),
+                SizedBox(height: 14,),
+
                 NotificationItem(
                   title:
                   'Your account has been verified. You can now go online and accept jobs.',
@@ -92,6 +112,13 @@ class NotificationsScreenCopy extends StatelessWidget {
                   title:
                   'You\'ve successfully accepted the pickup. Navigate to the customer location.',
                   time: '11:00 AM',
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: Divider(
+                    height: 1,
+                    color: Color.fromRGBO(232, 232, 232, 1),
+                  ),
                 ),
                 SizedBox(height: 40.h),
               ],
@@ -131,7 +158,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.only(bottom: 18.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -140,7 +167,7 @@ class NotificationItem extends StatelessWidget {
             width: 44.w,
             height: 44.w,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF6DE),
+              color: Colors.white,
               shape: BoxShape.circle,
               border: Border.all(color: Colors.amber )
             ),
@@ -158,15 +185,15 @@ class NotificationItem extends StatelessWidget {
                 CommonText(
                   textAlign: TextAlign.left,
                   text: title,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400,
                   color: Colors.black87,
                   lineHeight: 1.4,
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: 8.h),
                 CommonText(
                   text: time,
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Colors.grey[600]!,
                 ),

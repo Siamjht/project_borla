@@ -22,7 +22,7 @@ class _SearchLocationSheetState extends State<SearchLocationSheet> {
 
     child: SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 300,
+      //height: 300,
       child: Column(
         children: [
 
@@ -51,7 +51,10 @@ class _SearchLocationSheetState extends State<SearchLocationSheet> {
 
           const SizedBox(height: 16),
 
+
           RippleAnimation()
+
+
 
         ],
       ),

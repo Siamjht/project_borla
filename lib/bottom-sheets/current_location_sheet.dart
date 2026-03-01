@@ -32,131 +32,125 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 240,
+      //height: 240,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
 
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
+      child: Column(
+        children: [
 
-            const SizedBox(height: 12),
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade400,
-                borderRadius: BorderRadius.circular(2),
-              ),
+          const SizedBox(height: 12),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade400,
+              borderRadius: BorderRadius.circular(2),
             ),
+          ),
 
-            const SizedBox(height: 8),
+          const SizedBox(height: 8),
 
 
-            Text('Current location...', style: TextStyle(
+          Text('Current location...', style: TextStyle(
 
-                fontSize: 22,
+              fontSize: 22,
 
-                fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500
 
-            ),),
+          ),),
 
-            const SizedBox(height: 8),
+          const SizedBox(height: 8),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22,0,22,0),
-              child: Divider(
-                color: AppColors.gray200,
-                thickness: 1,
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22,0,22,0),
+            child: Divider(
+              color: AppColors.gray200,
+              thickness: 1,
             ),
+          ),
 
-            const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22,0,22,0),
-              child: CustomTextField(
-                controller: currentLocationController.locationController,
-                hint: '2nd Crescent Link, Ghana',
-                prefix: Image.asset('assets/images/fourth_pin.png'),
-                suffix: InkWell(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22,0,22,0),
+            child: CustomTextField(
+              controller: currentLocationController.locationController,
+              hint: '2nd Crescent Link, Ghana',
+              prefix: Image.asset('assets/images/fourth_pin.png'),
+              suffix: InkWell(
+                  onTap: (){
+                    currentLocationController.locationController.clear();
+                  },
+                  child: Image.asset('assets/images/cross.png'
+                  )
+              ),
+
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Row(
+
+              children: [
+
+
+                InkWell(
                     onTap: (){
-                      currentLocationController.locationController.clear();
-                    },
-                    child: Image.asset('assets/images/cross.png'
+                      Get.to(()=>SavedPlacesScreen());
+                      },
+                    child: Row(
+                      children: [
+                        Image.asset('assets/images/saved_icon_2.png', scale: 3.5,),
+
+                        SizedBox(width: 8,),
+
+                        Text('Saved Places', style: TextStyle(
+
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+
+
+                        ),),
+
+                      ],
                     )
                 ),
 
-              ),
+                // SizedBox(width: 8,),
+                //
+                // Text('Saved Places', style: TextStyle(
+                //
+                //   fontSize: 18,
+                //   fontWeight: FontWeight.w500,
+                //
+                //
+                // ),),
+
+                Spacer(),
+
+                InkWell(
+                  onTap: () {
+                    Get.to(()=> AddPlaceScreen());
+                  },
+                  child: CustomContainer(
+                    borderRadius: 4,
+                    color: AppColors.orange300,
+                      child: Icon(Icons.add, color: AppColors.white,)),
+                )
+
+              ],
+
+
             ),
+          )
 
-            Padding(
-              padding: const EdgeInsets.all(22.0),
-              child: Row(
-
-                children: [
-
-
-                  InkWell(
-                      onTap: (){
-                        Get.to(()=>SavedPlacesScreen());
-                        },
-                      child: Row(
-                        children: [
-                          Image.asset('assets/images/saved_icon_2.png', scale: 3.5,),
-
-                          SizedBox(width: 8,),
-
-                          Text('Saved Places', style: TextStyle(
-
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-
-
-                          ),),
-
-                        ],
-                      )
-                  ),
-
-                  // SizedBox(width: 8,),
-                  //
-                  // Text('Saved Places', style: TextStyle(
-                  //
-                  //   fontSize: 18,
-                  //   fontWeight: FontWeight.w500,
-                  //
-                  //
-                  // ),),
-
-                  Spacer(),
-
-                  InkWell(
-                    onTap: () {
-                      Get.to(()=> AddPlaceScreen());
-                    },
-                    child: CustomContainer(
-                      borderRadius: 4,
-                      color: AppColors.orange300,
-                        child: Icon(Icons.add, color: AppColors.white,)),
-                  )
-
-                ],
-
-
-              ),
-            )
-
-
-
-          ],
-        ),
+        ],
       )
-
-
     );
   }
 }

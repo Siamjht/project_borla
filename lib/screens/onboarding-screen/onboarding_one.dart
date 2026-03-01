@@ -68,54 +68,53 @@ class _OnboardingOneState extends State<OnboardingOne> {
 
                 const SizedBox(height: 46),
 
-                _currentPage == 2 ? Row(
+                _currentPage == 2 ?
 
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: () {
 
-                      children: [
+                                Get.to(()=> OnboardingTwo());
 
-                        ElevatedButton(
-                          onPressed: () {
-
-                            Get.to(()=> OnboardingTwo());
-
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero, // important
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            minimumSize: const Size(100, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 214, 0, 1),
-                                  Color.fromRGBO(255,149,0, 1),
-                                ],
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero, // important
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                minimumSize: const Size(100, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.fromLTRB(150, 16, 150, 16),
-                              child: const Text(
-                                'Get Started',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  //fontWeight: FontWeight.w600,
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(255, 214, 0, 1),
+                                      Color.fromRGBO(255,149,0, 1),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  //padding: const EdgeInsets.fromLTRB(150, 16, 150, 16),
+                                  child: const Text(
+                                    'Get Started',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      //fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        )
-
-                      ],
-
-                    ) : Row(
+                        ) : Row(
 
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
 
@@ -212,7 +211,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
                         ),
                       ),
                     )
-
 
                   ],
 

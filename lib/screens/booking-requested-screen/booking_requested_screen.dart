@@ -27,66 +27,72 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.dialog(
-        AlertDialog(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: Dialog(
+            insetPadding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            //contentPadding: EdgeInsets.zero,
+            backgroundColor: AppColors.white,
+            child: SizedBox(
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 30,),
 
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          contentPadding: EdgeInsets.zero,
-          backgroundColor: AppColors.white,
-          content: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: 30,),
+                        Image.asset('assets/images/orange_tick_2.png', scale: 6.5,),
 
-                    Image.asset('assets/images/orange_tick_2.png', scale: 6.5,),
+                        SizedBox(height: 24,),
 
-                    SizedBox(height: 24,),
+                        Text('Booking Requested!', style: TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w500
+                        ), ),
 
-                    Text('Booking Requested!', style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w600
-                    ), ),
+                        SizedBox(height: 20,),
 
-                    SizedBox(height: 20,),
+                        Text("We've received your request for your", style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromRGBO(137, 137, 137, 1),
+                            fontWeight: FontWeight.w400
+                        ), ),
 
-                    Text("We've received your request for your", style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500
-                    ), ),
+                        Text("Borla to be picked up. We'll let...", style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromRGBO(137, 137, 137, 1),
+                            fontWeight: FontWeight.w400
+                        ), ),
 
-                    Text("Borla to be picked up. We'll let...", style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500
-                    ), ),
+                        SizedBox(height: 36,),
 
-                    SizedBox(height: 36,),
+                        ViewRidesButton(navbarController: navbarController),
 
-                    ViewRidesButton(navbarController: navbarController),
+                        SizedBox( height: 15),
 
-                    SizedBox( height: 15),
+                        BackHomeButton(),
 
-                    BackHomeButton(),
-
-                    SizedBox( height: 20),
-                  ],
-                ),
+                        SizedBox( height: 36),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Assets.images.leftPatterHighDense.image(color: AppColors.orange300, height: 100, width: 100)),
+                  Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Assets.images.rightPatternHighDense.image(color: AppColors.orange300,height: 100, width: 100))
+                ],
               ),
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Assets.images.leftPatterHighDense.image(color: AppColors.orange300, height: 100, width: 100)),
-              Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Assets.images.rightPatternHighDense.image(color: AppColors.orange300,height: 100, width: 100))
-            ],
+            ),
           ),
         ),
       );

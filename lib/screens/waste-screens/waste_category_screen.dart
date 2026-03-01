@@ -39,48 +39,46 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 68, 17, 22),
+              //padding: const EdgeInsets.fromLTRB(20, 68, 17, 22),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 90),
               child: Column(
                 children: [
 
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 38,
-                          height: 38,
-                          decoration:  BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                                color: Colors.black.withAlpha(40),
-                              ),
-                            ],
-                          ),
-
-                          child: IconButton(
-                            padding: EdgeInsets.zero,
-
-                            iconSize: 22,
-                            icon: const Icon(Icons.arrow_back),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 38,
+                        height: 38,
+                        decoration:  BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                              color: Colors.black.withAlpha(40),
+                            ),
+                          ],
                         ),
 
-                        SizedBox(width: 40),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
 
-                        Text('Select Waste Category', style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w500
-                        ),)
-                      ],
-                    ),
+                          iconSize: 22,
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                      ),
+
+                      SizedBox(width: 44),
+
+                      Text('Select Waste Category', style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500
+                      ),)
+                    ],
                   ),
                   SizedBox(height: 42),
                   Column(
@@ -93,7 +91,8 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                             label: 'Organic',
                             scale: 4.3
                           ),
-                          SizedBox(width: 18),
+                          //SizedBox(width: 18),
+                          Spacer(),
                           buildCategoryCard(
                             index: 1,
                             image: 'assets/images/metal_2.png',
@@ -102,7 +101,8 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 18),
+                      SizedBox(height: 26),
+                      //Spacer(),
                       Row(
                         children: [
                           buildCategoryCard(
@@ -111,7 +111,9 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                               label: 'Plastic',
                               scale: 7.5
                           ),
-                          const SizedBox(width: 18),
+                          //const SizedBox(width: 18),
+                          Spacer(),
+
                           buildCategoryCard(
                             index: 3,
                             image: 'assets/images/general_2.png',
@@ -120,7 +122,7 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 18),
+                      SizedBox(height: 26),
                       Row(
                         children: [
                           buildCategoryCard(

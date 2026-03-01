@@ -24,8 +24,10 @@ class _AddressScreenState extends State<AddressScreen> {
         child: SafeArea(
           child: Column(
             children: [
+              SizedBox(height: 34,),
+
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 28),
                 child: Row(
                   children: [
                     Container(
@@ -42,7 +44,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           ),
                         ],
                       ),
-          
+
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         iconSize: 22,
@@ -52,9 +54,9 @@ class _AddressScreenState extends State<AddressScreen> {
                         },
                       ),
                     ),
-          
-                    SizedBox(width: 90),
-          
+
+                    SizedBox(width: 100),
+
                     Text('Address', style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500
@@ -64,15 +66,18 @@ class _AddressScreenState extends State<AddressScreen> {
               ),
               SizedBox(height: 16,),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                  return addressCard();
-                },),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ListView.builder(
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                    return addressCard();
+                  },),
+                ),
               ),
-          
-          
-          
+
+
+
               Padding(
                 padding: const EdgeInsets.all(22.0),
                 child: GradientButton(
@@ -81,7 +86,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     Get.to(()=>AddPlaceScreen());
                     //Navigator.pop(context);
                     //ShowPaymentSheet(context);
-          
+
                   },
                 ),
               ),

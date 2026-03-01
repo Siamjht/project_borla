@@ -91,7 +91,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
 
               return Positioned(
                 right: 16,
-                top: sheetTop - 56 - fabGap,
+                top: sheetTop - 80 - fabGap,
                 child: FloatingActionButton(
                   backgroundColor: Colors.amber,
                   //hoverColor: Colors.red,
@@ -102,10 +102,17 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
             },
           ),
 
-          DraggableScrollableSheet(
-            initialChildSize: 0.25,
-            minChildSize: 0.25,
-            maxChildSize: 0.7,
+          Obx(()=>DraggableScrollableSheet(
+            // initialChildSize: 0.25,
+            // minChildSize: 0.25,
+            // maxChildSize: 0.7,
+            ///
+            initialChildSize: controller.showSearchSheet.value ? 0.22 : 0.28,
+            minChildSize:      controller.showSearchSheet.value ? 0.18 : 0.25,
+            ///
+            // initialChildSize: 0.28,
+            // minChildSize: 0.25,
+            maxChildSize: 1.0,
             builder: (context, scrollController) {
               return NotificationListener<DraggableScrollableNotification>(
                 onNotification: (notification) {
@@ -113,8 +120,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                   return false;
                 },
                 child: SizedBox.expand(
-                  child: Obx(
-                        () => AnimatedSwitcher(
+                  child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 500),
                       transitionBuilder: (child, animation) {
                         return SlideTransition(
@@ -136,11 +142,14 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                         key: const ValueKey('current'),
                       ),
                     ),
-                  ),
+
                 ),
               );
             },
           ),
+          ),
+
+
 
         ],
       ),

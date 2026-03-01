@@ -66,10 +66,6 @@ class RipplePainter extends CustomPainter {
         ],
       ).createShader(Rect.fromCircle(center: center, radius: radius));
 
-
-
-
-
       canvas.drawCircle(center, radius, paint);
     }
 

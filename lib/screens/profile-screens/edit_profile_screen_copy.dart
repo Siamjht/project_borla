@@ -7,6 +7,7 @@ import 'package:project_borla/role/components/commonTextField/phone_text_field.d
 import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_button_copy.dart';
 import '../../theme/common_text_field_copy.dart';
@@ -62,8 +63,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 34,),
+
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 28),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -50,10 +50,7 @@ class _OnboardingOneState extends State<OnboardingOne> {
                     itemBuilder: (context, index) => VideoOnboardingPage(
                       imagePath: onboardingData[index]["image"]!,
                       titlePath1: onboardingData[index]["title1"]!,
-                      titlePath2: onboardingData[index]["title2"]!,
                       subtitlePath1: onboardingData[index]["subtitle1"]!,
-                      subtitlePath2: onboardingData[index]["subtitle2"]!,
-                      subtitlePath3: onboardingData[index]["subtitle3"]!,
                     ),
                   ),
                 ),

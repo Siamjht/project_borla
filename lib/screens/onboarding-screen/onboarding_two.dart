@@ -4,7 +4,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/screens/select_role_screen.dart';
 import '../../widgets/onboarding-widgets/onboarding_image_page_widget.dart';
-import 'onboarding_one.dart';
+
 
 class OnboardingTwo extends StatelessWidget {
   OnboardingTwo({super.key});
@@ -12,11 +12,8 @@ class OnboardingTwo extends StatelessWidget {
   final Map<String, String> onboardingData =
     {
       "image": "assets/images/onboard4.png",
-      "title1": "Welcome To Borla Borla",
-      "title2": "Your Garbage Pickup App",
-      "subtitle1": "Experience fast, reliable, and convenient waste",
-      "subtitle2": "collection service right at your doorstep",
-      "subtitle3": "anytime you need."
+      "title1": "Welcome To Borla Borla \nYour Garbage Pickup App",
+      "subtitle1": "Experience fast, reliable, and convenient waste \ncollection service right at your doorstep \nanytime you need.",
     };
 
   @override
@@ -40,10 +37,7 @@ class OnboardingTwo extends StatelessWidget {
               child:  VideoOnboardingPage(
                   imagePath: onboardingData["image"]!,
                   titlePath1: onboardingData["title1"]!,
-                  titlePath2: onboardingData["title2"]!,
                   subtitlePath1: onboardingData["subtitle1"]!,
-                  subtitlePath2: onboardingData["subtitle2"]!,
-                  subtitlePath3: onboardingData["subtitle3"]!,
                 ),
               ),
 

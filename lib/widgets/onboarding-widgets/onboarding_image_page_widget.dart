@@ -6,19 +6,13 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 class VideoOnboardingPage extends StatefulWidget {
   final String imagePath;
   final String titlePath1;
-  final String titlePath2;
   final String subtitlePath1;
-  final String subtitlePath2;
-  final String subtitlePath3;
 
   const VideoOnboardingPage({
     Key? key,
     required this.imagePath,
     required this.titlePath1,
-    required this.titlePath2,
     required this.subtitlePath1,
-    required this.subtitlePath2,
-    required this.subtitlePath3,
   }) : super(key: key);
 
   @override
@@ -52,14 +46,7 @@ class _VideoOnboardingPageState extends State<VideoOnboardingPage> {
               children: [
                 Text(
                   widget.titlePath1,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  widget.titlePath2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -70,25 +57,7 @@ class _VideoOnboardingPageState extends State<VideoOnboardingPage> {
                 //const SizedBox(height: 20),
                 Text(
                   widget.subtitlePath1,
-                  //textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  widget.subtitlePath2,
-                  //textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  widget.subtitlePath3,
-                  //textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

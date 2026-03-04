@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:project_borla/role/components/gradient_scafold.dart';
 
 import '../../../theme/app_color.dart';
-import '../../../theme/common_text_two.dart';
+import '../../components/text/common_text.dart';
 import 'controller/call_controller.dart';
 
 class OutgoingCallScreen extends StatefulWidget {

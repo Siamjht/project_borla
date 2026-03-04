@@ -7,7 +7,7 @@ import 'package:project_borla/theme/common_button_copy.dart';
 
 import '../language/language_service.dart';
 import '../role/components/custom_container.dart';
-import '../theme/common_text_two.dart';
+import '../role/components/text/common_text.dart';
 import '../utils/app_texts.dart';
 
 

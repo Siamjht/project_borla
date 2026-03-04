@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/theme/common_button_copy.dart';
 import '../../../../theme/app_color.dart';
-import '../../../theme/common_text_two.dart';
+import '../../../role/components/text/common_text.dart';
+
 
 void showUserLogoutBottomSheet(BuildContext context) {
   showModalBottomSheet(

@@ -44,76 +44,83 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
                     ],
                   ),
                 ),
-                child: AuthHeader(title: 'Choose your Role below', subtitle: 'Enter your role how you want to get started'),
+                child: AuthHeader(title: 'choose_your_role'.tr,
+                  subtitle: 'enter_your_role_subtitle'.tr),
               ),
               Positioned(
                   top: 0,
                   right: -60,
                   child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
 
-              Container(
-                //alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(34)
+              Positioned(
+                top: 240,
+                left: 0,
+                right: 0,
+                child: Container(
+                  //alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(34)
+                    ),
+                    color: Colors.white,
                   ),
-                  color: Colors.white,
-                ),
-                height: 666,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
+                  height: 666,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
 
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                    children: [
+                      children: [
 
-                      const SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                      Obx(() => userSelectionWidget(
-                          onTap: () {
-                            roleController.selectedRole.value = 'User';
-                          },
-                          gradientColor1: roleController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
-                          gradientColor2: roleController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
-                          borderWidth: roleController.selectedRole.value == "User"? 2.0 : 1.0,
-                          assetImage: Assets.images.user1.image(height: 145.h, width: 208.w,),
-                          role: "User"
-                      ),),
+                        Obx(() => userSelectionWidget(
+                            onTap: () {
+                              roleController.selectedRole.value = 'User';
+                            },
+                            gradientColor1: roleController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: roleController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: roleController.selectedRole.value == "User"? 2.0 : 1.0,
+                            assetImage: Assets.images.user1.image(height: 145.h, width: 208.w,),
+                            role: 'user_role'.tr
+                        ),),
 
-                      const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                      Obx(() => userSelectionWidget(
-                          onTap: () {
-                            roleController.selectedRole.value = 'Rider';
-                          },
-                          gradientColor1: roleController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
-                          gradientColor2: roleController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
-                          borderWidth: roleController.selectedRole.value == "Rider"? 2.0 : 1.0,
-                          assetImage: Assets.images.rider.image(height: 145.h, width: 208.w,),
-                          role: "Rider"
-                      ),),
+                        Obx(() => userSelectionWidget(
+                            onTap: () {
+                              roleController.selectedRole.value = 'Rider';
+                            },
+                            gradientColor1: roleController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: roleController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: roleController.selectedRole.value == "Rider"? 2.0 : 1.0,
+                            assetImage: Assets.images.rider.image(height: 145.h, width: 208.w,),
+                            role: 'rider_role'.tr
+                        ),),
 
-                      const SizedBox(height: 50),
+                        const SizedBox(height: 50),
 
-                      GradientButton(
-                        text: 'Join Now',
-                        onPressed: () {
-                          if(roleController.selectedRole.value != ""){
-                            if(roleController.selectedRole.value == "User"){
-                              Get.to(()=> RegisterScreen());
+                        GradientButton(
+                          text: 'join_now'.tr,
+                          onPressed: () {
+                            if(roleController.selectedRole.value != ""){
+                              if(roleController.selectedRole.value == "User"){
+                                Get.to(()=> RegisterScreen());
+                              }else{
+                                Get.to(()=> DriverRegisterScreen());
+                              }
                             }else{
-                              Get.to(()=> DriverRegisterScreen());
+                              Get.snackbar('select_role_title'.tr,
+                                  'select_role_message'.tr, snackPosition: SnackPosition.BOTTOM);
                             }
-                          }else{
-                            Get.snackbar("Select a role please", "They try again", snackPosition: SnackPosition.BOTTOM);
-                          }
-                        },
-                      ),
+                          },
+                        ),
 
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               )

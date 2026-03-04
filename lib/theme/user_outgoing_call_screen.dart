@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_borla/role/components/gradient_scafold.dart';
-
 import '../../../theme/app_color.dart';
-import '../../../theme/common_text_two.dart';
 import '../controllers/user-controllers/user_outgoing_call_controller.dart';
+import '../role/components/text/common_text.dart';
 import 'gradient_scaffold_copy.dart';
 
 

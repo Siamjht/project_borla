@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/screens/home-screens/user-home-screens/user-controller/user_home_controller.dart';
 import 'package:project_borla/screens/track-screen/track_screen.dart';
-// import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
-// import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-// import '../../../../gen/custom_assets/assets.gen.dart';
-// import '../../../commonScreens/chat/chatting_screen.dart';
-// import '../../../components/dotted_line.dart';
-// import '../../../components/text/common_text.dart';
-import '../../../theme/common_text_two.dart';
+import '../../../role/components/text/common_text.dart';
 import '../../home-screens/user-home-screens/user-innerwidget/common_widgets_copy.dart';
 import '../activity-controller/activity_controller_copy.dart';
 import '../schedule_detail_screen_copy.dart';
-//import 'common_widgets.dart';
+
 
 class UserActivityCard extends StatelessWidget {
   bool isDetailScreen;

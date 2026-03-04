@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
+import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_text_field_copy.dart';
-import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 
 class UserChangePasswordScreen extends StatelessWidget {

@@ -1,11 +1,8 @@
 
 import 'package:flutter/material.dart';
-
 import 'package:project_borla/screens/home-screens/user-home-screens/user-innerwidget/payment_receive_dialog_copy.dart';
-
-
+import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/common_button_copy.dart';
-import '../../../../theme/common_text_two.dart';
 import '../../../../utils/custom-gen-assets/assets.gen.dart';
 
 

@@ -7,10 +7,10 @@ import 'package:project_borla/role/components/commonTextField/phone_text_field.d
 import 'package:project_borla/screens/profile-screens/ps-controllers/profile_controller_copy.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/common_button_copy.dart';
 import '../../theme/common_text_field_copy.dart';
-import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import '../../utils/custom-gen-assets/assets.gen.dart';
 

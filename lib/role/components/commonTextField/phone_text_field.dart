@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 Widget userPhoneTextFormField({required PhoneController controller,}) {
@@ -8,15 +9,15 @@ Widget userPhoneTextFormField({required PhoneController controller,}) {
 
     //validator: validator,
     controller: controller,
-    //initialValue: PhoneNumber.parse('+233'),
-    //initialCountryCode: 'GH',
+    // initialValue: PhoneNumber.parse('+233'),
+    // initialCountryCode: 'GH',
     decoration: InputDecoration(
       filled: true,
       fillColor: Colors.transparent,
-      hintText: 'Enter phone number',
+      hintText: 'enter_phone_number'.tr,
       hintStyle: TextStyle(color: Colors.grey[500]),
       contentPadding: EdgeInsets.symmetric(
-          vertical: 16.h, horizontal: 16.w),
+          vertical: 14, horizontal: 16.w),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
         borderSide: BorderSide(color: Colors.grey[300]!),
@@ -50,7 +51,7 @@ Widget driverPhoneTextFormField() {
     decoration: InputDecoration(
       filled: true,
       fillColor: Colors.transparent,
-      hintText: 'Enter phone number',
+      hintText: 'enter_phone_number'.tr,
       hintStyle: TextStyle(color: Colors.grey[500]),
       contentPadding: EdgeInsets.symmetric(
           vertical: 16.h, horizontal: 16.w),

@@ -82,108 +82,117 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
              ),
            ),
-            child: AuthHeader(title: 'Welcome Back!', subtitle: 'Sign in to continue your journey with Borla Borla'),
+            child: AuthHeader(
+              title: 'welcome_back'.tr,
+              subtitle: 'sign_in_to_continue'.tr,
+            ),
           ),
           Positioned(
               top: 0,
               right: -60,
               child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
-          SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(34)
+          Positioned(
+            top: 220,
+            left: 0,
+            right: 0, // <-- important: constrain width
+            bottom: 0,
+            child: SingleChildScrollView(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(34)
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              height: 666,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 4),
-                      Text('Phone Number', style: TextStyle(
-                        fontWeight: FontWeight.w700
-                      ),),
-                      const SizedBox(height: 8),
-                      userPhoneTextFormField(
-                        controller: authController2.phoneController,
-                      ),
-                      const SizedBox(height: 16),
-                      Text('Password', style: TextStyle(
+                height: 666,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text('phone_number'.tr, style: TextStyle(
                           fontWeight: FontWeight.w700
-                      ),),
-                      const SizedBox(height: 8),
-                      CommonTextField(
-                        controller: authController2.passController,
-                        validator: (value) {
-                          if(value == null || value.isEmpty ) {
-                            return 'Please Enter your Password';
-                          } else {
-                            return null;
-                          }
-                        },
-                        hintText: 'Password',
-                        isPassword: true,
-                      ),
+                        ),),
+                        const SizedBox(height: 8),
+                        userPhoneTextFormField(
+                          controller: authController2.phoneController,
+                        ),
+                        const SizedBox(height: 16),
+                        Text('password'.tr, style: TextStyle(
+                            fontWeight: FontWeight.w700
+                        ),),
+                        const SizedBox(height: 8),
+                        CommonTextField(
+                          controller: authController2.passController,
+                          validator: (value) {
+                            if(value == null || value.isEmpty ) {
+                              return 'password_required'.tr;
+                            } else {
+                              return null;
+                            }
+                          },
+                          hintText: 'password'.tr,
+                          isPassword: true,
+                        ),
 
-                      CheckboxSection(
-                        value: agree,
-                        onChanged: (val) {
-                          setState(() {
-                            agree = val;
-                          });
-                        },
-                      ),
+                        CheckboxSection(
+                          value: agree,
+                          onChanged: (val) {
+                            setState(() {
+                              agree = val;
+                            });
+                          },
+                        ),
 
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
-                      GradientButton(
-                        text: 'Log In',
-                        onPressed: () {
-                          //Get.to(()=>UserNavBar());
-                          formOnSubmit();
-                        },
-                      ),
+                        GradientButton(
+                          text: 'log_in'.tr,
+                          onPressed: () {
+                            //Get.to(()=>UserNavBar());
+                            formOnSubmit();
+                          },
+                        ),
 
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                      Row(
-                        children: [
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              'or continue with',
-                              style: TextStyle(color: Colors.grey),
+                        Row(
+                          children: [
+                            Expanded(child: Divider(color: Colors.grey.shade300)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                'or_continue_with'.tr,
+                                style: TextStyle(color: Colors.grey),
+                              ),
                             ),
-                          ),
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                        ],
-                      ),
+                            Expanded(child: Divider(color: Colors.grey.shade300)),
+                          ],
+                        ),
 
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                      SocialLoginButton(
-                        text: 'Continue with Google',
-                        asset: 'assets/images/google.png',
-                        onPressed: () {},
-                      ),
+                        SocialLoginButton(
+                          text: 'continue_with_google'.tr,
+                          asset: 'assets/images/google.png',
+                          onPressed: () {},
+                        ),
 
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
-                      SocialLoginButton(
-                        text: 'Continue with Apple',
-                        asset: 'assets/images/apple_2.png',
-                        onPressed: () {},
-                      ),
+                        SocialLoginButton(
+                          text: 'continue_with_apple'.tr,
+                          asset: 'assets/images/apple_2.png',
+                          onPressed: () {},
+                        ),
 
-                      DontHaveAccountSection()
+                        DontHaveAccountSection()
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
 
 import '../../controllers/user-controllers/auth_controller.dart';
 import '../../features/auth/login_screen.dart';
@@ -37,19 +39,19 @@ class RegistrationSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              Text('Name', style: TextStyle(
+              Text('name'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
               const SizedBox(height: 12),
-              CustomTextField(
+              CommonTextField(
                 controller: registerScreenController.registerNameController,
-                hint: 'Enter your name',
+                hintText: 'enter_your_name'.tr,
                 //prefix: const Icon(Icons.phone),
               ),
 
               const SizedBox(height: 24),
 
-              Text('Phone Number', style: TextStyle(
+              Text('phone_number'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
 
@@ -61,66 +63,64 @@ class RegistrationSection extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              Text('Email', style: TextStyle(
+              Text('email'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
 
               const SizedBox(height: 12),
 
-              CustomTextField(
+              CommonTextField(
                 controller: registerScreenController.registerEmailController,
-                hint: 'Enter your email',
-                prefix: const Icon(Icons.email),
+                hintText: 'enter_your_email'.tr,
+                prefixIcon: const Icon(Icons.email),
               ),
 
               const SizedBox(height: 24),
 
-              Text('Location', style: TextStyle(
+              Text('location'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
 
               const SizedBox(height: 12),
 
-              CustomTextField(
+              CommonTextField(
                 controller: registerScreenController.registerLocationController,
-                hint: 'Enter your location',
-                prefix: const Icon(Icons.location_on_outlined),
+                hintText: 'enter_your_location'.tr,
+                prefixIcon: const Icon(Icons.location_on_outlined),
               ),
 
               const SizedBox(height: 24),
 
-              Text('Password', style: TextStyle(
+              Text('password'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
 
               const SizedBox(height: 12),
 
-              CustomTextField(
+              CommonTextField(
                 controller: registerScreenController.registerPassController,
-                hint: 'Password',
-                obscureText: true,
-                suffix: const Icon(Icons.visibility_off),
+                hintText: 'password_hint'.tr,
+                isPassword: true,
               ),
 
               const SizedBox(height: 24),
 
-              Text(' Confirm Password', style: TextStyle(
+              Text('confirm_password'.tr, style: TextStyle(
                   fontWeight: FontWeight.w700
               ),),
 
               const SizedBox(height: 12),
 
-              CustomTextField(
+              CommonTextField(
                 controller: registerScreenController.registerConfirmPassController,
-                hint: 'Password',
-                obscureText: true,
-                suffix: const Icon(Icons.visibility_off),
+                hintText: 'confirm_password_hint'.tr,
+                isPassword: true,
               ),
 
               const SizedBox(height: 32),
 
               GradientButton(
-                text: 'Sign Up',
+                text: 'sign_up'.tr,
                 onPressed: () {
                   Get.to(()=> OtpScreen());
                 },
@@ -131,10 +131,10 @@ class RegistrationSection extends StatelessWidget {
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade300)),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
-                      'or continue with',
+                      'or_continue_with'.tr,
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -145,7 +145,7 @@ class RegistrationSection extends StatelessWidget {
               const SizedBox(height: 30),
 
               SocialLoginButton(
-                text: 'Continue with Google',
+                text: 'continue_with_google'.tr,
                 asset: 'assets/images/google.png',
                 onPressed: () {},
               ),
@@ -153,7 +153,7 @@ class RegistrationSection extends StatelessWidget {
               const SizedBox(height: 16),
 
               SocialLoginButton(
-                text: 'Continue with Apple',
+                text: 'continue_with_apple'.tr,
                 asset: 'assets/images/apple_2.png',
                 onPressed: () {},
               ),

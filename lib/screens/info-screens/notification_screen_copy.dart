@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project_borla/theme/gradient_scaffold_copy.dart';
-
+import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
-import '../../theme/common_text_two.dart';
+
 
 class NotificationsScreenCopy extends StatelessWidget {
   bool isFromProfile;

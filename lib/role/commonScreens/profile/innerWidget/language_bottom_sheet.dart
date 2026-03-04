@@ -14,25 +14,59 @@ class LanguageSelectionBottomSheet extends StatefulWidget {
   const LanguageSelectionBottomSheet({super.key});
 
   @override
-  State<LanguageSelectionBottomSheet> createState() =>
-      _LanguageSelectionBottomSheetState();
+  State<LanguageSelectionBottomSheet> createState() => _LanguageSelectionBottomSheetState();
 }
 
-class _LanguageSelectionBottomSheetState
-    extends State<LanguageSelectionBottomSheet> {
-  String selectedLanguage = 'English';
+class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSheet> {
+  String selectedLanguage = 'English'; // fallback / initial value
 
   final List<Map<String, String>> languages = [
-    {'name': 'English', 'greeting': 'Hello'},
-    {'name': 'Ghana', 'greeting': 'Akwaaba'},
+    {'name': 'English', 'greeting': 'Hello', 'lang': 'en', 'country': 'US'},
+    {'name': 'Ghana', 'greeting': 'Akwaaba', 'lang': 'ak', 'country': 'GH'},
   ];
 
-  void changeToEnglish() {
-    Get.updateLocale(const Locale('en', 'US'));
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentLanguage();
   }
 
-  void changeToGhana() {
-    Get.updateLocale(const Locale('ak', 'GH'));
+  Future<void> _loadCurrentLanguage() async {
+    final currentLocale = await LanguageService.getLocale();
+
+    String name = 'English'; // default fallback
+
+    if (currentLocale.languageCode == 'ak') {
+      name = 'Ghana';
+    } else if (currentLocale.languageCode == 'en') {
+      name = 'English';
+    }
+
+    if (mounted) {
+      setState(() {
+        selectedLanguage = name;
+      });
+    }
+  }
+
+  Future<void> _changeLanguage(String langName) async {
+    final selected = languages.firstWhere(
+          (lang) => lang['name'] == langName,
+      orElse: () => languages.first,
+    );
+
+    final locale = Locale(
+      selected['lang']!,
+      selected['country'],
+    );
+
+    await LanguageService.changeLocale(locale);
+
+    if (mounted) {
+      setState(() {
+        selectedLanguage = langName;
+      });
+    }
   }
 
   @override
@@ -49,20 +83,24 @@ class _LanguageSelectionBottomSheetState
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
+              // Drag handle
               CustomContainer(
                 height: 3,
-                  width: 40,
-                  color: AppColors.gray200,
-                  child: SizedBox()),
-              // Title
+                width: 40,
+                color: AppColors.gray200,
+                child: SizedBox(),
+              ),
+
               SizedBox(height: 12.h),
+
+              // Title
               CommonText(
                 text: AppTexts.chooseLanguage,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 textAlign: TextAlign.center,
               ),
+
               SizedBox(height: 8.h),
 
               // Subtitle
@@ -73,6 +111,7 @@ class _LanguageSelectionBottomSheetState
                 color: AppColors.gray300,
                 textAlign: TextAlign.center,
               ),
+
               SizedBox(height: 32.h),
 
               // Language Options
@@ -81,23 +120,20 @@ class _LanguageSelectionBottomSheetState
                 runSpacing: 32.h,
                 alignment: WrapAlignment.center,
                 children: languages.map((lang) {
+                  final langName = lang['name']!;
+                  final isSelected = selectedLanguage == langName;
+
                   return LanguageOption(
-                    name: lang['name']!,
+                    name: langName,
                     greeting: lang['greeting']!,
-                    isSelected: selectedLanguage == lang['name'],
+                    isSelected: isSelected,
                     onTap: () {
-                      setState(() {
-                        selectedLanguage = lang['name']!;
-                      });
-                      if(selectedLanguage == 'English'){
-                        changeToEnglish();
-                      }else{
-                        changeToGhana();
-                      }
+                      _changeLanguage(langName);
                     },
                   );
                 }).toList(),
               ),
+
               SizedBox(height: 40.h),
 
               // Save Button
@@ -105,25 +141,14 @@ class _LanguageSelectionBottomSheetState
                 width: double.infinity,
                 height: 56.h,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // 🔹 1. Change app language + save to storage
-                    if (selectedLanguage == 'English') {
-                      await LanguageService.changeLocale(
-                        const Locale('en', 'US'),
-                      );
-                    } else {
-                      await LanguageService.changeLocale(
-                        const Locale('ak', 'GH'),
-                      );
-                    }
-
-                    // 🔹 2. Close bottom sheet
+                  onPressed: () {
+                    // All changes are already saved in _changeLanguage()
+                    // Just close + give feedback
                     Navigator.pop(context);
 
-                    // 🔹 3. Feedback to user
                     Get.snackbar(
-                      'Success',
-                      'Language changed to $selectedLanguage',
+                      "success".tr,
+                      '${'Language changed to'.tr} $selectedLanguage',
                       snackPosition: SnackPosition.BOTTOM,
                     );
                   },
@@ -134,8 +159,8 @@ class _LanguageSelectionBottomSheetState
                     ),
                     elevation: 0,
                   ),
-                  child: const CommonText(
-                    text: 'Save',
+                  child:CommonText(
+                    text: 'save'.tr,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,

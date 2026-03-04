@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
+import '../../role/components/text/common_text.dart';
 import '../../theme/app_color.dart';
 import '../../theme/common_back_button_copy.dart';
-import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 
 class PolicyScreen extends StatelessWidget {

@@ -4,10 +4,8 @@ import 'package:get/get.dart';
 
 import 'package:project_borla/screens/activity-screens/schedule_screen_copy.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-import '../../theme/common_text_two.dart';
+import '../../role/components/text/common_text.dart';
 import '../../theme/gradient_scaffold_copy.dart';
-
 import 'activity-controller/activity_controller_copy.dart';
 import 'activity-widgets/job_tabbar_copy.dart';
 import 'history_screen_copy.dart';

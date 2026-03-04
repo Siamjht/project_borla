@@ -1,15 +1,10 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:project_borla/role/garbageCollector/call/outgoing_call_screen.dart';
-
 import 'package:project_borla/theme/app_color.dart';
-
-
+import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
-import '../../theme/common_text_two.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import '../../theme/user_outgoing_call_screen.dart';
 import 'chat_screen_controller.dart';
@@ -137,7 +132,7 @@ class _MessageBubble extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 6,
                 ),
               ],

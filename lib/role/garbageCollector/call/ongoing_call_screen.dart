@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../theme/app_color.dart';
-import '../../../theme/common_text_two.dart';
+import '../../components/text/common_text.dart';
 import 'controller/call_controller.dart';
 
 class OngoingCallScreen extends StatefulWidget {

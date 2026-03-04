@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:project_borla/screens/home-screens/user-home-screens/user-innerwidget/waste_details_widget_copy.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-import '../../../../theme/common_text_two.dart';
+import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/custom_container_copy.dart';
 import '../../../../utils/custom-gen-assets/assets.gen.dart';
 

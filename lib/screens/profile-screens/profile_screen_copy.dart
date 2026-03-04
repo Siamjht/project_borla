@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/screens/info-screens/about_us_screen.dart';
@@ -11,7 +10,7 @@ import 'package:project_borla/screens/profile-screens/ps-inner-widgets/logout_bo
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/settingsListItemsCopy.dart';
 import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../bottom-sheets/user_lang_sheet.dart';
-import '../../theme/common_text_two.dart';
+import '../../role/components/text/common_text.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import '../info-screens/terms_and_conditions_screen.dart';
 import 'edit_profile_screen_copy.dart';

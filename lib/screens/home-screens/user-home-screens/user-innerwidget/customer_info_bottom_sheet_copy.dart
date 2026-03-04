@@ -1,12 +1,10 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../features/fragments/dotted_line_copy.dart';
+import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/app_color.dart';
 import '../../../../theme/common_button_copy.dart';
-import '../../../../theme/common_text_two.dart';
 import '../navigate_destination_screen_copy.dart';
 import '../user-controller/user_home_controller.dart';
 import 'common_widgets_copy.dart';

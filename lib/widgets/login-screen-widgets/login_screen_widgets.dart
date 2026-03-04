@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/features/auth/forget_pass_screen.dart';
-
+import 'package:project_borla/language/language_service.dart';
 import '../../screens/select_role_screen.dart';
 
 class CheckboxSection extends StatelessWidget {
@@ -24,7 +24,7 @@ class CheckboxSection extends StatelessWidget {
         ),
 
         const SizedBox(width: 10),
-        const Text("Keep me logged in"),
+        Text('keep_me_logged_in'.tr),
 
         const Spacer(),
 
@@ -39,11 +39,12 @@ class CheckboxSection extends StatelessWidget {
                 Color.fromRGBO(255, 149, 0, 1),
               ],
             ).createShader(bounds),
-            child: const Text(
-              'Forgot Password?',
+            child: Text(
+              'forgot_password_question'.tr,
               style: TextStyle(
                 color: Colors.white,
-                fontWeight: FontWeight.w600,
+                fontSize: LanguageService.setLang == 'en' ? 14 : 12,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
@@ -137,7 +138,7 @@ class DontHaveAccountSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
 
       children: [
-        Text("Don't have an account?", style: const TextStyle(
+        Text('dont_have_account'.tr, style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: Colors.grey,
@@ -155,8 +156,8 @@ class DontHaveAccountSection extends StatelessWidget {
                     Color.fromRGBO(255, 149, 0, 1),
                   ],
                 ).createShader(bounds),
-            child: const Text(
-              'Sign Up',
+            child: Text(
+              'sign_up'.tr,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,

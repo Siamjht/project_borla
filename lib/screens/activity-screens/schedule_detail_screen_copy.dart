@@ -1,17 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
-// import 'package:project_borla/role/components/image/common_image.dart';
-// import 'package:project_borla/role/components/text/common_text.dart';
-// import 'package:project_borla/role/garbageCollector/activity/innerWidget/job_activity_card.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-// import '../../components/custom_container.dart';
-// import '../../components/gradient_scafold.dart';
 import '../../role/components/image/common_image.dart';
+import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
-import '../../theme/common_text_two.dart';
 import '../../theme/custom_container_copy.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import 'activity-widgets/job_activity_card_copy.dart';

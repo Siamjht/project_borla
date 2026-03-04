@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:project_borla/screens/onboarding-screen/onboarding_two.dart';
-
+import '../../role/components/button/common_button.dart';
 import '../../widgets/onboarding-widgets/onboarding_data.dart';
 import '../../widgets/onboarding-widgets/onboarding_image_page_widget.dart';
 
@@ -34,191 +33,105 @@ class _OnboardingOneState extends State<OnboardingOne> {
             ],
           ),
         ),
-        child: Stack(
+        child: Column(
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (value) {
-                      setState(() {
-                        _currentPage = value;
-                      });
-                    },
-                    itemCount: onboardingData.length,
-                    itemBuilder: (context, index) => VideoOnboardingPage(
-                      imagePath: onboardingData[index]["image"]!,
-                      titlePath1: onboardingData[index]["title1"]!,
-                      subtitlePath1: onboardingData[index]["subtitle1"]!,
-                    ),
-                  ),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (value) {
+                  setState(() {
+                    _currentPage = value;
+                  });
+                },
+                itemCount: onboardingData.length,
+                itemBuilder: (context, index) => VideoOnboardingPage(
+                  imagePath: onboardingData[index]["image"]!,
+                  titlePath1: onboardingData[index]["title"]!.tr,
+                  subtitlePath1: onboardingData[index]["subtitle"]!.tr,
                 ),
-                //const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    onboardingData.length,
-                        (index) => buildDot(index),
-                  ),
-                ),
-
-                const SizedBox(height: 46),
-
-                _currentPage == 2 ? Row(
-
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                      children: [
-
-                        ElevatedButton(
-                          onPressed: () {
-
-                            Get.to(()=> OnboardingTwo());
-
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero, // important
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            minimumSize: const Size(100, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(255, 214, 0, 1),
-                                  Color.fromRGBO(255,149,0, 1),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.fromLTRB(150, 16, 150, 16),
-                              child: const Text(
-                                'Get Started',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  //fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-
-                      ],
-
-                    ) : Row(
-
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                  children: [
-
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromRGBO(255, 214, 0, 1),
-                            Color.fromRGBO(255,149,0, 1),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      padding: const EdgeInsets.all(2), // border thickness
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(100, 50),
-                          backgroundColor: Colors.white, // white button
-                          shadowColor: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14), // inner radius
-                          ),
-                        ),
-                        onPressed: () {
-                          Get.to(()=> OnboardingTwo());
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(50, 14, 50, 14),
-
-                          child: ShaderMask(
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: [
-                                Color.fromRGBO(255, 214, 0, 1),
-                                Color.fromRGBO(255,149,0, 1),
-                              ],
-                            ).createShader(bounds),
-                            child: Text(
-                              'Skip',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_currentPage == onboardingData.length - 1) {
-                         // _completeOnboarding();
-
-                        } else {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero, // important
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromRGBO(255, 214, 0, 1),
-                              Color.fromRGBO(255,149,0, 1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.fromLTRB(60, 16, 60, 16),
-                          child: const Text(
-                            'Continue',
-                            style: TextStyle(
-                              color: Colors.white,
-                              //fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-
-
-                  ],
-
-                ),
-
-                const SizedBox(height: 80),
-              ],
+              ),
+            ),
+            16.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                onboardingData.length,
+                    (index) => buildDot(index),
+              ),
             ),
 
+            const SizedBox(height: 30),
+
+                _currentPage == 2
+        ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+        Expanded(
+          child: Padding(
+            padding:EdgeInsets.symmetric(horizontal: 16.0),
+            child: CommonButton(
+              titleText: "get_started".tr,
+              firstGradient: const Color(0xFFFFD600),
+              secondGradient: const Color(0xFFFF9500),
+              useGradientBackground: true,
+              buttonRadius: 12,
+              onTap: () {
+                Get.to(() => OnboardingTwo());
+              },
+            ),
+          ),
+        ),
+                  ],
+                )
+        : Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+          // Skip button (white with gradient text and border)
+          Expanded(
+            child: CommonButton(
+              titleText: "skip".tr,
+              firstGradient: const Color(0xFFFFD600),
+              secondGradient: const Color(0xFFFF9500),
+              useGradientBorder: true,
+              useGradientBackground: false,
+              useGradientText: true,
+              backgroundColor: Colors.white,
+              buttonRadius: 16,
+              borderWidth: 2,
+              onTap: () {
+                Get.to(() => OnboardingTwo());
+              },
+            ),
+          ),
+
+          12.horizontalSpace,
+          // Continue button (full gradient)
+          Expanded(
+            child: CommonButton(
+              titleText: "continue".tr,
+              firstGradient: const Color(0xFFFFD600),
+              secondGradient: const Color(0xFFFF9500),
+              useGradientBackground: true,
+              buttonRadius: 12,
+              onTap: () {
+                if (_currentPage == onboardingData.length - 1) {
+                  // _completeOnboarding();
+                } else {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              },
+            ),
+          ),
+                    ],
+                  ),
+        ),
+
+            const SizedBox(height: 80),
           ],
         ),
       ),

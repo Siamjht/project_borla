@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_borla/theme/app_color.dart';
-import '../../../theme/common_text_two.dart';
+import '../../../role/components/text/common_text.dart';
+
 
 class SettingsListItem extends StatelessWidget {
   final IconData icon;

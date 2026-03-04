@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
@@ -16,7 +17,7 @@ class AlreadyHaveAccountSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
 
       children: [
-        Text("Already have an account?", style: const TextStyle(
+        Text("already_have_account".tr, style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: Colors.grey,
@@ -34,8 +35,8 @@ class AlreadyHaveAccountSection extends StatelessWidget {
                     Color.fromRGBO(255, 149, 0, 1),
                   ],
                 ).createShader(bounds),
-            child: const Text(
-              'Sign In',
+            child: Text(
+              "log_in".tr,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,

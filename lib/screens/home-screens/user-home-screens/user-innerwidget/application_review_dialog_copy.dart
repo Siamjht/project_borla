@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
-
-
-import '../../../../theme/common_text_two.dart';
+import '../../../../role/components/text/common_text.dart';
 import '../../../../utils/custom-gen-assets/assets.gen.dart';
 
 

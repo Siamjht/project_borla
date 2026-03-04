@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -6,6 +7,7 @@ import 'package:phone_form_field/phone_form_field.dart';
 import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/features/auth/otp_screen_two.dart';
+import 'package:project_borla/language/language_service.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../role/components/commonTextField/phone_text_field.dart';
@@ -58,7 +60,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         body: Stack(
 
             alignment: AlignmentDirectional.bottomStart,
@@ -75,8 +76,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 child: AuthHeader(
-                    title: 'Create Your New Account',
-                    subtitle: 'Register now and explore the world your way.'),
+                  title: 'create_your_new_account'.tr,
+                  subtitle: 'register_now_and_explore'.tr,
+                ),
               ),
 
               Positioned(
@@ -84,11 +86,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   right: -60,
                   child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
 
-              RegistrationSection(registerScreenController: registerScreenController)
+              Positioned(
+                top: LanguageService.setLang == 'en' ? 230 : 210,
+                  left: 0,
+                  right: 0,
+                  child: RegistrationSection(registerScreenController: registerScreenController)
+              )
 
             ]
         )
-
     );
   }
 }

@@ -1,12 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../theme/app_color.dart';
-import 'common_text_two.dart';
+import '../role/components/text/common_text.dart';
+
 
 
 class CommonTextField extends StatelessWidget {

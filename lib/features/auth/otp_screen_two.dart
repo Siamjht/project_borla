@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/features/auth/set_pass_screen.dart';
@@ -27,33 +28,30 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Stack(
         alignment: AlignmentDirectional.bottomStart,
         children: [
-          // const AuthHeader(
-          //   title: "Confirm It's Really You.",
-          //   subtitle: "Enter the 4-digit code from your email.",
-          // ),
-
           Container(
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
                   Color.fromRGBO(255, 214, 0, 1),
-                  Color.fromRGBO(255,149,0, 1),
+                  Color.fromRGBO(255, 149, 0, 1),
                 ],
               ),
             ),
             child: AuthHeader(
-                title: "Confirm It's Really You.",
-                subtitle: 'Enter the 4-digit code from your email.'),
+              title: "confirm_its_really_you".tr,
+              subtitle: "enter_4_digit_code_from_email".tr,
+            ),
           ),
+
           Positioned(
-              top: 0,
-              right: -60,
-              child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
+            top: 0,
+            right: -60,
+            child: Assets.images.backgroundShadow.image(height: 300, width: 400),
+          ),
+
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(34)
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
               color: Colors.white,
             ),
             height: 650,
@@ -66,7 +64,6 @@ class _OtpScreenState extends State<OtpScreen> {
                     onChanged: (value) {
                       setState(() => otp = value);
                     },
-
                   ),
 
                   const SizedBox(height: 32),
@@ -74,17 +71,18 @@ class _OtpScreenState extends State<OtpScreen> {
                   Column(
                     children: [
                       Text(
-                        "Didn't receive OTP?",
+                        "didnt_receive_otp".tr,
                         style: TextStyle(
-                            fontWeight: FontWeight.w600 ,
-                            fontSize: 16,
-                            color: Colors.grey.shade600
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
                         ),
                       ),
                       const SizedBox(height: 6),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
 
+                        },
                         child: ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
                             colors: [
@@ -99,37 +97,30 @@ class _OtpScreenState extends State<OtpScreen> {
                                 bottom: BorderSide(color: Colors.white, width: 3),
                               ),
                             ),
-                            child: const Text(
-                              'Resend Code',
-                              style: TextStyle(
+                            child: Text(
+                              "resend_code".tr,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-
                               ),
                             ),
                           ),
                         ),
-
-
-
                       ),
                     ],
                   ),
 
-                 // const Spacer(),
-
-                  SizedBox(height: 36,),
+                  SizedBox(height: 36),
 
                   GradientButton(
-                    text: 'Verify',
-                    onPressed:  () {
-                      if(widget.isSignup){
-                        Get.to(()=> UserNavBar());
-                      }else{
-                        Get.to(()=> SetPassScreen());
+                    text: "verify".tr,
+                    onPressed: () {
+                      if (widget.isSignup) {
+                        Get.to(() => UserNavBar());
+                      } else {
+                        Get.to(() => SetPassScreen());
                       }
-                      //debugPrint('OTP entered: $otp');
                     },
                   ),
                 ],

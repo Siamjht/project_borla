@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
+import 'package:project_borla/language/language_service.dart';
 import 'package:project_borla/role/commonScreens/profile/controller/profile_controller.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
@@ -27,154 +28,155 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-        body: Stack(
-            alignment: AlignmentDirectional.bottomStart,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      AppColors.green500,
-                      AppColors.green500
-                    ],
-                  ),
-                ),
-                child: AuthHeader(
-                    title: 'Create Your New Account',
-                    subtitle: 'Register now and explore the world your way.'),
+      body: Stack(
+        alignment: AlignmentDirectional.bottomStart,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  AppColors.green500,
+                  AppColors.green500,
+                ],
               ),
-              Positioned(
-                top: 0,
-                  right: -60,
-                  child: Assets.images.backgroundShadow.image(height: 300, width: 400)),
+            ),
+            child: AuthHeader(
+              title: 'create_your_new_account'.tr,
+              subtitle: 'register_now_and_explore'.tr,
+            ),
+          ),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(34)
-                  ),
-                  color: Colors.white,
-                ),
-                height: 666,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: SingleChildScrollView(
-                    child: Column(
+          Positioned(
+            top: 0,
+            right: -60,
+            child: Assets.images.backgroundShadow.image(height: 300, width: 400),
+          ),
 
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          Positioned(
+            top: LanguageService.setLang == 'en'? 230 : 210,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+                color: Colors.white,
+              ),
+              height: 666,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
 
-                      children: [
-                        const SizedBox(height: 8),
+                      profileItems(context, controller),
 
-                        profileItems(context, controller),
+                      const SizedBox(height: 24),
 
-                        const SizedBox(height: 24),
+                      Text(
+                        'password'.tr,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
 
-                        Text('Password', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
+                      const SizedBox(height: 12),
+                      CommonTextField(
+                        hintText: 'password_hint'.tr,
+                        isPassword: true,
+                      ),
 
-                        const SizedBox(height: 12),
-                        CommonTextField(
-                          hintText: 'Password',
-                          isPassword: true,
-                        ),
+                      const SizedBox(height: 24),
 
-                        const SizedBox(height: 24),
+                      Text(
+                        'confirm_password'.tr,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
 
-                        Text(' Confirm Password', style: TextStyle(
-                            fontWeight: FontWeight.w700
-                        ),),
+                      const SizedBox(height: 12),
+                      CommonTextField(
+                        hintText: 'confirm_password_hint'.tr,
+                        isPassword: true,
+                      ),
 
-                        const SizedBox(height: 12),
-                        CommonTextField(
-                          hintText: 'Confirm Password',
-                          isPassword: true,
-                        ),
+                      const SizedBox(height: 32),
 
-                        const SizedBox(height: 32),
+                      CommonButton(
+                        titleText: 'sign_up'.tr,
+                        buttonRadius: 12,
+                        onTap: () {
+                          Get.to(() => DriverOtpScreen());
+                        },
+                      ),
 
-                        CommonButton(
-                          titleText: 'Sign Up',
-                          buttonRadius: 12,
-                          onTap: () {
-                            Get.to(()=> DriverOtpScreen());
-                          },
-                        ),
+                      const SizedBox(height: 30),
 
-                        const SizedBox(height: 30),
-
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                'or continue with',
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey.shade300)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              'or_continue_with'.tr,
+                              style: const TextStyle(color: Colors.grey),
                             ),
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                          ],
-                        ),
+                          ),
+                          Expanded(child: Divider(color: Colors.grey.shade300)),
+                        ],
+                      ),
 
-                        const SizedBox(height: 30),
+                      const SizedBox(height: 30),
 
-                        SocialLoginButton(
-                          text: 'Continue with Google',
-                          asset: 'assets/images/google.png',
-                          onPressed: () {},
-                        ),
+                      SocialLoginButton(
+                        text: 'continue_with_google'.tr,
+                        asset: 'assets/images/google.png',
+                        onPressed: () {},
+                      ),
 
-                        const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                        SocialLoginButton(
-                          text: 'Continue with Apple',
-                          asset: 'assets/images/apple_2.png',
-                          onPressed: () {},
-                        ),
+                      SocialLoginButton(
+                        text: 'continue_with_apple'.tr,
+                        asset: 'assets/images/apple_2.png',
+                        onPressed: () {},
+                      ),
 
-                        const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                        Row(
-
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: [
-                            Text("Already have an account?", style: const TextStyle(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'already_have_account'.tr,
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
                               color: Colors.grey,
-                            ),),
-                            //SizedBox(width: 2,),
-                            TextButton(
-                              onPressed: (){
-                                Get.offAll(()=> LoginScreen());
-                              },
-                              child: const Text(
-                                'Sign In',
-                                style: TextStyle(
-                                  color: AppColors.green500,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),)
-                          ],
-                        ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.offAll(() => LoginScreen());
+                            },
+                            child: Text(
+                              'sign_in'.tr,
+                              style: const TextStyle(
+                                color: AppColors.green500,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
 
-                        const SizedBox(height: 70),
-
-                      ],
-                    ),
+                      const SizedBox(height: 70),
+                    ],
                   ),
                 ),
-              )
-
-            ]
-        )
-
-
-
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

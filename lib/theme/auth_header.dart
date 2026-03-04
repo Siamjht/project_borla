@@ -16,7 +16,7 @@ class AuthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 36),
+      padding: const EdgeInsets.fromLTRB(20, 30, 20, 36),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,8 +25,8 @@ class AuthHeader extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 31,
-              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
           ),
@@ -35,8 +35,8 @@ class AuthHeader extends StatelessWidget {
             subtitle,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],

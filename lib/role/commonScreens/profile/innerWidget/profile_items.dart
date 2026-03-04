@@ -17,15 +17,14 @@ Widget profileItems(BuildContext context, controller) {
       Align(
         alignment: Alignment.centerLeft,
         child: CommonText(
-          text: 'Name',
+          text: 'name_label'.tr,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
       ),
       SizedBox(height: 8.h),
       CommonTextField(
-        hintText: 'Enter Name',
-        //controller: controller.nameController,
+        hintText: 'enter_name_hint'.tr,
         controller: controller.nameController,
       ),
       SizedBox(height: 20.h),
@@ -33,25 +32,23 @@ Widget profileItems(BuildContext context, controller) {
       /// ----------------- Phone Field -----------------
       Align(
         alignment: Alignment.centerLeft,
-        child: const CommonText(
-          text: 'Phone Number',
+        child: CommonText(
+          text: 'phone_number_label'.tr,
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: Colors.black87,
         ),
       ),
       SizedBox(height: 8.h),
-      //phoneTextFormField(controller: _phoneController),
-
-      driverPhoneTextFormField(),
+      driverPhoneTextFormField(), // assuming this widget handles its own hint/label
 
       SizedBox(height: 20.h),
 
       /// ---------------- DATE OF BIRTH ----------------
       Align(
         alignment: Alignment.centerLeft,
-        child: const CommonText(
-          text: 'Date of Birth',
+        child: CommonText(
+          text: 'date_of_birth_label'.tr,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
@@ -62,12 +59,15 @@ Widget profileItems(BuildContext context, controller) {
         child: AbsorbPointer(
           child: CommonTextField(
             controller: controller.dobController,
-            hintText: 'DD / MM / YYYY',
-            suffixIcon:
-            SizedBox(height: 20, width: 20,
+            hintText: 'date_of_birth_hint'.tr,
+            suffixIcon: SizedBox(
+              height: 20,
+              width: 20,
               child: Center(
                 child: Assets.icons.dobCalenderIcon.image(
-                    height: 20, width: 20),
+                  height: 20,
+                  width: 20,
+                ),
               ),
             ),
           ),
@@ -80,14 +80,14 @@ Widget profileItems(BuildContext context, controller) {
       Align(
         alignment: Alignment.centerLeft,
         child: CommonText(
-          text: 'Location',
+          text: 'location_label'.tr,
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
       ),
       SizedBox(height: 8.h),
       CommonTextField(
-        hintText: 'Enter Location',
+        hintText: 'enter_location_hint'.tr,
         controller: controller.locationController,
       ),
 
@@ -97,8 +97,8 @@ Widget profileItems(BuildContext context, controller) {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CommonText(
-            text: 'Ghana Card ID',
+          CommonText(
+            text: 'ghana_card_id_label'.tr,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -116,21 +116,17 @@ Widget profileItems(BuildContext context, controller) {
                 height: 130.h,
                 width: double.infinity,
                 child: GestureDetector(
-                  onTap: () =>
-                      controller.pickImage(isProfile: false),
-                  child: controller.ghanaCardImage.value !=
-                      null
+                  onTap: () => controller.pickImage(isProfile: false),
+                  child: controller.ghanaCardImage.value != null
                       ? ClipRRect(
-                    borderRadius:
-                    BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12),
                     child: Image.file(
                       controller.ghanaCardImage.value!,
                       fit: BoxFit.cover,
                     ),
                   )
                       : Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.cloud_upload_outlined,
@@ -139,7 +135,7 @@ Widget profileItems(BuildContext context, controller) {
                       ),
                       SizedBox(height: 8.h),
                       CommonText(
-                        text: 'Upload',
+                        text: 'upload_button'.tr,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: AppColors.gray300,

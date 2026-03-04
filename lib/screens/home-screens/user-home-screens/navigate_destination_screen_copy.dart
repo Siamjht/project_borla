@@ -2,11 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-
+import '../../../role/components/text/common_text.dart';
 import '../../../theme/common_back_button_copy.dart';
 import '../../../theme/common_button_copy.dart';
-import '../../../theme/common_text_two.dart';
 import '../../../theme/custom_container_copy.dart';
 import '../../../utils/custom-gen-assets/assets.gen.dart';
 

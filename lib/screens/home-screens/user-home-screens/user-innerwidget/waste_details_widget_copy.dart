@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-
-import '../../../../theme/common_text_two.dart';
+import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/custom_container_copy.dart';
 import '../../../../utils/custom-gen-assets/assets.gen.dart';
 import '../user-controller/user_home_controller.dart';

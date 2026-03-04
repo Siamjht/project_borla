@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:project_borla/theme/app_color.dart';
+import '../role/components/text/common_text.dart';
 
-
-import 'common_text_two.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback? onTap;

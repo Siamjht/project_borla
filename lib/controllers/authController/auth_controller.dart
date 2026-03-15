@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../helpers/prefs_helper.dart';
 import '../../models/authModels/create_user_model.dart';
 import '../../models/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
+import '../../role/components/navBar/nav_bar.dart';
+import '../../role/garbageCollector/auth/driver_otp_screen.dart';
 import '../../services/api_service.dart';
 import '../../services/socket_service.dart';
 import '../../utils/app_urls.dart';
@@ -16,6 +19,8 @@ import '../../utils/app_urls.dart';
 
 
 class AuthController extends GetxController {
+
+  static AuthController get instance => Get.put(AuthController());
 
   // static String otpTokenKey = 'otpToken';
   // ── Form & Controllers ──
@@ -27,6 +32,20 @@ class AuthController extends GetxController {
   final RxBool isOtpSending = false.obs;
   final RxBool keepLoggedIn = false.obs;
   String email = "";
+
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneNumController = PhoneController();
+  final addressController = TextEditingController();
+  final passController = TextEditingController();
+  final confirmPassController = TextEditingController();
+  final roleController = TextEditingController();
+  final dobController = TextEditingController();
+
+  final otpController = TextEditingController();
+
+  String ghanaICard = '';
+  String role = 'driver';
 
   // @override
   // void onClose() {
@@ -49,7 +68,7 @@ class AuthController extends GetxController {
         },
       );
       if (response.statusCode == 200) {
-        final loginModel = LoginModel.fromJson(Map<String, dynamic>.from(response.body));
+        final loginModel = LoginResponseModel.fromJson(Map<String, dynamic>.from(response.body));
 
         PrefsHelper.token = loginModel.data.accessToken;
         PrefsHelper.userId = loginModel.data.user.id;
@@ -84,32 +103,21 @@ class AuthController extends GetxController {
   }
 
   // ---- Create user method -------
-  Future<bool> createUser({
-    required String name,
-    required String email,
-    required String phoneNumber,
-    required String address,
-    required String password,
-    required double latitude,
-    required double longitude,
-    String? imagePath,
-  }) async {
+  Future<bool> createUser() async {
     isLoading.value = true;
 
     try {
 
-      this.email = email;
       final Map<String, dynamic> body = {
         'data': jsonEncode({
-          'name': name,
-          'email': email,
-          'phoneNumber': phoneNumber,
-          'address': address,
-          'password': password,
-          'location': {
-            'type': 'Point',
-            'coordinates': [longitude, latitude],
-          },
+          'email': emailController,
+          'name': nameController,
+          'phoneNumber': phoneNumController,
+          'password': passController,
+          'confirmPassword': confirmPassController,
+          'dateOfBirth': dobController,
+          'locationName': addressController,
+          'role': role,
         }),
       };
 
@@ -117,16 +125,18 @@ class AuthController extends GetxController {
         url: AppUrls.createUser,
         method: HttpMethod.post,
         body: body,
-        imagePath: imagePath,
-        imageName: 'profile',
+        imagePath: ghanaICard,
+        imageName: 'ghanaCardId',
       );
 
       if (response.statusCode == 200) {
-        final model = CreateUserResponseModel.fromJson(
-          Map<String, dynamic>.from(response.body),
-        );
+        CreateUserResponseModel model =
+        CreateUserResponseModel.fromJson(Map<String, dynamic>.from(response.body));
 
-        PrefsHelper.token = model.data.otpToken;
+        String email = model.data.email;
+        String token = model.data.verificationToken;
+        log("response: $token, $email");
+        Get.to(() => DriverOtpScreen());
         CustomSnackbar.success(model.message);
         return true;
       } else {
@@ -166,6 +176,7 @@ class AuthController extends GetxController {
           data['token'] ?? '',
         );
 
+        Get.to(() => DriverNavbar());
         CustomSnackbar.success(response.message);
         return true;
       } else {

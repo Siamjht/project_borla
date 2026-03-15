@@ -42,10 +42,10 @@ Widget userPhoneTextFormField({required PhoneController controller,}) {
 }
 
 
-Widget driverPhoneTextFormField() {
+Widget driverPhoneTextFormField({phoneController}) {
   return PhoneFormField(
 
-    //controller: controller,
+    controller: phoneController,
     initialValue: PhoneNumber.parse('+233'),
     //initialCountryCode: 'GH',
     decoration: InputDecoration(
@@ -66,7 +66,7 @@ Widget driverPhoneTextFormField() {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.r),
         borderSide: const BorderSide(color: Color(0xFF4CAF50),
-            width: 2),
+            width: 1),
       ),
     ),
     countryButtonStyle: const CountryButtonStyle(

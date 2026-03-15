@@ -1,168 +1,152 @@
 
-class LoginModel {
-  final bool success;
-  final String message;
-  final LoginData data;
+class LoginResponseModel {
+  bool success;
+  String message;
+  LoginData data;
 
-  LoginModel({
-    required this.success,
-    required this.message,
-    required this.data,
-  });
+  LoginResponseModel({
+    this.success = false,
+    this.message = '',
+    LoginData? data,
+  }) : data = data ?? LoginData();
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) {
-    return LoginModel(
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
+    return LoginResponseModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: LoginData.fromJson(
-        Map<String, dynamic>.from(json['data'] ?? {}),
-      ),
+      data: LoginData.fromJson(json['data'] ?? {}),
     );
   }
 }
 
-// ─────────────────────────────────────────
-
 class LoginData {
-  final UserModel user;
-  final String accessToken;
-  final String refreshToken;
+  User user;
+  String accessToken;
+  String refreshToken;
 
   LoginData({
-    required this.user,
-    required this.accessToken,
-    required this.refreshToken,
-  });
+    User? user,
+    this.accessToken = '',
+    this.refreshToken = '',
+  }) : user = user ?? User();
 
   factory LoginData.fromJson(Map<String, dynamic> json) {
     return LoginData(
-      user: UserModel.fromJson(json['user']),
+      user: User.fromJson(json['user'] ?? {}),
       accessToken: json['accessToken'] ?? '',
       refreshToken: json['refreshToken'] ?? '',
     );
   }
 }
 
-// ─────────────────────────────────────────
+class User {
+  String id;
+  String name;
+  String email;
+  String password;
+  String status;
+  String onlineStatus;
+  String role;
+  String profilePicture;
+  String phoneNumber;
+  String dateOfBirth;
+  List<String> ghanaCardId;
+  String? customerId;
+  bool riderVerified;
+  String zoneId;
+  String? expireAt;
+  bool isDeleted;
+  Location location;
+  String locationName;
+  String createdAt;
+  String updatedAt;
+  Verification verification;
 
-class UserModel {
-  final String id;
-  final String name;
-  final String email;
-  final String phoneNumber;
-  final String address;
-  final String role;
-  final String profile;
-  final String? gender;
-  final String? dateOfBirth;
-  final String? bio;
-  final String status;
-  final String loginWith;
-  final LocationModel location;
-  final VerificationModel verification;
-  final DeviceModel device;
+  User({
+    this.id = '',
+    this.name = '',
+    this.email = '',
+    this.password = '',
+    this.status = '',
+    this.onlineStatus = '',
+    this.role = '',
+    this.profilePicture = '',
+    this.phoneNumber = '',
+    this.dateOfBirth = '',
+    this.ghanaCardId = const [],
+    this.customerId,
+    this.riderVerified = false,
+    this.zoneId = '',
+    this.expireAt,
+    this.isDeleted = false,
+    Location? location,
+    this.locationName = '',
+    this.createdAt = '',
+    this.updatedAt = '',
+    Verification? verification,
+  })  : location = location ?? Location(),
+        verification = verification ?? Verification();
 
-  UserModel({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
-    required this.address,
-    required this.role,
-    required this.profile,
-    this.gender,
-    this.dateOfBirth,
-    this.bio,
-    required this.status,
-    required this.loginWith,
-    required this.location,
-    required this.verification,
-    required this.device,
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['_id'] ?? '',
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
-      phoneNumber: json['phoneNumber'] ?? '',
-      address: json['address'] ?? '',
-      role: json['role'] ?? '',
-      profile: json['profile'] ?? '',
-      gender: json['gender'] ?? '',
-      dateOfBirth: json['dateOfBirth'] ?? '',
-      bio: json['bio'] ?? '',
+      password: json['password'] ?? '',
       status: json['status'] ?? '',
-      loginWith: json['loginWth'] ?? '',
-      location: LocationModel.fromJson(json['location'] ?? {}),
-      verification: VerificationModel.fromJson(json['verification'] ?? {}),
-      device: DeviceModel.fromJson(json['device'] ?? {}),
+      onlineStatus: json['onlineStatus'] ?? '',
+      role: json['role'] ?? '',
+      profilePicture: json['profilePicture'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      dateOfBirth: json['dateOfBirth'] ?? '',
+      ghanaCardId: (json['ghanaCardId'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList() ??
+          [],
+      customerId: json['customerId'],
+      riderVerified: json['riderVerified'] ?? false,
+      zoneId: json['zoneId'] ?? '',
+      expireAt: json['expireAt'],
+      isDeleted: json['isDeleted'] ?? false,
+      location: Location.fromJson(json['location'] ?? {}),
+      locationName: json['locationName'] ?? '',
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+      verification: Verification.fromJson(json['verification'] ?? {}),
     );
   }
 }
 
-// ─────────────────────────────────────────
+class Location {
+  String type;
+  List<double> coordinates;
 
-class LocationModel {
-  final String type;
-  final List<double> coordinates;
-
-  LocationModel({
-    required this.type,
-    required this.coordinates,
+  Location({
+    this.type = '',
+    this.coordinates = const [],
   });
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      type: json['type'] ?? 'Point',
-      coordinates: List<double>.from(
-        (json['coordinates'] ?? []).map((e) => (e as num).toDouble()),
-      ),
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+      type: json['type'] ?? '',
+      coordinates: (json['coordinates'] as List<dynamic>?)
+          ?.map((e) => (e as num).toDouble())
+          .toList() ??
+          [],
     );
   }
 }
 
-// ─────────────────────────────────────────
+class Verification {
+  bool status;
 
-class VerificationModel {
-  final int otp;
-  final String expiresAt;
-  final bool status;
-
-  VerificationModel({
-    required this.otp,
-    required this.expiresAt,
-    required this.status,
+  Verification({
+    this.status = false,
   });
 
-  factory VerificationModel.fromJson(Map<String, dynamic> json) {
-    return VerificationModel(
-      // ✅ Handle both int and String
-      otp: int.tryParse(json['otp'].toString()) ?? 0,
-      expiresAt: json['expiresAt'] ?? '',
+  factory Verification.fromJson(Map<String, dynamic> json) {
+    return Verification(
       status: json['status'] ?? false,
-    );
-  }
-}
-
-// ─────────────────────────────────────────
-
-class DeviceModel {
-  final String ip;
-  final String device;
-  final String lastLogin;
-
-  DeviceModel({
-    required this.ip,
-    required this.device,
-    required this.lastLogin,
-  });
-
-  factory DeviceModel.fromJson(Map<String, dynamic> json) {
-    return DeviceModel(
-      ip: json['ip'] ?? '',
-      device: json['device'] ?? '',
-      lastLogin: json['lastLogin'] ?? '',
     );
   }
 }

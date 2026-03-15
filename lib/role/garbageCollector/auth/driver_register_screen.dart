@@ -1,15 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/language/language_service.dart';
-import 'package:project_borla/role/commonScreens/profile/controller/profile_controller.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../theme/auth_header.dart';
-import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/social_login_button.dart';
 import '../../commonScreens/profile/innerWidget/profile_items.dart';
 import 'driver_otp_screen.dart';
@@ -23,7 +22,7 @@ class DriverRegisterScreen extends StatefulWidget {
 
 class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
-  ProfileController controller = Get.put(ProfileController());
+  final _authCtrl = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +69,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                     children: [
                       const SizedBox(height: 8),
 
-                      profileItems(context, controller),
+                      profileItems(context, _authCtrl),
 
                       const SizedBox(height: 24),
 
@@ -81,6 +80,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
                       const SizedBox(height: 12),
                       CommonTextField(
+                        controller: _authCtrl.passController,
                         hintText: 'password_hint'.tr,
                         isPassword: true,
                       ),
@@ -94,6 +94,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
                       const SizedBox(height: 12),
                       CommonTextField(
+                        controller: _authCtrl.confirmPassController,
                         hintText: 'confirm_password_hint'.tr,
                         isPassword: true,
                       ),
@@ -104,7 +105,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                         titleText: 'sign_up'.tr,
                         buttonRadius: 12,
                         onTap: () {
-                          Get.to(() => DriverOtpScreen());
+                          _authCtrl.createUser();
                         },
                       ),
 
@@ -126,21 +127,21 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
                       const SizedBox(height: 30),
 
-                      SocialLoginButton(
-                        text: 'continue_with_google'.tr,
-                        asset: 'assets/images/google.png',
-                        onPressed: () {},
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      SocialLoginButton(
-                        text: 'continue_with_apple'.tr,
-                        asset: 'assets/images/apple_2.png',
-                        onPressed: () {},
-                      ),
-
-                      const SizedBox(height: 12),
+                      // SocialLoginButton(
+                      //   text: 'continue_with_google'.tr,
+                      //   asset: 'assets/images/google.png',
+                      //   onPressed: () {},
+                      // ),
+                      //
+                      // const SizedBox(height: 16),
+                      //
+                      // SocialLoginButton(
+                      //   text: 'continue_with_apple'.tr,
+                      //   asset: 'assets/images/apple_2.png',
+                      //   onPressed: () {},
+                      // ),
+                      //
+                      // const SizedBox(height: 12),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

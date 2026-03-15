@@ -6,18 +6,19 @@ class AppUrls {
   static const socketUrl = "http://103.186.20.117:2005";
 
 
-  static const signUp = "$baseUrl/auth/register";
-  static const verifyEmail = "$baseUrl/auth/verify_email";
+  static const signUp = "$baseUrl/auth/signup";
   static const signIn = "$baseUrl/auth/login";
-  static const createUser = "$baseUrl/users";
   static const verifyOtp = "$baseUrl/otp/verify-otp";
   static const resendOtp = "$baseUrl/otp/resend-otp";
   static const forgotPassword = "$baseUrl/auth/forgot-password";
   static const changePassword = "$baseUrl/auth/change-password";
   static const resetPassword = "$baseUrl/auth/reset-password";
-  static const deleteMyAccount = "$baseUrl/users/delete-my-account";
   static const getMyProfile = "$baseUrl/users/my-profile";
   static const updateProfile = "$baseUrl/users/update-my-profile";
+
+  static const verifyEmail = "$baseUrl/auth/verify_email";
+  static const createUser = "$baseUrl/users";
+  static const deleteMyAccount = "$baseUrl/users/delete-my-account";
   static const createEvent = "$baseUrl/events";
   static const notifications = "$baseUrl/notifications";
   static const myRequests = "$baseUrl/join-request/my-requests";

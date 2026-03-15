@@ -9,7 +9,7 @@ import '../../utils/app_urls.dart';
 
 class ProfileController extends GetxController {
   // ── State ──
-  final Rx<UserModel> profile = UserModel.fromJson({}).obs;
+  // final Rx<UserModel> profile = UserModel.fromJson({}).obs;
   final RxBool isLoading = false.obs;
   final RxBool isUpdating = false.obs;
 
@@ -34,12 +34,12 @@ class ProfileController extends GetxController {
   }
 
   // ── Populate form fields from profile ──
-  void _populateFields(UserModel user) {
-    nameController.text = user.name;
-    phoneController.text = user.phoneNumber;
-    addressController.text = user.address;
-    imagePath.value = user.profile;
-  }
+  // void _populateFields(UserModel user) {
+  //   nameController.text = user.name;
+  //   phoneController.text = user.phoneNumber;
+  //   addressController.text = user.address;
+  //   imagePath.value = user.profile;
+  // }
 
   // ── Get Profile ──
   Future<void> getProfile() async {
@@ -52,8 +52,8 @@ class ProfileController extends GetxController {
         final model = ProfileResponseModel.fromJson(
           Map<String, dynamic>.from(response.body),
         );
-        profile.value = model.data;
-        _populateFields(model.data);
+        // profile.value = model.data;
+        // _populateFields(model.data);
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -96,7 +96,7 @@ class ProfileController extends GetxController {
         final model = ProfileResponseModel.fromJson(
           Map<String, dynamic>.from(response.body),
         );
-        profile.value = model.data;
+        // profile.value = model.data;
         Get.back();
         await Future.delayed(const Duration(milliseconds: 300));
         CustomSnackbar.success(response.message);

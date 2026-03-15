@@ -2,44 +2,44 @@
 import 'login_model.dart';
 
 class CreateUserResponseModel {
-  final bool success;
-  final String message;
-  final CreateUserData data;
+  bool success;
+  String message;
+  CreateUserData data;
 
   CreateUserResponseModel({
-    required this.success,
-    required this.message,
-    required this.data,
-  });
+    this.success = false,
+    this.message = '',
+    CreateUserData? data,
+  }) : data = data ?? CreateUserData();
 
   factory CreateUserResponseModel.fromJson(Map<String, dynamic> json) {
     return CreateUserResponseModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: CreateUserData.fromJson(
-        Map<String, dynamic>.from(json['data'] ?? {}),
-      ),
+      data: CreateUserData.fromJson(json['data'] ?? {}),
     );
   }
 }
 
-// ─────────────────────────────────────────
-
 class CreateUserData {
-  final UserModel user;
-  final String otpToken;
+  String email;
+  String name;
+  String verificationToken;
+  String message;
 
   CreateUserData({
-    required this.user,
-    required this.otpToken,
+    this.email = '',
+    this.name = '',
+    this.verificationToken = '',
+    this.message = '',
   });
 
   factory CreateUserData.fromJson(Map<String, dynamic> json) {
     return CreateUserData(
-      user: UserModel.fromJson(
-        Map<String, dynamic>.from(json['user'] ?? {}),
-      ),
-      otpToken: json['otpToken']?['token'] ?? '',
+      email: json['email'] ?? '',
+      name: json['name'] ?? '',
+      verificationToken: json['verificationToken'] ?? '',
+      message: json['message'] ?? '',
     );
   }
 }

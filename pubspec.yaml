@@ -55,6 +55,8 @@ dependencies:
   http: ^1.6.0
   mime: ^2.0.0
   socket_io_client: ^3.1.4
+  flutter_modern_animated_loader: ^0.0.2
+
 
 dev_dependencies:
   flutter_test:

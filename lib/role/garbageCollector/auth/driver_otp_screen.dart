@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modern_animated_loader/flutter_animated_loader.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/navBar/nav_bar.dart';
 import 'package:project_borla/theme/app_color.dart';
@@ -17,8 +19,7 @@ class DriverOtpScreen extends StatefulWidget {
 }
 
 class _DriverOtpScreenState extends State<DriverOtpScreen> {
-
-  TextEditingController otpController = TextEditingController();
+  final _authCtrl = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 26.0),
                       child: PinCodeTextField(
-                        controller: otpController,
+                        controller: _authCtrl.otpController,
                         cursorColor: AppColors.black100,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         appContext: context,
@@ -100,33 +101,41 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        GestureDetector(
-                          onTap: () {},
-                          child: ShaderMask(
-                            shaderCallback: (bounds) => const LinearGradient(
-                              colors: [
-                                AppColors.green500,
-                                AppColors.green500,
-                              ],
-                            ).createShader(bounds),
-                            child: Container(
-                              padding: const EdgeInsets.only(bottom: 0.3),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(color: Colors.white, width: 3),
-                                ),
-                              ),
-                              child: Text(
-                                "resend_code".tr,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                       Obx(() => _authCtrl.isOtpSending.value
+                           ? Center(
+                         child: FlutterAnimatedLoader.staggerWave(
+                           color: AppColors.green500,
+                           size: 20,
+                         ),
+                       ) :  GestureDetector(
+                         onTap: () {
+                           _authCtrl.resendOtp(_authCtrl.emailController.text);
+                         },
+                         child: ShaderMask(
+                           shaderCallback: (bounds) => const LinearGradient(
+                             colors: [
+                               AppColors.green500,
+                               AppColors.green500,
+                             ],
+                           ).createShader(bounds),
+                           child: Container(
+                             padding: const EdgeInsets.only(bottom: 0.3),
+                             decoration: const BoxDecoration(
+                               border: Border(
+                                 bottom: BorderSide(color: Colors.white, width: 3),
+                               ),
+                             ),
+                             child: Text(
+                               "resend_code".tr,
+                               style: const TextStyle(
+                                 color: Colors.white,
+                                 fontSize: 16,
+                                 fontWeight: FontWeight.w600,
+                               ),
+                             ),
+                           ),
+                         ),
+                       ),),
                         const SizedBox(height: 40),
                         CommonButton(
                           titleText: "verify".tr,
@@ -134,7 +143,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                           secondGradient: AppColors.green500,
                           buttonRadius: 12,
                           onTap: () {
-                            Get.to(() => DriverNavbar());
+                            _authCtrl.verifyEmailOTP(_authCtrl.otpController.text);
                           },
                         ),
                       ],

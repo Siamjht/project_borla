@@ -59,7 +59,7 @@ class _UserLanguageSelectionBottomSheetState
               // Title
               SizedBox(height: 12.h),
               CommonText(
-                text: AppTexts.chooseLanguage,
+                text: AppStrings.chooseLanguage,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 textAlign: TextAlign.center,
@@ -68,7 +68,7 @@ class _UserLanguageSelectionBottomSheetState
 
               // Subtitle
               CommonText(
-                text: AppTexts.languageRestartNote,
+                text: AppStrings.languageRestartNote,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.gray300,

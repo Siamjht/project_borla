@@ -95,7 +95,7 @@ class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSh
 
               // Title
               CommonText(
-                text: AppTexts.chooseLanguage,
+                text: AppStrings.chooseLanguage,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 textAlign: TextAlign.center,
@@ -105,7 +105,7 @@ class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSh
 
               // Subtitle
               CommonText(
-                text: AppTexts.languageRestartNote,
+                text: AppStrings.languageRestartNote,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.gray300,

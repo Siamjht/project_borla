@@ -52,6 +52,9 @@ dependencies:
   shared_preferences: ^2.5.4
   flutter_rating_bar: ^4.0.1
   cupertino_calendar_picker: ^2.2.6
+  http: ^1.6.0
+  mime: ^2.0.0
+  socket_io_client: ^3.1.4
 
 dev_dependencies:
   flutter_test:

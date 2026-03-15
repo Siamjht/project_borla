@@ -54,7 +54,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                         child: CircleAvatar(
                           radius: 32,
                           backgroundImage:
-                          NetworkImage(AppTexts.userProfilePic),
+                          NetworkImage(AppStrings.userProfilePic),
                         ),
                       ),
                       const Spacer(),

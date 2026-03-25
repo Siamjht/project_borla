@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
+import 'package:project_borla/role/components/navBar/nav_bar.dart';
+import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/utils/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +18,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offAllNamed(AppRoute.onboard1);
+      if(PrefsHelper.token.isNotEmpty){
+        if(PrefsHelper.myRole == "rider"){
+          Get.offAll(DriverNavbar());
+        }else{
+         Get.offAll(UserNavBar());
+        }
+      }else{
+        Get.offAllNamed(AppRoute.onboard1);
+      }
     });
     super.initState();
   }

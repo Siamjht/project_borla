@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import '../../theme/auth_header.dart';
 import '../../widgets/custom_text_field.dart';
@@ -19,7 +20,7 @@ class ForgetPassScreen extends StatefulWidget {
 
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
-  UserAuthController authController = Get.put(UserAuthController());
+  final _authCtrl = Get.find<AuthController>();
 
   final formKey = GlobalKey <FormState>() ;
 
@@ -27,13 +28,17 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
   //TextEditingController emailController = TextEditingController();
 
-  void formOnSubmit() {
+  Future<void> formOnSubmit() async {
     if(formKey.currentState!.validate()) {
-      print ('Form is valid');
-      Get.to(()=> OtpScreen(isSignup: false,));
+      debugPrint ('Form is valid');
+      final bool success = await _authCtrl.forgotPassword(_authCtrl.emailController.text);
+
+      if(success){
+        Get.to(()=> OtpScreen(isSignup: false,));
+      }
     }
     else {
-      print ('Form is Invalid');
+      debugPrint ('Form is Invalid');
     }
   }
 
@@ -92,7 +97,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
                       CustomTextField(
 
-                        controller: authController.emailController,
+                        controller: _authCtrl.emailController,
                         hint: 'Enter your email',
                         prefix: const Icon(Icons.email),
 
@@ -101,13 +106,8 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
 
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 40),
 
-
-                      const SizedBox(height: 8),
-
-
-                      const SizedBox(height: 16),
 
                       GradientButton(
                         text: 'Send Code',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/features/auth/set_pass_screen.dart';
 import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import '../../gen/custom_assets/assets.gen.dart';
@@ -19,6 +20,8 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+
+  final _authCtrl = Get.find<AuthController>();
   String otp = '';
 
   @override
@@ -81,7 +84,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       const SizedBox(height: 6),
                       GestureDetector(
                         onTap: () {
-
+                          _authCtrl.resendOtp(_authCtrl.emailController.text);
                         },
                         child: ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
@@ -115,11 +118,14 @@ class _OtpScreenState extends State<OtpScreen> {
 
                   GradientButton(
                     text: "verify".tr,
-                    onPressed: () {
+                    onPressed: () async {
                       if (widget.isSignup) {
                         Get.to(() => UserNavBar());
                       } else {
-                        Get.to(() => SetPassScreen());
+                        final success = await _authCtrl.verifyEmailOTP(otp);
+                        if(success){
+                          Get.to(() => SetPassScreen());
+                        }
                       }
                     },
                   ),

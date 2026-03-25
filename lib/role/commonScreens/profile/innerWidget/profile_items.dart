@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../theme/app_color.dart';
@@ -10,15 +11,6 @@ import '../../../components/commonTextField/phone_text_field.dart';
 import '../../../components/text/common_text.dart';
 
 Widget profileItems(BuildContext context, controller) {
-  final emailController = TextEditingController();
-  final nameController = TextEditingController();
-  final phoneNumController = TextEditingController();
-  final passController = TextEditingController();
-  final confirmPassController = TextEditingController();
-  final roleController = TextEditingController();
-  final dobController = TextEditingController();
-  final addressController = TextEditingController();
-
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -48,7 +40,7 @@ Widget profileItems(BuildContext context, controller) {
         ),
       ),
       SizedBox(height: 8.h),
-      driverPhoneTextFormField(phoneController: phoneNumController), // assuming this widget handles its own hint/label
+      // driverPhoneTextFormField(phoneController: phoneNumController), // assuming this widget handles its own hint/label
 
       SizedBox(height: 20.h),
 

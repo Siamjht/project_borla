@@ -1,9 +1,10 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/api_service.dart';
 import '../../models/authModels/login_model.dart';
-import '../../models/profileModel/profile_response_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../utils/app_urls.dart';
 
@@ -23,6 +24,8 @@ class ProfileController extends GetxController {
 
   // ── Image ──
   final RxString imagePath = ''.obs;
+  final RxString ghanaICard = ''.obs;
+  final Rx<User> profile = User.fromJson({}).obs;
 
 
   @override
@@ -33,13 +36,14 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  // ── Populate form fields from profile ──
-  // void _populateFields(UserModel user) {
-  //   nameController.text = user.name;
-  //   phoneController.text = user.phoneNumber;
-  //   addressController.text = user.address;
-  //   imagePath.value = user.profile;
-  // }
+//  ── Populate form fields from profile ──
+  void _populateFields(User user) {
+    nameController.text = user.name;
+    phoneController.text = user.phoneNumber;
+    addressController.text = user.locationName;
+    dateOfBirthController.text = user.dateOfBirth;
+    imagePath.value = user.profilePicture;
+  }
 
   // ── Get Profile ──
   Future<void> getProfile() async {
@@ -49,11 +53,11 @@ class ProfileController extends GetxController {
       final response = await ApiService.get(AppUrls.getMyProfile);
 
       if (response.statusCode == 200) {
-        final model = ProfileResponseModel.fromJson(
-          Map<String, dynamic>.from(response.body),
-        );
-        // profile.value = model.data;
-        // _populateFields(model.data);
+        final data = Map<String, dynamic>.from(response.body['data'] ?? {});
+        final model = User.fromJson(data);
+        profile.value = model;
+        log("Profile name: ${profile.value.name}");
+        _populateFields(model);
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -73,27 +77,23 @@ class ProfileController extends GetxController {
       final Map<String, dynamic> body = {
         'name': nameController.text.trim(),
         'phoneNumber': phoneController.text.trim(),
-        'address': addressController.text.trim(),
-        // 'bio': bioController.text.trim(),
-        // 'gender': genderController.text.trim(),
-        // 'dateOfBirth': dateOfBirthController.text.trim(),
-        'location[type]': 'Point',
-        'location[coordinates][0]': longitude.toString(),
-        'location[coordinates][1]': latitude.toString(),
+        'locationName': addressController.text.trim(),
+        'dateOfBirth': dateOfBirthController.text.trim(),
+        'latitude': latitude.toString(),
+        'longitude': longitude.toString(),
       };
 
-      final bool isLocalImage = imagePath.value.isNotEmpty &&
-          !imagePath.value.startsWith('http');
-      final response = await ApiService.multipartRequest(
+      // final bool isLocalImage = imagePath.value.isNotEmpty &&
+      //     !imagePath.value.startsWith('http');
+      final response = await ApiService.multipartRequestWithMultipleImages(
         url: AppUrls.updateProfile,
         method: HttpMethod.patch,
         body: body,
-        imagePath: isLocalImage ? imagePath.value : null,
-        imageName: 'profile',
+        imageList: [{'profilePicture': imagePath.value}, {'ghanaCardId' : ghanaICard.value}],
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final model = ProfileResponseModel.fromJson(
+        final model = User.fromJson(
           Map<String, dynamic>.from(response.body),
         );
         // profile.value = model.data;

@@ -1,16 +1,17 @@
-import 'package:dotted_border/dotted_border.dart';
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:phone_form_field/phone_form_field.dart';
+import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/theme/app_color.dart';
+import '../../../controllers/profileController/profile_controller.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../components/commonBackButton/common_back_button.dart';
-import '../../components/commonTextField/common_text_field.dart';
 import '../../components/gradient_scafold.dart';
 import '../../components/text/common_text.dart';
-import 'controller/profile_controller.dart';
 import 'innerWidget/profile_items.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -91,9 +92,9 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                             ),
                             child: ClipOval(
-                              child: controller.profileImage.value != null
+                              child: controller.imagePath.value.isNotEmpty
                                   ? Image.file(
-                                controller.profileImage.value!,
+                                File(controller.imagePath.value),
                                 fit: BoxFit.cover,
                               )
                                   : Center(
@@ -107,7 +108,7 @@ class EditProfileScreen extends StatelessWidget {
                           right: 5,
                           child: GestureDetector(
                             onTap: () =>
-                                controller.pickImage(isProfile: true),
+                                OtherHelper.openGallery(),
                             child: Container(
                               padding: EdgeInsets.all(6),
                               decoration: BoxDecoration(

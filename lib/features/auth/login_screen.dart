@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:phone_form_field/phone_form_field.dart';
-import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
-import 'package:project_borla/features/auth/forget_pass_screen.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
+import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
-import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
-import 'package:project_borla/screens/select_role_screen.dart';
 import 'package:project_borla/theme/auth_header.dart';
-
 import '../../gen/custom_assets/assets.gen.dart';
-import '../../role/components/commonTextField/phone_text_field.dart';
-import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/login-screen-widgets/login_screen_widgets.dart';
-import '../../widgets/social_login_button.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,42 +18,22 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  UserAuthController authController2 = Get.put(UserAuthController());
+  final _authCtrl = Get.put(AuthController());
 
   final formKey = GlobalKey<FormState>() ;
 
   bool agree = false ;
 
-  @override
-  void initState() {
-    super.initState();
-    authController2.phoneController = PhoneController(
-      initialValue: const PhoneNumber(
-        isoCode: IsoCode.GH,
-        nsn: '',
-      ),
-    );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      authController2.phoneController.value = const PhoneNumber(
-        isoCode: IsoCode.GH,
-        nsn: '',
-      );
-    });
-  }
-  @override
-  void dispose() {
-    authController2.phoneController.dispose();
-    authController2.passController.dispose();
-    super.dispose();
-  }
 
   void formOnSubmit() {
     if(formKey.currentState!.validate()) {
-      print ('Form is valid');
-      Get.to(()=>UserNavBar());
+      _authCtrl.login(
+          email: _authCtrl.emailController.text,
+          password: _authCtrl.passController.text
+      );
     }
     else {
-      print ('Form is Invalid');
+      debugPrint ('Form is Invalid');
     }
   }
 
@@ -113,12 +84,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 4),
-                        Text('phone_number'.tr, style: TextStyle(
+                        // Text('phone_number'.tr, style: TextStyle(
+                        //   fontWeight: FontWeight.w700
+                        // ),),
+                        // const SizedBox(height: 8),
+                        // userPhoneTextFormField(
+                        //   controller: _authCtrl.phoneNumController,
+                        // ),
+
+                        Text('Email'.tr, style: TextStyle(
                           fontWeight: FontWeight.w700
                         ),),
                         const SizedBox(height: 8),
-                        userPhoneTextFormField(
-                          controller: authController2.phoneController,
+                        CommonTextField(
+                          controller: _authCtrl.emailController,
+                          hintText: "Email",
+                          validator: OtherHelper.emailValidator,
                         ),
                         const SizedBox(height: 16),
                         Text('password'.tr, style: TextStyle(
@@ -126,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),),
                         const SizedBox(height: 8),
                         CommonTextField(
-                          controller: authController2.passController,
+                          controller: _authCtrl.passController,
                           validator: (value) {
                             if(value == null || value.isEmpty ) {
                               return 'password_required'.tr;
@@ -150,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
 
                         GradientButton(
+                          isLoading: _authCtrl.isLoading,
                           text: 'log_in'.tr,
                           onPressed: () {
                             //Get.to(()=>UserNavBar());
@@ -159,35 +141,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         const SizedBox(height: 24),
 
-                        Row(
-                          children: [
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                'or_continue_with'.tr,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                            Expanded(child: Divider(color: Colors.grey.shade300)),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Divider(color: Colors.grey.shade300)),
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(horizontal: 12),
+                        //       child: Text(
+                        //         'or_continue_with'.tr,
+                        //         style: TextStyle(color: Colors.grey),
+                        //       ),
+                        //     ),
+                        //     Expanded(child: Divider(color: Colors.grey.shade300)),
+                        //   ],
+                        // ),
+                        //
+                        // const SizedBox(height: 24),
 
-                        const SizedBox(height: 24),
-
-                        SocialLoginButton(
-                          text: 'continue_with_google'.tr,
-                          asset: 'assets/images/google.png',
-                          onPressed: () {},
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        SocialLoginButton(
-                          text: 'continue_with_apple'.tr,
-                          asset: 'assets/images/apple_2.png',
-                          onPressed: () {},
-                        ),
+                        // SocialLoginButton(
+                        //   text: 'continue_with_google'.tr,
+                        //   asset: 'assets/images/google.png',
+                        //   onPressed: () {},
+                        // ),
+                        //
+                        // const SizedBox(height: 16),
+                        //
+                        // SocialLoginButton(
+                        //   text: 'continue_with_apple'.tr,
+                        //   asset: 'assets/images/apple_2.png',
+                        //   onPressed: () {},
+                        // ),
 
                         DontHaveAccountSection()
 

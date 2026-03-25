@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/controllers/user-controllers/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
+import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
+import 'package:project_borla/theme/app_color.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../theme/auth_header.dart';
@@ -17,7 +20,7 @@ class SetPassScreen extends StatefulWidget {
 
 class _SetPassScreenState extends State<SetPassScreen> {
 
-  UserAuthController setPassScreenController = Get.put(UserAuthController());
+  final _authCtrl = Get.find<AuthController>();
 
   final formKey = GlobalKey <FormState> () ;
 
@@ -64,58 +67,85 @@ class _SetPassScreenState extends State<SetPassScreen> {
                 height: 630,
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Column(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text('New Password', style: TextStyle(
+                            fontWeight: FontWeight.w700
+                        ),),
 
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                        const SizedBox(height: 16),
 
-                    children: [
-
-                      const SizedBox(height: 20),
-
-                      Text('New Password', style: TextStyle(
-                          fontWeight: FontWeight.w700
-                      ),),
-
-                      const SizedBox(height: 16),
-
-                      CustomTextField(
-                        controller: setPassScreenController.newPassController,
-                        hint: 'Password',
-                        obscureText: true,
-                        suffix: const Icon(Icons.visibility_off),
-                      ),
-
-
-
-                      const SizedBox(height: 20),
-
-                      Text('Confirm Password', style: TextStyle(
-                          fontWeight: FontWeight.w700
-                      ),),
-
-                      const SizedBox(height: 16),
-
-                      CustomTextField(
-                        controller: setPassScreenController.confirmPassController,
-                        hint: 'Password',
-                        obscureText: true,
-                        suffix: const Icon(Icons.visibility_off),
-                      ),
+                        CommonTextField(
+                          controller: _authCtrl.passController,
+                          hintText: 'Password',
+                          isPassword: true,
+                          borderRadius: 14,
+                          borderColor: AppColors.primaryColor,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password is required";
+                            }
+                            if (value.length < 6) {
+                              return "Password must be at least 6 characters";
+                            }
+                            return null;
+                          },
+                        ),
 
 
-                      const SizedBox(height: 50),
+                        const SizedBox(height: 20),
 
-                      GradientButton(
-                        text: 'Save',
-                        onPressed: () {
-                          Get.offAll(()=> LoginScreen());
-                        },
-                      ),
+                        Text('Confirm Password', style: TextStyle(
+                            fontWeight: FontWeight.w700
+                        ),),
 
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 16),
+
+                        CommonTextField(
+                          controller: _authCtrl.confirmPassController,
+                          hintText: 'Confirm password',
+                          isPassword: true,
+                          borderRadius: 14,
+                          borderColor: AppColors.primaryColor,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Confirm password is required";
+                            }
+                            if (value != _authCtrl.passController.text) {
+                              return "Passwords do not match";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 50),
+
+                        GradientButton(
+                          text: 'Save',
+                          onPressed: () async {
+
+                            if (!formKey.currentState!.validate()) return;
+
+                            final bool success = await _authCtrl.resetPassword(
+                              newPassword: _authCtrl.passController.text,
+                              confirmPassword: _authCtrl.confirmPassController.text,
+                            );
+
+                            if (success) {
+                              Get.offAll(() => LoginScreen());
+                            }
+                          },
+                        ),
+
+                        const SizedBox(height: 24),
 
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               )

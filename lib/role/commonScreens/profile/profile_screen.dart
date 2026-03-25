@@ -1,14 +1,17 @@
 
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/profileController/profile_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/role/commonScreens/notification/notification_screen.dart';
 import 'package:project_borla/role/commonScreens/privacyPolicy/privacy_policy_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/change_password_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/edit_profile_screen.dart';
 import 'package:project_borla/role/commonScreens/termsOfConditions/terms_of_conditions.dart';
+import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
@@ -20,8 +23,16 @@ import 'innerWidget/language_bottom_sheet.dart';
 import 'innerWidget/logout_bottom_sheet.dart';
 import 'innerWidget/settingsListItems.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  final _profileCtrl = Get.put(ProfileController());
 
   void showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -30,6 +41,12 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       builder: (context) => const LanguageSelectionBottomSheet(),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _profileCtrl.getProfile();
   }
 
   @override
@@ -52,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Profile Header
-                    Container(
+                    Obx(() => Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -61,16 +78,14 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          const CircleAvatar(
-                            radius: 32,
-                            backgroundImage: NetworkImage(
-                              'https://shorturl.at/WSMrn',
-                            ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(32),
+                            child: ShimmerImageLoader(url: _profileCtrl.profile.value.profilePicture, width: 56, height: 56),
                           ),
                           const SizedBox(width: 16),
 
-                          const CommonText(
-                            text: 'Borla Ghana',
+                          CommonText(
+                            text: _profileCtrl.profile.value.name,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.left,
@@ -79,13 +94,13 @@ class ProfileScreen extends StatelessWidget {
 
                           const Spacer(),
                           InkWell(
-                            onTap: () {
-                              Get.to(()=> EditProfileScreen());
-                            },
+                              onTap: () {
+                                Get.to(()=> EditProfileScreen());
+                              },
                               child: Icon(Icons.chevron_right, color: Colors.grey[600])),
                         ],
                       ),
-                    ),
+                    ),),
 
                     const SizedBox(height: 40),
 

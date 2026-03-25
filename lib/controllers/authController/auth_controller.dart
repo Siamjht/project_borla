@@ -2,8 +2,10 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../helpers/prefs_helper.dart';
@@ -12,6 +14,7 @@ import '../../models/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../role/components/navBar/nav_bar.dart';
 import '../../role/garbageCollector/auth/driver_otp_screen.dart';
+import '../../screens/home-screens/user_nav_bar.dart';
 import '../../services/api_service.dart';
 import '../../services/socket_service.dart';
 import '../../utils/app_urls.dart';
@@ -41,11 +44,32 @@ class AuthController extends GetxController {
   final confirmPassController = TextEditingController();
   final roleController = TextEditingController();
   final dobController = TextEditingController();
-
   final otpController = TextEditingController();
 
-  String ghanaICard = '';
   String role = 'driver';
+
+
+  /// Images
+  final Rx<File?> profileImage = Rx<File?>(null);
+  final Rx<File?> ghanaCardImage = Rx<File?>(null);
+  final ImagePicker _picker = ImagePicker();
+
+  /// Pick image
+  Future<void> pickImage({required bool isProfile}) async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+
+    if (pickedFile != null) {
+      final file = File(pickedFile.path);
+      if (isProfile) {
+        profileImage.value = file;
+      } else {
+        ghanaCardImage.value = file;
+      }
+    }
+  }
 
   // @override
   // void onClose() {
@@ -89,6 +113,15 @@ class AuthController extends GetxController {
             "userId",
             loginModel.data.user.id,
           );
+          await PrefsHelper.setString(
+            "myRole",
+              loginModel.data.user.role
+          );
+        }
+        if(loginModel.data.user.role == "user"){
+          Get.to(()=>UserNavBar());
+        }else{
+          Get.to(()=>DriverNavbar());
         }
         SocketServices.connectToSocket();
         CustomSnackbar.success(loginModel.message);
@@ -125,7 +158,7 @@ class AuthController extends GetxController {
         url: AppUrls.createUser,
         method: HttpMethod.post,
         body: body,
-        imagePath: ghanaICard,
+        imagePath: ghanaCardImage.value?.path,
         imageName: 'ghanaCardId',
       );
 
@@ -152,7 +185,6 @@ class AuthController extends GetxController {
   }
 
   /// Verify Otp
-
   Future<bool> verifyEmailOTP(String otp) async {
     isLoading.value = true;
 
@@ -189,7 +221,6 @@ class AuthController extends GetxController {
   }
 
   /// Forgot Password
-
   Future<bool> forgotPassword(String email) async {
     isLoading.value = true;
 
@@ -219,7 +250,6 @@ class AuthController extends GetxController {
   }
 
   /// Reset password
-
   Future<bool> resetPassword({
     required String newPassword,
     required String confirmPassword,
@@ -251,7 +281,6 @@ class AuthController extends GetxController {
   }
 
   /// Resend OTP
-
   Future<bool> resendOtp(String email) async {
     isOtpSending.value = true;
 

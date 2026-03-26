@@ -1,7 +1,12 @@
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../theme/app_color.dart';
@@ -63,7 +68,7 @@ class OtherHelper {
       builder: (context, child) => Theme(
           data: Theme.of(context).copyWith(
             colorScheme:  const ColorScheme.light(
-              primary: AppColors.white,
+              primary: AppColors.green500,
             ),
           ),
           child: child!),
@@ -73,7 +78,7 @@ class OtherHelper {
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-      controller.text = "${picked.year}/${picked.month}/${picked.day}";
+      controller.text = "${picked.year}-${picked.month}-${picked.day}";
       return picked.toIso8601String();
     }
 
@@ -163,6 +168,86 @@ class OtherHelper {
     DateTime dateTime = DateTime.parse(isoDate);
     String formatted = DateFormat('yyyy-MM-dd').format(dateTime);
     return formatted;
+  }
+
+  /// Address from coordinates
+  static Future<String> getAddressFromCoordinates(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        final Placemark place = placemarks[0];
+
+        // ── Only include non-empty parts ──
+        final List<String> parts = [
+          place.street ?? '',
+          place.subLocality ?? '',
+          place.locality ?? '',
+          place.subAdministrativeArea ?? '',
+          place.administrativeArea ?? '',
+          place.country ?? '',
+        ].where((part) => part.trim().isNotEmpty).toList();
+
+        return parts.join(', ');
+      } else {
+        return 'No address found';
+      }
+    } catch (e) {
+      log('Error: $e');
+      return 'Error: $e';
+    }
+  }
+
+  /// Coordinates from address
+  static Future<LatLng?> getCoordinatesFromAddress(String address) async {
+    try {
+      final List<Location> locations = await locationFromAddress(address);
+
+      if (locations.isEmpty) return null;
+
+      return LatLng(
+        locations.first.latitude,
+        locations.first.longitude,
+      );
+    } catch (e) {
+      log('Error in getCoordinatesFromAddress: $e');
+      return null;
+    }
+  }
+
+  ///Get current location
+  static Future<String> getCurrentLocationAddress() async {
+    try {
+      // ── Check permission ──
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return '';
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) return '';
+
+      // ── Get position ──
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // ── Get address ──
+      final address = await getAddressFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      // ProfileController.instance.latitude = position.latitude;
+      // ProfileController.instance.longitude = position.longitude;
+      // ProfileController.instance.updateProfile(isLocationUpdate: true);
+
+      return address;
+    } catch (e) {
+      log('Error in getCurrentLocationAddress: $e');
+      return '';
+    }
   }
 
 }

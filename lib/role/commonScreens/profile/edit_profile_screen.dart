@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
+import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../../controllers/profileController/profile_controller.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
@@ -82,8 +83,8 @@ class EditProfileScreen extends StatelessWidget {
                       children: [
                         Obx(() {
                           return Container(
-                            width: 120.w,
-                            height: 120.w,
+                            width: 120,
+                            height: 120,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
@@ -93,10 +94,7 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                             child: ClipOval(
                               child: controller.imagePath.value.isNotEmpty
-                                  ? Image.file(
-                                File(controller.imagePath.value),
-                                fit: BoxFit.cover,
-                              )
+                                  ? ShimmerImageLoader(url: controller.imagePath.value, width: 120, height: 120)
                                   : Center(
                                     child: Assets.images.emptyProfile.image(height: 100.w, width: 100.w),
                                   ),
@@ -107,8 +105,9 @@ class EditProfileScreen extends StatelessWidget {
                           bottom: 5,
                           right: 5,
                           child: GestureDetector(
-                            onTap: () =>
-                                OtherHelper.openGallery(),
+                            onTap: () async {
+                              controller.imagePath.value = (await OtherHelper.openGallery())!;
+                            },
                             child: Container(
                               padding: EdgeInsets.all(6),
                               decoration: BoxDecoration(
@@ -143,13 +142,14 @@ class EditProfileScreen extends StatelessWidget {
                     SizedBox(height: 40.h),
 
                     /// ---------------- UPDATE BUTTON ----------------
-                    CommonButton(
+                    Obx(() => CommonButton(
+                      isLoading: controller.isUpdating.value,
                       onTap: () {
-                        Get.back();
+                        controller.updateProfile();
                       },
                       buttonRadius: 12,
                       titleText: "Update",
-                    )
+                    ),)
                   ],
                 ),
               ),

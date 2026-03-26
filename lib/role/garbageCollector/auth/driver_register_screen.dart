@@ -69,7 +69,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                     children: [
                       const SizedBox(height: 8),
 
-                      profileItems(context, _authCtrl),
+                      // profileItems(context, _authCtrl),
 
                       const SizedBox(height: 24),
 

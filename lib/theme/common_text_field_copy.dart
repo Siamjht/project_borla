@@ -1,171 +1,192 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-
 import '../../../theme/app_color.dart';
-import '../role/components/text/common_text.dart';
 
 
 
-class CommonTextField extends StatelessWidget {
-  CommonTextField({
+
+class CommonTextField extends StatefulWidget {
+  const CommonTextField({
     super.key,
     this.hintText,
     this.labelText,
-    this.prefixText,
     this.prefixIcon,
-    this.suffixIcon,
     this.isPassword = false,
+    this.readOnly = false,
     this.controller,
     this.textInputAction = TextInputAction.next,
     this.keyboardType = TextInputType.text,
-    this.maxLength,
-    this.maxLines = 1,
+    this.mexLength,
+    this.maxLines,
     this.validator,
+    this.prefixText,
     this.paddingHorizontal = 16,
-    this.paddingVertical = 16,
+    this.paddingVertical = 14,
     this.borderRadius = 10,
-    this.borderWidth = 1,
     this.inputFormatters,
-    this.fillColor = AppColors.transparent,
+    this.fillColor = AppColors.primaryColor,
     this.hintTextColor = AppColors.hintTextColor,
     this.labelTextColor = AppColors.hintTextColor,
     this.textColor = AppColors.textColor,
     this.borderColor = AppColors.textFieldBorderColor,
     this.onSubmitted,
     this.onTap,
+    this.suffixIcon,
+    this.onChanged,
+    this.gradient,
+    this.borderWidth = 1
   });
 
-  // Text
   final String? hintText;
   final String? labelText;
   final String? prefixText;
 
-  // Icons
   final Widget? prefixIcon;
   final Widget? suffixIcon;
 
-  // Colors
-  final Color fillColor;
-  final Color hintTextColor;
-  final Color labelTextColor;
+  final Color? fillColor;
+  final Color? labelTextColor;
+  final Color? hintTextColor;
   final Color textColor;
   final Color borderColor;
 
-  // Layout
   final double paddingHorizontal;
   final double paddingVertical;
   final double borderRadius;
-  final double borderWidth;
+  final int? mexLength;
+  final int? maxLines;
 
-  // Input config
-  final int? maxLength;
-  final int maxLines;
   final bool isPassword;
-  final TextEditingController? controller;
-  final TextInputAction textInputAction;
-  final TextInputType keyboardType;
-  final FormFieldValidator<String>? validator;
-  final List<TextInputFormatter>? inputFormatters;
+  final bool readOnly;
 
-  // Callbacks
-  final ValueChanged<String>? onSubmitted;
+  final Gradient? gradient;
+
+  final Function(String)? onChanged;
+  final Function(String)? onSubmitted;
   final VoidCallback? onTap;
 
-  /// Password visibility
-  final RxBool _obscureText = true.obs;
+  final TextEditingController? controller;
+  final TextInputAction textInputAction;
+  final FormFieldValidator? validator;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final double borderWidth;
+
+  @override
+  State<CommonTextField> createState() => _CommonTextFieldState();
+}
+
+class _CommonTextFieldState extends State<CommonTextField> {
+  late bool obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    obscureText = widget.isPassword;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      validator: validator,
-      onTap: onTap,
-      onFieldSubmitted: onSubmitted,
-      inputFormatters: inputFormatters,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-
-      maxLength: maxLength,
-      maxLines: isPassword ? 1 : maxLines,
-      obscureText: isPassword ? _obscureText.value : false,
-
-      cursorColor: AppColors.textDark,
-      style: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w400,
-        color: textColor,
-      ),
-
-      decoration: _inputDecoration(),
-    );
-  }
-
-  InputDecoration _inputDecoration() {
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(borderRadius.r),
-      borderSide: BorderSide(color: borderColor, width: borderWidth,),
-    );
-
-    return InputDecoration(
-      filled: true,
-      fillColor: fillColor,
-      errorMaxLines: 2,
-      counterText: "",
-
-      prefixIcon: prefixIcon,
-      prefix: prefixText == null
-          ? null
-          : CommonText(
-        text: prefixText!,
-        fontWeight: FontWeight.w400,
-        textAlign: TextAlign.left,
-      ),
-
-      suffixIcon: isPassword ? _passwordToggle() : suffixIcon,
-
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: paddingHorizontal.w,
-        vertical: paddingVertical.h,
-      ),
-
-      border: border,
-      enabledBorder: border,
-      focusedBorder: border,
-      disabledBorder: border,
-      errorBorder: border,
-
-      hintText: hintText,
-      labelText: labelText,
-
-      hintStyle: TextStyle(
-        fontSize: 14.sp,
-        color: hintTextColor,
-        fontWeight: FontWeight.w400,
-      ),
-      labelStyle: TextStyle(
-        fontSize: 14.sp,
-        color: labelTextColor,
-        fontWeight: FontWeight.w400,
-      ),
-    );
-  }
-
-  Widget _passwordToggle() {
-    return GestureDetector(
-      onTap: () => _obscureText.toggle(),
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(end: 10.w),
-        child: Icon(
-          _obscureText.value
-              ? Icons.visibility_off_outlined
-              : Icons.visibility_outlined,
-          size: 20.sp,
-          color: textColor,
+    return Stack(
+      children: [
+        // ✅ Gradient/color layer — purely visual, doesn't intercept touches
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: widget.gradient,
+              color: widget.gradient == null ? widget.fillColor : null,
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              border: Border.all(
+                color: widget.borderColor,
+                width: widget.borderWidth,
+              ),
+            ),
+          ),
         ),
-      ),
+        // ✅ TextField on top — receives all touches normally
+        TextFormField(
+          controller: widget.controller,
+          onChanged: widget.onChanged,
+          onFieldSubmitted: widget.onSubmitted,
+          onTap: widget.onTap,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: widget.keyboardType,
+          validator: widget.validator,
+          obscureText: widget.isPassword ? obscureText : false,
+          textInputAction: widget.textInputAction,
+          maxLength: widget.mexLength,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
+          readOnly: widget.readOnly,
+          cursorColor: widget.textColor,
+          inputFormatters: widget.inputFormatters,
+          style: TextStyle(fontSize: 14, color: widget.textColor),
+          decoration: InputDecoration(
+            errorMaxLines: 2,
+            filled: true,
+            fillColor: Colors.transparent, // transparent so gradient shows through
+            counterText: "",
+            prefixIcon: widget.prefixIcon,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: widget.paddingHorizontal.w,
+              vertical: widget.paddingVertical.h,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius.r),
+              borderSide: BorderSide.none,
+            ),
+            hintText: widget.hintText,
+            labelText: widget.labelText,
+            hintStyle: TextStyle(fontSize: 14, color: widget.hintTextColor),
+            labelStyle: TextStyle(fontSize: 14, color: widget.labelTextColor),
+            prefix: widget.prefixText != null
+                ? Padding(
+              padding: EdgeInsets.only(right: 6.w),
+              child: Text(
+                widget.prefixText!,
+                style: TextStyle(fontSize: 14, color: widget.textColor),
+              ),
+            )
+                : null,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+              icon: Icon(
+                obscureText
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility_outlined,
+                size: 20.sp,
+                color: widget.textColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+            )
+                : widget.suffixIcon,
+          ),
+        ),
+      ],
     );
   }
 }

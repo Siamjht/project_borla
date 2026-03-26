@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/prefs_helper.dart';
@@ -18,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Future.delayed(const Duration(seconds: 3), () {
+      log("Token: ${PrefsHelper.token}");
       if(PrefsHelper.token.isNotEmpty){
         if(PrefsHelper.myRole == "rider"){
           Get.offAll(DriverNavbar());

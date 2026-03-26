@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onChanged: (val) {
                             setState(() {
                               agree = val;
+                              _authCtrl.keepLoggedIn.value = val;
                             });
                           },
                         ),

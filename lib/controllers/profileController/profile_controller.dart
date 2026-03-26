@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/other_helper.dart';
 import '../../../services/api_service.dart';
 import '../../models/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
@@ -21,6 +22,7 @@ class ProfileController extends GetxController {
   final bioController = TextEditingController();
   final genderController = TextEditingController();
   final dateOfBirthController = TextEditingController();
+  TextEditingController isoDateController = TextEditingController();
 
   // ── Image ──
   final RxString imagePath = ''.obs;
@@ -41,8 +43,10 @@ class ProfileController extends GetxController {
     nameController.text = user.name;
     phoneController.text = user.phoneNumber;
     addressController.text = user.locationName;
-    dateOfBirthController.text = user.dateOfBirth;
+    dateOfBirthController.text = OtherHelper.formatDate(isoDate: user.dateOfBirth);
+    isoDateController.text = user.dateOfBirth;
     imagePath.value = user.profilePicture;
+    ghanaICard.value = user.ghanaCardId.first;
   }
 
   // ── Get Profile ──
@@ -68,8 +72,8 @@ class ProfileController extends GetxController {
 
   // ── Update Profile ──
   Future<void> updateProfile({
-    required double latitude,
-    required double longitude,
+     double latitude = 23.05896,
+     double longitude = 90.23889,
   }) async {
     isUpdating.value = true;
 
@@ -78,7 +82,7 @@ class ProfileController extends GetxController {
         'name': nameController.text.trim(),
         'phoneNumber': phoneController.text.trim(),
         'locationName': addressController.text.trim(),
-        'dateOfBirth': dateOfBirthController.text.trim(),
+        'dateOfBirth': isoDateController.text.trim(),
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
       };

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/utils/app_routes.dart';
 
 import 'language/app_translation.dart';
@@ -11,6 +12,7 @@ import 'language/language_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final Locale savedLocale = await LanguageService.getLocale();
+  PrefsHelper.getAllPrefData();
 
   runApp(MyApp(locale: savedLocale));
 }

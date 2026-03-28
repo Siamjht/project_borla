@@ -19,8 +19,7 @@ import 'package:project_borla/screens/onboarding-screen/onboarding_one.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import 'package:project_borla/screens/profile-screens/address_screen.dart';
 import 'package:project_borla/screens/profile-screens/change_password_screen_copy.dart';
-import 'package:project_borla/screens/profile-screens/edit_profile_screen_copy.dart';
-import 'package:project_borla/screens/profile-screens/profile_screen_copy.dart';
+import 'package:project_borla/screens/profile-screens/profile_screen_user.dart';
 // import 'package:project_borla/screens/rider-review-screen/rider_review_screen.dart';
 import 'package:project_borla/screens/rider-searching-screen/rider_searching_screen.dart';
 import 'package:project_borla/screens/scheduled-screens/cancel_ride_screen.dart';
@@ -35,6 +34,7 @@ import 'package:project_borla/screens/track-screen/track_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_category_screen.dart';
 import 'package:project_borla/screens/waste-screens/waste_qty_screen.dart';
 
+import '../role/commonScreens/profile/edit_profile_screen.dart';
 import '../screens/confirm-location-screens/confirm_location_screen.dart';
 import '../screens/search-place-screens/location_search_screen_two.dart';
 import '../screens/splash_screen.dart';
@@ -182,7 +182,7 @@ class AppRoute {
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: profile,
-        page: () => ProfileScreenCopy(),
+        page: () => ProfileScreenUser(),
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: editProfile,

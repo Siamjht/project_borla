@@ -1,11 +1,7 @@
 
-
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../helpers/prefs_helper.dart';
@@ -13,7 +9,6 @@ import '../../models/authModels/create_user_model.dart';
 import '../../models/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../role/components/navBar/nav_bar.dart';
-import '../../role/garbageCollector/auth/driver_otp_screen.dart';
 import '../../screens/home-screens/user_nav_bar.dart';
 import '../../services/api_service.dart';
 import '../../services/socket_service.dart';
@@ -34,7 +29,6 @@ class AuthController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isOtpSending = false.obs;
   final RxBool keepLoggedIn = false.obs;
-  String email = "";
 
   final emailController = TextEditingController();
   final nameController = TextEditingController();
@@ -46,30 +40,14 @@ class AuthController extends GetxController {
   final dobController = TextEditingController();
   final otpController = TextEditingController();
 
-  String role = 'driver';
+  TextEditingController isoDateController = TextEditingController();
+  // ── Image ──
+  final RxString imagePath = ''.obs;
+  final RxString ghanaICard = ''.obs;
+  final Rx<User> profile = User.fromJson({}).obs;
 
+  RxString selectedRole = "".obs;
 
-  /// Images
-  final Rx<File?> profileImage = Rx<File?>(null);
-  final Rx<File?> ghanaCardImage = Rx<File?>(null);
-  final ImagePicker _picker = ImagePicker();
-
-  /// Pick image
-  Future<void> pickImage({required bool isProfile}) async {
-    final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-
-    if (pickedFile != null) {
-      final file = File(pickedFile.path);
-      if (isProfile) {
-        profileImage.value = file;
-      } else {
-        ghanaCardImage.value = file;
-      }
-    }
-  }
 
   // @override
   // void onClose() {
@@ -141,24 +119,63 @@ class AuthController extends GetxController {
 
     try {
 
+
       final Map<String, dynamic> body = {
-        'data': jsonEncode({
-          'email': emailController,
-          'name': nameController,
-          'phoneNumber': phoneNumController,
-          'password': passController,
-          'confirmPassword': confirmPassController,
-          'dateOfBirth': dobController,
-          'locationName': addressController,
-          'role': role,
-        }),
+          'email': emailController.text,
+          'name': nameController.text,
+          'phoneNumber': phoneNumController.value.international.toString(),
+          'password': passController.text,
+          'confirmPassword': confirmPassController.text,
+          'locationName': addressController.text,
+          'role': selectedRole.value.toLowerCase(),
       };
+
+      final response = await ApiService.post(AppUrls.createUser, body: body,);
+
+      if (response.statusCode == 200) {
+        CreateUserResponseModel model =
+        CreateUserResponseModel.fromJson(Map<String, dynamic>.from(response.body));
+
+        PrefsHelper.myEmail = model.data.email;
+        PrefsHelper.token = model.data.verificationToken;
+        log("response: ${PrefsHelper.token}, ${PrefsHelper.myEmail}");
+        CustomSnackbar.success(model.message);
+        return true;
+      } else {
+        CustomSnackbar.error(response.message);
+        return false;
+      }
+    } catch (e) {
+      CustomSnackbar.error(e.toString());
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // ------- Create Driver method ------
+  Future<bool> createDriver() async {
+    isLoading.value = true;
+
+    try {
+
+
+      final Map<String, dynamic> body = {
+          'email': emailController.text,
+          'name': nameController.text,
+          'phoneNumber': phoneNumController.value.international.toString(),
+          'password': passController.text,
+          'confirmPassword': confirmPassController.text,
+          'dateOfBirth': isoDateController.text,
+          'locationName': addressController.text,
+          'role': selectedRole.value.toLowerCase(),
+        };
 
       final response = await ApiService.multipartRequest(
         url: AppUrls.createUser,
         method: HttpMethod.post,
         body: body,
-        imagePath: ghanaCardImage.value?.path,
+        imagePath: ghanaICard.value,
         imageName: 'ghanaCardId',
       );
 
@@ -166,10 +183,9 @@ class AuthController extends GetxController {
         CreateUserResponseModel model =
         CreateUserResponseModel.fromJson(Map<String, dynamic>.from(response.body));
 
-        String email = model.data.email;
-        String token = model.data.verificationToken;
-        log("response: $token, $email");
-        Get.to(() => DriverOtpScreen());
+        PrefsHelper.myEmail = model.data.email;
+        PrefsHelper.token = model.data.verificationToken;
+        log("response: ${PrefsHelper.token}, ${PrefsHelper.myEmail}");
         CustomSnackbar.success(model.message);
         return true;
       } else {
@@ -185,7 +201,7 @@ class AuthController extends GetxController {
   }
 
   /// Verify Otp
-  Future<bool> verifyEmailOTP(String otp) async {
+  Future<bool> verifyEmailOTP(String otp,) async {
     isLoading.value = true;
 
     try {
@@ -208,7 +224,6 @@ class AuthController extends GetxController {
           data['token'] ?? '',
         );
 
-        Get.to(() => DriverNavbar());
         CustomSnackbar.success(response.message);
         return true;
       } else {
@@ -225,7 +240,7 @@ class AuthController extends GetxController {
     isLoading.value = true;
 
     try {
-      this.email = email;
+      PrefsHelper.myEmail = email;
 
       final response = await ApiService.patch(
         AppUrls.forgotPassword,
@@ -259,9 +274,6 @@ class AuthController extends GetxController {
     try {
       final response = await ApiService.patch(
         AppUrls.resetPassword,
-        headers: {
-          'token': PrefsHelper.token,
-        },
         body: {
           "newPassword": newPassword,
           "confirmPassword": confirmPassword,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:project_borla/controllers/select_role_controller.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/features/auth/register_screen.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
@@ -20,7 +20,7 @@ class SelectRoleScreen extends StatefulWidget {
 class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
 
-  SelectRoleController roleController = Get.put(SelectRoleController());
+  AuthController authController = Get.put(AuthController());
 
   bool agree = false ;
   //RxString selectedRole = "".obs;
@@ -77,11 +77,11 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
                         Obx(() => userSelectionWidget(
                             onTap: () {
-                              roleController.selectedRole.value = 'User';
+                              authController.selectedRole.value = 'User';
                             },
-                            gradientColor1: roleController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
-                            gradientColor2: roleController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
-                            borderWidth: roleController.selectedRole.value == "User"? 2.0 : 1.0,
+                            gradientColor1: authController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: authController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: authController.selectedRole.value == "User"? 2.0 : 1.0,
                             assetImage: Assets.images.user1.image(height: 145.h, width: 208.w,),
                             role: 'user_role'.tr
                         ),),
@@ -90,11 +90,11 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
                         Obx(() => userSelectionWidget(
                             onTap: () {
-                              roleController.selectedRole.value = 'Rider';
+                              authController.selectedRole.value = 'Rider';
                             },
-                            gradientColor1: roleController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
-                            gradientColor2: roleController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
-                            borderWidth: roleController.selectedRole.value == "Rider"? 2.0 : 1.0,
+                            gradientColor1: authController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: authController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: authController.selectedRole.value == "Rider"? 2.0 : 1.0,
                             assetImage: Assets.images.rider.image(height: 145.h, width: 208.w,),
                             role: 'rider_role'.tr
                         ),),
@@ -104,8 +104,8 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
                         GradientButton(
                           text: 'join_now'.tr,
                           onPressed: () {
-                            if(roleController.selectedRole.value != ""){
-                              if(roleController.selectedRole.value == "User"){
+                            if(authController.selectedRole.value != ""){
+                              if(authController.selectedRole.value == "User"){
                                 Get.to(()=> RegisterScreen());
                               }else{
                                 Get.to(()=> DriverRegisterScreen());

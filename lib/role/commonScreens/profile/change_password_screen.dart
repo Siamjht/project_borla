@@ -1,17 +1,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
+import 'package:project_borla/theme/common_button_copy.dart';
+import '../../../controllers/settingsController/settings_controller.dart';
+import '../../../theme/app_color.dart';
 import '../../components/commonBackButton/common_back_button.dart';
 import '../../components/commonTextField/common_text_field.dart';
 import '../../components/gradient_scafold.dart';
 import '../../components/text/common_text.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
-  ChangePasswordScreen({super.key});
+  bool isUser;
+  ChangePasswordScreen({super.key, this.isUser = false});
 
-  final TextEditingController _currentPassController = TextEditingController();
-  final TextEditingController _newPassController = TextEditingController();
-  final TextEditingController _confirmPassController = TextEditingController();
+  final _settingsCtrl = Get.put(SettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,48 +45,28 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Current Password
-                    PasswordField(label: 'Current Password', passController: _currentPassController ,),
+                    PasswordField(label: 'Current Password', passController: _settingsCtrl.oldPasswordController ,),
                     SizedBox(height: 20.h),
 
                     // New Password
-                    PasswordField(label: 'New Password',  passController: _newPassController),
+                    PasswordField(label: 'New Password',  passController: _settingsCtrl.newPasswordController),
                     SizedBox(height: 20.h),
 
                     // Confirm Password
-                    PasswordField(label: 'Confirm Password',  passController: _confirmPassController),
+                    PasswordField(label: 'Confirm Password',  passController: _settingsCtrl.confirmPasswordController),
                     SizedBox(height: 40,),
 
                     // Save Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56.h,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: CommonText(
-                                text: 'Password changed successfully',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4CAF50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const CommonText(
-                          text: 'Save',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    Obx(() => CommonButton(
+                      isLoading: _settingsCtrl.isLoading.value,
+                      onTap: () {
+                        _settingsCtrl.changePassword(context);
+                      },
+                      titleText: "save".tr,
+                      firstGradient: isUser? AppColors.orange300 : AppColors.green500,
+                      secondGradient: isUser? AppColors.orange500 : AppColors.green500,
+                      buttonRadius: 12,
+                    ),),
                   ],
                 ),
               ),
@@ -106,8 +90,6 @@ class PasswordField extends StatefulWidget {
 
 class _PasswordFieldState extends State<PasswordField> {
 
-  TextEditingController passController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -121,7 +103,7 @@ class _PasswordFieldState extends State<PasswordField> {
         ),
         SizedBox(height: 8.h),
         CommonTextField(
-          controller: passController,
+          controller: widget.passController,
           hintText: '••••••••',
           isPassword: true,
         ),

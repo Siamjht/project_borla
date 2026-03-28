@@ -14,7 +14,7 @@ import '../../../components/commonTextField/common_text_field.dart';
 import '../../../components/searchPlaces/address_search_field.dart';
 import '../../../components/text/common_text.dart';
 
-Widget profileItems(BuildContext context, ProfileController controller) {
+Widget profileItems(BuildContext context, ProfileController controller, bool isUser) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -53,36 +53,42 @@ Widget profileItems(BuildContext context, ProfileController controller) {
       SizedBox(height: 20.h),
 
       /// ---------------- DATE OF BIRTH ----------------
-      Align(
-        alignment: Alignment.centerLeft,
-        child: CommonText(
-          text: 'date_of_birth_label'.tr,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      SizedBox(height: 8.h),
-      GestureDetector(
-        onTap: () async {
-          controller.isoDateController.text = await OtherHelper.openDatePicker(controller.dateOfBirthController);
-          log("ISo Date: ${controller.isoDateController}");
-        },
-        child: AbsorbPointer(
-          child: CommonTextField(
-            controller: controller.dateOfBirthController,
-            hintText: 'date_of_birth_hint'.tr,
-            suffixIcon: SizedBox(
-              height: 20,
-              width: 20,
-              child: Center(
-                child: Assets.icons.dobCalenderIcon.image(
+      isUser? SizedBox.shrink() :
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CommonText(
+              text: 'date_of_birth_label'.tr,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          GestureDetector(
+            onTap: () async {
+              controller.isoDateController.text = await OtherHelper.openDatePicker(controller.dateOfBirthController);
+              log("ISo Date: ${controller.isoDateController}");
+            },
+            child: AbsorbPointer(
+              child: CommonTextField(
+                controller: controller.dateOfBirthController,
+                hintText: 'date_of_birth_hint'.tr,
+                suffixIcon: SizedBox(
                   height: 20,
                   width: 20,
+                  child: Center(
+                    child: Assets.icons.dobCalenderIcon.image(
+                      height: 20,
+                      width: 20,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
 
       SizedBox(height: 20.h),
@@ -123,6 +129,7 @@ Widget profileItems(BuildContext context, ProfileController controller) {
       SizedBox(height: 20.h),
 
       /// ---------------- GHANA CARD ----------------
+      isUser? SizedBox.shrink() :
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

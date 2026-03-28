@@ -12,7 +12,7 @@ import '../../widgets/custom_text_field.dart';
 import '../../widgets/search-screen-widgets/search_screen_header_widget.dart';
 import '../../widgets/search-screen-widgets/search_screen_tab_widget.dart';
 import '../confirm-location-screens/confirm_location_screen.dart';
-import '../profile-screens/profile_screen_copy.dart';
+import '../profile-screens/profile_screen_user.dart';
 
 class LocationSearchScreenTwo extends StatefulWidget {
   const LocationSearchScreenTwo({super.key});

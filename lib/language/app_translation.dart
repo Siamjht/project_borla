@@ -71,6 +71,43 @@ class AppTranslations extends Translations {
       "enter_location_hint": "Enter Location",
       "ghana_card_id_label": "Ghana Card ID",
       "upload_button": "Upload",
+
+      // ForgetPassScreen
+      'forgot_title': 'Forgot Your Password?',
+      'forgot_subtitle':
+      "Don't worry, it happens! Enter your email and we'll send you a link to reset your password.",
+      'email_id': 'Email ID',
+      'email_hint': 'Enter your email',
+      'send_code': 'Send Code',
+
+      // OtpScreen (example extras)
+      'otp_title': 'Verify OTP',
+      'otp_subtitle': 'Enter the code sent to your email.',
+
+      // SetPassScreen
+      'set_pass_title': 'Set a New Password.',
+      'set_pass_subtitle': 'Enter a strong and secure password to get back to your journey.',
+      'new_password': 'New Password',
+      'new_password_hint': 'Password',
+
+      // Validators
+      'password_min_length': 'Password must be at least 6 characters',
+      'confirm_password_required': 'Confirm password is required',
+      'passwords_not_match': 'Passwords do not match',
+
+      'about_us': 'About Us',
+      'privacy_policy': 'Privacy Policy',
+      'terms_and_conditions': 'Terms & Conditions',
+
+      'profile': 'Profile',
+      'others': 'Others',
+      'change_password': 'Change Password',
+      'address': 'Address',
+      'change_language': 'Change Language',
+      'customer_support': 'Customer Support',
+      'notifications': 'Notifications',
+      'logout': 'Logout',
+
     },
     'ak_GH': {
       "choose_language": "Paw kasa a wobɛfa",
@@ -141,7 +178,42 @@ class AppTranslations extends Translations {
       "enter_location_hint": "Hyɛ wo bea mu",
       "ghana_card_id_label": "Ghana Card ID",
       "upload_button": "Fa Hyɛ Mu",
-    }
 
+      // ForgetPassScreen  (Twi — Akan dialect)
+      'forgot_title': 'Wuwerɛ Wo Password?',
+      'forgot_subtitle':
+      'Nsuro, ɛba saa! Hyɛ wo email na yɛde link ama wo sɛ woasan wo password.',
+      'email_id': 'Email Adwuma',
+      'email_hint': 'Hyɛ wo email',
+      'send_code': 'Soma Koodu',
+
+      // OtpScreen
+      'otp_title': 'Sisie OTP',
+      'otp_subtitle': 'Hyɛ koodu a yɛsomaa wo email mu.',
+
+      // SetPassScreen
+      'set_pass_title': 'Hyɛ Password Foforo.',
+      'set_pass_subtitle': 'Hyɛ password yɛ den na ocherefo sɛ woasan wo akwantu mu.',
+      'new_password': 'Password Foforo',
+      'new_password_hint': 'Password',
+
+      // Validators
+      'password_min_length': 'Password sɛ ɛwɔ nkyerɛ 6 soro',
+      'confirm_password_required': 'Sisie password hia',
+      'passwords_not_match': 'Password no nni bom',
+
+      'about_us': 'Fa Ho Nsɛm',
+      'privacy_policy': 'Gyinadie Nhyehyɛe',
+      'terms_and_conditions': 'Mmara Ne Nneyɛe',
+
+      'profile': 'Wo Ho Nsɛm',
+      'others': 'Afoforo',
+      'change_password': 'Sesa Wo Passwords',
+      'address': 'Wo Bea',
+      'change_language': 'Sesa Kasa',
+      'customer_support': 'Aboaboa',
+      'notifications': 'Nkra',
+      'logout': 'Pue',
+    }
   };
 }

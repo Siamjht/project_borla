@@ -43,10 +43,14 @@ class ProfileController extends GetxController {
     nameController.text = user.name;
     phoneController.text = user.phoneNumber;
     addressController.text = user.locationName;
-    dateOfBirthController.text = OtherHelper.formatDate(isoDate: user.dateOfBirth);
-    isoDateController.text = user.dateOfBirth;
+    if(user.dateOfBirth.isNotEmpty){
+      dateOfBirthController.text = OtherHelper.formatDate(isoDate: user.dateOfBirth);
+      isoDateController.text = user.dateOfBirth;
+    }
     imagePath.value = user.profilePicture;
-    ghanaICard.value = user.ghanaCardId.first;
+    if(user.ghanaCardId.isNotEmpty){
+      ghanaICard.value = user.ghanaCardId.first;
+    }
   }
 
   // ── Get Profile ──
@@ -74,11 +78,18 @@ class ProfileController extends GetxController {
   Future<void> updateProfile({
      double latitude = 23.05896,
      double longitude = 90.23889,
+    bool isUser = false,
   }) async {
     isUpdating.value = true;
 
     try {
-      final Map<String, dynamic> body = {
+      final Map<String, dynamic> body = isUser? {
+        'name': nameController.text.trim(),
+        'phoneNumber': phoneController.text.trim(),
+        'locationName': addressController.text.trim(),
+        'latitude': latitude.toString(),
+        'longitude': longitude.toString(),
+      }: {
         'name': nameController.text.trim(),
         'phoneNumber': phoneController.text.trim(),
         'locationName': addressController.text.trim(),
@@ -93,14 +104,28 @@ class ProfileController extends GetxController {
         url: AppUrls.updateProfile,
         method: HttpMethod.patch,
         body: body,
-        imageList: [{'profilePicture': imagePath.value}, {'ghanaCardId' : ghanaICard.value}],
+
+        imageList:  isUser?
+        [{
+          'imagePath': imagePath.value,
+          'imageName': 'profilePicture',
+        }] : [{
+          'imagePath': imagePath.value,
+          'imageName': 'profilePicture',
+        },
+          {
+            'imagePath': ghanaICard.value,
+            'imageName': 'ghanaCardId',
+          },
+        ],
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final model = User.fromJson(
-          Map<String, dynamic>.from(response.body),
+          Map<String, dynamic>.from(response.body['data']),
         );
-        // profile.value = model.data;
+        profile.value = model;
+        _populateFields(model);
         Get.back();
         await Future.delayed(const Duration(milliseconds: 300));
         CustomSnackbar.success(response.message);

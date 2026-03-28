@@ -1,6 +1,4 @@
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,8 +13,10 @@ import '../../components/gradient_scafold.dart';
 import '../../components/text/common_text.dart';
 import 'innerWidget/profile_items.dart';
 
+
 class EditProfileScreen extends StatelessWidget {
-  EditProfileScreen({super.key});
+  bool isUser;
+  EditProfileScreen({super.key, this.isUser = false});
 
   final ProfileController controller = Get.put(ProfileController());
 
@@ -88,7 +88,7 @@ class EditProfileScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: const Color(0xFF4CAF50),
+                                color: isUser? AppColors.orange500 : Color(0xFF4CAF50),
                                 width: 4,
                               ),
                             ),
@@ -116,9 +116,9 @@ class EditProfileScreen extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
-                                child: const Icon(
+                                child: Icon(
                                   Icons.add,
-                                  color: AppColors.green500,
+                                  color: isUser? AppColors.orange500 : AppColors.green500,
                                   size: 25,
                                 ),
                               ),
@@ -129,15 +129,15 @@ class EditProfileScreen extends StatelessWidget {
                     ),
 
                     SizedBox(height: 12.h),
-                    const CommonText(
+                    CommonText(
                       text: 'Change Your Profile Picture',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF4CAF50),
+                      color: isUser? AppColors.orange300 : Color(0xFF4CAF50),
                     ),
 
                     SizedBox(height: 32.h),
-                    profileItems(context, controller),
+                    profileItems(context, controller, isUser),
 
                     SizedBox(height: 40.h),
 
@@ -145,9 +145,11 @@ class EditProfileScreen extends StatelessWidget {
                     Obx(() => CommonButton(
                       isLoading: controller.isUpdating.value,
                       onTap: () {
-                        controller.updateProfile();
+                        controller.updateProfile(isUser: isUser);
                       },
                       buttonRadius: 12,
+                      firstGradient: isUser? AppColors.orange300 : AppColors.green300,
+                      secondGradient: isUser? AppColors.orange500 : AppColors.green500,
                       titleText: "Update",
                     ),)
                   ],

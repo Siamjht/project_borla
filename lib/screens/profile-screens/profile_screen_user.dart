@@ -5,27 +5,43 @@ import 'package:project_borla/screens/info-screens/about_us_screen.dart';
 import 'package:project_borla/screens/info-screens/notification_screen_copy.dart';
 import 'package:project_borla/screens/info-screens/policy_screen.dart';
 import 'package:project_borla/screens/profile-screens/address_screen.dart';
-import 'package:project_borla/screens/profile-screens/change_password_screen_copy.dart';
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/logout_bottom_sheet_copy.dart';
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/settingsListItemsCopy.dart';
 import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
-import '../../bottom-sheets/user_lang_sheet.dart';
+import '../../controllers/profileController/profile_controller.dart';
+import '../../role/commonScreens/profile/change_password_screen.dart';
+import '../../role/commonScreens/profile/edit_profile_screen.dart';
+import '../../role/commonScreens/profile/innerWidget/language_bottom_sheet.dart';
+import '../../role/components/image/shimmer_image_loader.dart';
 import '../../role/components/text/common_text.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import '../info-screens/terms_and_conditions_screen.dart';
-import 'edit_profile_screen_copy.dart';
 
 
-class ProfileScreenCopy extends StatelessWidget {
-  const ProfileScreenCopy({super.key});
+class ProfileScreenUser extends StatefulWidget {
+  const ProfileScreenUser({super.key});
+
+  @override
+  State<ProfileScreenUser> createState() => _ProfileScreenUserState();
+}
+
+class _ProfileScreenUserState extends State<ProfileScreenUser> {
+
+  final _profileCtrl = Get.put(ProfileController());
 
   void showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows full height if needed
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const UserLanguageSelectionBottomSheet(),
+      builder: (context) => LanguageSelectionBottomSheet(isUser: true),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _profileCtrl.getProfile();
   }
 
   @override
@@ -39,11 +55,15 @@ class ProfileScreenCopy extends StatelessWidget {
             children: [
               Center(
                 child: CommonText(
-                  text: 'Profile', fontSize: 18, fontWeight: FontWeight.w600,),
+                  text: 'profile'.tr,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
+
               // Profile Header
-              Container(
+              Obx(() => Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -52,36 +72,35 @@ class ProfileScreenCopy extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 32,
-                      backgroundImage: NetworkImage(
-                        'https://shorturl.at/WSMrn',
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(32),
+                      child: ShimmerImageLoader(
+                        url: _profileCtrl.profile.value.profilePicture,
+                        width: 56,
+                        height: 56,
                       ),
                     ),
                     const SizedBox(width: 16),
-
-                    const CommonText(
-                      text: 'Borla Ghana',
+                    CommonText(
+                      text: _profileCtrl.profile.value.name,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       textAlign: TextAlign.left,
                       maxLines: 1,
                     ),
-
                     const Spacer(),
                     InkWell(
-                        onTap: () {
-                          Get.to(()=> EditProfileScreen());
-                        },
-                        child: Icon(Icons.chevron_right, color: Colors.grey[600])),
+                      onTap: () => Get.to(() => EditProfileScreen(isUser: true)),
+                      child: Icon(Icons.chevron_right, color: Colors.grey[600]),
+                    ),
                   ],
                 ),
-              ),
+              )),
 
               const SizedBox(height: 40),
 
-              const CommonText(
-                text: 'Others',
+              CommonText(
+                text: 'others'.tr,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: Colors.black87,
@@ -91,76 +110,60 @@ class ProfileScreenCopy extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // Settings items
               SettingsListItem(
                 icon: Icons.lock_outline,
-                title: 'Change Password',
-                onTap: () {
-                  Get.to(()=> UserChangePasswordScreen());
-                },
+                title: 'change_password'.tr,
+                onTap: () => Get.to(() => ChangePasswordScreen(isUser: true)),
               ),
 
               SettingsListItem(
                 icon: Icons.add_location_alt_rounded,
-                title: 'Address',
-                onTap: () {
-                  Get.to(()=> AddressScreen());
-                },
+                title: 'address'.tr,
+                onTap: () => Get.to(() => AddressScreen()),
               ),
 
               SettingsListItem(
                 icon: Icons.language,
-                title: 'Change Language',
-                onTap: () {
-                  showLanguageBottomSheet(context);
-                },
+                title: 'change_language'.tr,
+                onTap: () => showLanguageBottomSheet(context),
               ),
 
               SettingsListItemTwo(
-                //icon: Icons.headphones,
-                img: 'assets/images/user_chat.png' ,
-                title: 'Customer Support',
-                onTap: () {
-                  Get.to(()=> StartChatScreen());
-                },
+                img: 'assets/images/user_chat.png',
+                title: 'customer_support'.tr,
+                onTap: () => Get.to(() => StartChatScreen()),
               ),
 
               SettingsListItem(
                 icon: Icons.notifications_outlined,
-                title: 'Notifications',
-                onTap: () {
-                  Get.to(()=> NotificationsScreenCopy(isFromProfile: true,));
-                },
+                title: 'notifications'.tr,
+                onTap: () => Get.to(() => NotificationsScreenCopy(isFromProfile: true)),
               ),
+
               SettingsListItem(
-                onTap: () {
-                  Get.to(()=> AboutUsScreen());
-                },
                 icon: Icons.info_outline,
-                title: 'About Us',
+                title: 'about_us'.tr,
+                onTap: () => Get.to(() => AboutUsScreen()),
               ),
+
               SettingsListItem(
-                onTap: () {
-                  Get.to(()=> PolicyScreen());
-                },
                 icon: Icons.privacy_tip_outlined,
-                title: 'Privacy policy',
+                title: 'privacy_policy'.tr,
+                onTap: () => Get.to(() => PolicyScreen()),
               ),
+
               SettingsListItem(
-                onTap: () {
-                  Get.to(()=> TermsOfConditions());
-                },
                 icon: Icons.description_outlined,
-                title: 'Terms & Conditions',
+                title: 'terms_and_conditions'.tr,
+                onTap: () => Get.to(() => TermsOfConditions()),
               ),
+
               SettingsListItem(
                 icon: Icons.logout,
-                title: 'Logout',
+                title: 'logout'.tr,
                 titleColor: Colors.red,
                 iconColor: Colors.red,
-                onTap: () {
-                  showUserLogoutBottomSheet(context);
-                },
+                onTap: () => showUserLogoutBottomSheet(context),
               ),
             ],
           ),

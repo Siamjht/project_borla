@@ -1,5 +1,9 @@
 
+import 'dart:developer';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
@@ -8,9 +12,12 @@ import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
+import '../../../helpers/other_helper.dart';
 import '../../../theme/auth_header.dart';
-import '../../../widgets/social_login_button.dart';
-import '../../commonScreens/profile/innerWidget/profile_items.dart';
+import '../../components/commonTextField/phone_text_field.dart';
+import '../../components/image/shimmer_image_loader.dart';
+import '../../components/searchPlaces/address_search_field.dart';
+import '../../components/text/common_text.dart';
 import 'driver_otp_screen.dart';
 
 class DriverRegisterScreen extends StatefulWidget {
@@ -23,6 +30,7 @@ class DriverRegisterScreen extends StatefulWidget {
 class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
   final _authCtrl = Get.put(AuthController());
+  RxBool isOpeningGallery = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +77,186 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                     children: [
                       const SizedBox(height: 8),
 
-                      // profileItems(context, _authCtrl),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: CommonText(
+                              text: 'name_label'.tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          CommonTextField(
+                            hintText: 'enter_name_hint'.tr,
+                            controller: _authCtrl.nameController,
+                          ),
+                          SizedBox(height: 20.h),
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: CommonText(
+                              text: 'email'.tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          CommonTextField(
+                            hintText: 'enter_your_email'.tr,
+                            controller: _authCtrl.emailController,
+                          ),
+                          SizedBox(height: 20.h),
+
+                          /// ----------------- Phone Field -----------------
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: CommonText(
+                              text: 'phone_number_label'.tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          driverPhoneTextFormField(
+                              phoneController: _authCtrl.phoneNumController
+                          ), // assuming this widget handles its own hint/label
+                          SizedBox(height: 20.h),
+
+                          /// ---------------- DATE OF BIRTH ----------------
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: CommonText(
+                              text: 'date_of_birth_label'.tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          GestureDetector(
+                            onTap: () async {
+                              _authCtrl.isoDateController.text = await OtherHelper.openDatePicker(_authCtrl.dobController);
+                              log("ISo Date: ${_authCtrl.isoDateController}");
+                            },
+                            child: AbsorbPointer(
+                              child: CommonTextField(
+                                controller: _authCtrl.dobController,
+                                hintText: 'date_of_birth_hint'.tr,
+                                suffixIcon: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Center(
+                                    child: Assets.icons.dobCalenderIcon.image(
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          /// ---------------- LOCATION ----------------
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: CommonText(
+                              text: 'location_label'.tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+
+                          AddressSearchField(
+                            hintText: 'enter_location_hint'.tr,
+                            controller: _authCtrl.addressController,
+                            textInputAction: TextInputAction.done,
+                            fillColor: Colors.white,
+                            borderColor: const Color(0xFFE5E7EB),
+                            hintTextColor: AppColors.gray400,
+                            textColor: AppColors.black500,
+                            borderRadius: 16,
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              child: Assets.icons.location.image(height: 20, width: 20),
+                            ),
+                            onSelected: (suggestion) async {
+                              final latLang = await OtherHelper.getCoordinatesFromAddress(suggestion.description);
+                              log("LatLang $latLang");
+                              if(latLang != null){
+                                // _ctrl.latitude = latLang.latitude;
+                                // _ctrl.longitude = latLang.longitude;
+                              }
+                            },),
+
+                          SizedBox(height: 20.h),
+
+                          /// ---------------- GHANA CARD ----------------
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: 'ghana_card_id_label'.tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(height: 8.h),
+                              DottedBorder(
+                                options: RoundedRectDottedBorderOptions(
+                                  radius: const Radius.circular(12),
+                                  dashPattern: const [10, 5],
+                                  strokeWidth: 2,
+                                  padding: const EdgeInsets.all(8),
+                                  color: AppColors.gray200,
+                                ),
+                                child: Obx(() {
+                                  return SizedBox(
+                                    height: 130.h,
+                                    width: double.infinity,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        isOpeningGallery.value = true;
+                                        final path = await OtherHelper.openGallery();
+                                        if (path != null) {
+                                          _authCtrl.ghanaICard.value = path; // ✅ only set if not null
+                                        }
+                                        isOpeningGallery.value = false;
+                                      },
+                                      child: _authCtrl.ghanaICard.value.isNotEmpty
+                                          ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: ShimmerImageLoader(url: _authCtrl.ghanaICard.value, width: double.infinity, height: 130.h),
+                                      )
+                                          :   isOpeningGallery.value == true? Center(child: CircularProgressIndicator()) : Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.cloud_upload_outlined,
+                                            size: 32,
+                                            color: AppColors.gray300,
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          CommonText(
+                                            text: 'upload_button'.tr,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.gray300,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
 
                       const SizedBox(height: 24),
 
@@ -101,31 +288,33 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
                       const SizedBox(height: 32),
 
-                      CommonButton(
+                      Obx(() => CommonButton(
+                        isLoading: _authCtrl.isLoading.value,
                         titleText: 'sign_up'.tr,
                         buttonRadius: 12,
-                        onTap: () {
-                          _authCtrl.createUser();
+                        onTap: () async {
+                         final success = await _authCtrl.createDriver();
+                         if(success){
+                           Get.to(() => DriverOtpScreen());
+                         }
                         },
-                      ),
+                      ),),
 
                       const SizedBox(height: 30),
 
-                      Row(
-                        children: [
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              'or_continue_with'.tr,
-                              style: const TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          Expanded(child: Divider(color: Colors.grey.shade300)),
-                        ],
-                      ),
-
-                      const SizedBox(height: 30),
+                      // Row(
+                      //   children: [
+                      //     Expanded(child: Divider(color: Colors.grey.shade300)),
+                      //     Padding(
+                      //       padding: const EdgeInsets.symmetric(horizontal: 12),
+                      //       child: Text(
+                      //         'or_continue_with'.tr,
+                      //         style: const TextStyle(color: Colors.grey),
+                      //       ),
+                      //     ),
+                      //     Expanded(child: Divider(color: Colors.grey.shade300)),
+                      //   ],
+                      // ),
 
                       // SocialLoginButton(
                       //   text: 'continue_with_google'.tr,

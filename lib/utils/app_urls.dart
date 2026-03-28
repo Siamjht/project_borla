@@ -17,9 +17,12 @@ class AppUrls {
   static const updateProfile = "$baseUrl/users/update-my-profile";
 
   static const verifyEmail = "$baseUrl/auth/verify_email";
-  static const createUser = "$baseUrl/users";
+  static const createUser = "$baseUrl/auth/signup";
   static const deleteMyAccount = "$baseUrl/users/delete-my-account";
   static const createEvent = "$baseUrl/events";
   static const notifications = "$baseUrl/notifications";
   static const myRequests = "$baseUrl/join-request/my-requests";
+  static const aboutUs = "$baseUrl/content-pages/about-us";
+  static const termsCondition = "$baseUrl/content-pages/terms-and-conditions";
+  static const privacyPolicy = "$baseUrl/content-pages/privacy-policy";
 }

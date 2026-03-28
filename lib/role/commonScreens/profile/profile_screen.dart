@@ -37,9 +37,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows full height if needed
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const LanguageSelectionBottomSheet(),
+      builder: (context) => LanguageSelectionBottomSheet(),
     );
   }
 
@@ -56,12 +56,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             CommonText(
-              text: 'Profile',
+              text: 'profile'.tr,
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.textDark,
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20.0),
@@ -80,10 +80,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(32),
-                            child: ShimmerImageLoader(url: _profileCtrl.profile.value.profilePicture, width: 56, height: 56),
+                            child: ShimmerImageLoader(
+                              url: _profileCtrl.profile.value.profilePicture,
+                              width: 56,
+                              height: 56,
+                            ),
                           ),
                           const SizedBox(width: 16),
-
                           CommonText(
                             text: _profileCtrl.profile.value.name,
                             fontSize: 20,
@@ -91,21 +94,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             textAlign: TextAlign.left,
                             maxLines: 1,
                           ),
-
                           const Spacer(),
                           InkWell(
-                              onTap: () {
-                                Get.to(()=> EditProfileScreen());
-                              },
-                              child: Icon(Icons.chevron_right, color: Colors.grey[600])),
+                            onTap: () => Get.to(() => EditProfileScreen()),
+                            child: Icon(Icons.chevron_right, color: Colors.grey[600]),
+                          ),
                         ],
                       ),
-                    ),),
+                    )),
 
                     const SizedBox(height: 40),
 
-                    const CommonText(
-                      text: 'Others',
+                    CommonText(
+                      text: 'others'.tr,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.black87,
@@ -115,65 +116,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     const SizedBox(height: 16),
 
-                    // Settings items
                     SettingsListItem(
                       icon: Icons.lock_outline,
-                      title: 'Change Password',
-                      onTap: () {
-                        Get.to(()=> ChangePasswordScreen());
-                      },
+                      title: 'change_password'.tr,
+                      onTap: () => Get.to(() => ChangePasswordScreen()),
                     ),
+
                     SettingsListItem(
                       icon: Icons.language,
-                      title: 'Change Language',
-                      onTap: () {
-                        showLanguageBottomSheet(context);
-                      },
+                      title: 'change_language'.tr,
+                      onTap: () => showLanguageBottomSheet(context),
                     ),
+
                     SettingsListItemTwo(
-                      //icon: Icons.headphones,
-                      img: Assets.icons.customerSupportIcon.image(height: 26, width: 26, color: AppColors.green500,),
-                      title: 'Customer Support',
-                      onTap: () {
-                        Get.to(()=> StartChatScreen());
-                      },
+                      img: Assets.icons.customerSupportIcon.image(
+                        height: 26,
+                        width: 26,
+                        color: AppColors.green500,
+                      ),
+                      title: 'customer_support'.tr,
+                      onTap: () => Get.to(() => StartChatScreen()),
                     ),
+
                     SettingsListItem(
                       icon: Icons.notifications_outlined,
-                      title: 'Notifications',
-                      onTap: () {
-                        Get.to(()=> NotificationsScreen());
-                      },
+                      title: 'notifications'.tr,
+                      onTap: () => Get.to(() => NotificationsScreen()),
                     ),
+
                     SettingsListItem(
-                      onTap: () {
-                        Get.to(()=> AboutUs());
-                      },
                       icon: Icons.info_outline,
-                      title: 'About Us',
+                      title: 'about_us'.tr,
+                      onTap: () => Get.to(() => AboutUs()),
                     ),
+
                     SettingsListItem(
-                      onTap: () {
-                        Get.to(()=> PrivacyPolicyScreen());
-                      },
                       icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy policy',
+                      title: 'privacy_policy'.tr,
+                      onTap: () => Get.to(() => PrivacyPolicyScreen()),
                     ),
+
                     SettingsListItem(
-                      onTap: () {
-                        Get.to(()=> TermsOfConditions());
-                      },
                       icon: Icons.description_outlined,
-                      title: 'Terms & Conditions',
+                      title: 'terms_and_conditions'.tr,
+                      onTap: () => Get.to(() => TermsOfConditions()),
                     ),
+
                     SettingsListItem(
                       icon: Icons.logout,
-                      title: 'Logout',
+                      title: 'logout'.tr,
                       titleColor: Colors.red,
                       iconColor: Colors.red,
-                      onTap: () {
-                        showLogoutBottomSheet(context);
-                      },
+                      onTap: () => showLogoutBottomSheet(context),
                     ),
                   ],
                 ),

@@ -11,7 +11,8 @@ import '../../../components/text/common_text.dart';
 
 
 class LanguageSelectionBottomSheet extends StatefulWidget {
-  const LanguageSelectionBottomSheet({super.key});
+  final bool isUser;
+  const LanguageSelectionBottomSheet({super.key, this.isUser = false});
 
   @override
   State<LanguageSelectionBottomSheet> createState() => _LanguageSelectionBottomSheetState();
@@ -124,6 +125,7 @@ class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSh
                   final isSelected = selectedLanguage == langName;
 
                   return LanguageOption(
+                    isUser: widget.isUser,
                     name: langName,
                     greeting: lang['greeting']!,
                     isSelected: isSelected,
@@ -153,7 +155,7 @@ class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSh
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.green500,
+                    backgroundColor: widget.isUser? AppColors.orange300 : AppColors.green500,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -180,6 +182,7 @@ class LanguageOption extends StatelessWidget {
   final String name;
   final String greeting;
   final bool isSelected;
+  final bool isUser;
   final VoidCallback onTap;
 
   const LanguageOption({
@@ -187,6 +190,7 @@ class LanguageOption extends StatelessWidget {
     required this.name,
     required this.greeting,
     required this.isSelected,
+    required this.isUser,
     required this.onTap,
   });
 
@@ -204,10 +208,10 @@ class LanguageOption extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isSelected
-                      ? AppColors.green50
+                      ? isUser? AppColors.orange50 : AppColors.green50
                       :  Colors.transparent,
                   border: Border.all(
-                    color: !isSelected ? AppColors.green50 : Colors.transparent,
+                    color: !isSelected ? isUser? AppColors.orange50 : AppColors.green50 : Colors.transparent,
                     width: 2,
                   ),
                 ),
@@ -216,7 +220,7 @@ class LanguageOption extends StatelessWidget {
                     text: greeting,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                    color: isSelected ? const Color(0xFF4CAF50) : Colors.black87,
+                    color: isSelected ? isUser? AppColors.orange300 : const Color(0xFF4CAF50) : Colors.black87,
                   ),
                 ),
               ),
@@ -235,8 +239,8 @@ class LanguageOption extends StatelessWidget {
               right: 0,
               child: Container(
                 padding: EdgeInsets.all(6.w),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF4CAF50),
+                decoration: BoxDecoration(
+                  color: isUser? AppColors.orange300 : Color(0xFF4CAF50),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

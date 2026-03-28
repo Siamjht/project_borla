@@ -3,6 +3,7 @@ import 'package:flutter_modern_animated_loader/flutter_animated_loader.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:project_borla/controllers/authController/auth_controller.dart';
+import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/navBar/nav_bar.dart';
 import 'package:project_borla/theme/app_color.dart';
@@ -142,8 +143,12 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                           firstGradient: AppColors.green500,
                           secondGradient: AppColors.green500,
                           buttonRadius: 12,
-                          onTap: () {
-                            _authCtrl.verifyEmailOTP(_authCtrl.otpController.text);
+                          onTap: () async {
+                            final success = await _authCtrl.verifyEmailOTP(_authCtrl.otpController.text);
+                            if(success){
+                              Get.offAll(() => LoginScreen());
+                              // Get.to(() => DriverNavbar());
+                            }
                           },
                         ),
                       ],

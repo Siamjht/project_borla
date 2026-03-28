@@ -1,33 +1,33 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
+import 'dart:developer';
 
-import '../../controllers/user-controllers/auth_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:project_borla/controllers/authController/auth_controller.dart';
+import 'package:project_borla/role/components/commonTextField/common_text_field.dart';
+import 'package:project_borla/role/components/commonTextField/phone_text_field.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/otp_screen_two.dart';
-import '../../role/components/commonTextField/phone_text_field.dart';
-import '../custom_text_field.dart';
-import '../gradient_button.dart';
-import '../social_login_button.dart';
-import 'already_have_account_widget.dart';
+import '../../gen/custom_assets/assets.gen.dart';
+import '../../helpers/other_helper.dart';
+import '../../role/components/button/common_button.dart';
+import '../../role/components/searchPlaces/address_search_field.dart';
+import '../../role/components/text/common_text.dart';
+import '../../theme/app_color.dart';
+
 
 class RegistrationSection extends StatelessWidget {
-  const RegistrationSection({
+  RegistrationSection({
     super.key,
-    required this.registerScreenController,
   });
 
-  final UserAuthController registerScreenController;
+  final _authCtrl = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(34)
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
         color: Colors.white,
       ),
       height: 666,
@@ -35,135 +35,198 @@ class RegistrationSection extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
           child: Column(
-
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              Text('name'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
-              const SizedBox(height: 12),
-              CommonTextField(
-                controller: registerScreenController.registerNameController,
-                hintText: 'enter_your_name'.tr,
-                //prefix: const Icon(Icons.phone),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CommonText(
+                      text: 'name_label'.tr,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  CommonTextField(
+                    hintText: 'enter_name_hint'.tr,
+                    controller: _authCtrl.nameController,
+                  ),
+                  SizedBox(height: 20.h),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CommonText(
+                      text: 'email'.tr,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  CommonTextField(
+                    hintText: 'enter_your_email'.tr,
+                    controller: _authCtrl.emailController,
+                  ),
+                  SizedBox(height: 20.h),
+
+                  /// ----------------- Phone Field -----------------
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CommonText(
+                      text: 'phone_number_label'.tr,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  userPhoneTextFormField(controller: _authCtrl.phoneNumController
+                  ), // assuming this widget handles its own hint/label
+                  SizedBox(height: 20.h),
+
+
+                  /// ---------------- LOCATION ----------------
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CommonText(
+                      text: 'location_label'.tr,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+
+                  AddressSearchField(
+                    hintText: 'enter_location_hint'.tr,
+                    controller: _authCtrl.addressController,
+                    textInputAction: TextInputAction.done,
+                    fillColor: Colors.white,
+                    borderColor: const Color(0xFFE5E7EB),
+                    hintTextColor: AppColors.gray400,
+                    textColor: AppColors.black500,
+                    borderRadius: 16,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Assets.icons.location.image(height: 20, width: 20),
+                    ),
+                    onSelected: (suggestion) async {
+                      final latLang = await OtherHelper.getCoordinatesFromAddress(suggestion.description);
+                      log("LatLang $latLang");
+                      if(latLang != null){
+                        // _ctrl.latitude = latLang.latitude;
+                        // _ctrl.longitude = latLang.longitude;
+                      }
+                    },),
+
+                ],
               ),
 
               const SizedBox(height: 24),
 
-              Text('phone_number'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
-
-              const SizedBox(height: 12),
-
-              userPhoneTextFormField(
-                  controller: registerScreenController.registerPhoneController,
+              Text(
+                'password'.tr,
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
 
-              const SizedBox(height: 24),
-
-              Text('email'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
-
               const SizedBox(height: 12),
-
               CommonTextField(
-                controller: registerScreenController.registerEmailController,
-                hintText: 'enter_your_email'.tr,
-                prefixIcon: const Icon(Icons.email),
-              ),
-
-              const SizedBox(height: 24),
-
-              Text('location'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
-
-              const SizedBox(height: 12),
-
-              CommonTextField(
-                controller: registerScreenController.registerLocationController,
-                hintText: 'enter_your_location'.tr,
-                prefixIcon: const Icon(Icons.location_on_outlined),
-              ),
-
-              const SizedBox(height: 24),
-
-              Text('password'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
-
-              const SizedBox(height: 12),
-
-              CommonTextField(
-                controller: registerScreenController.registerPassController,
+                controller: _authCtrl.passController,
                 hintText: 'password_hint'.tr,
                 isPassword: true,
               ),
 
               const SizedBox(height: 24),
 
-              Text('confirm_password'.tr, style: TextStyle(
-                  fontWeight: FontWeight.w700
-              ),),
+              Text(
+                'confirm_password'.tr,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
 
               const SizedBox(height: 12),
-
               CommonTextField(
-                controller: registerScreenController.registerConfirmPassController,
+                controller: _authCtrl.confirmPassController,
                 hintText: 'confirm_password_hint'.tr,
                 isPassword: true,
               ),
 
               const SizedBox(height: 32),
 
-              GradientButton(
-                text: 'sign_up'.tr,
-                onPressed: () {
-                  Get.to(()=> OtpScreen());
+              Obx(() => CommonButton(
+                isLoading: _authCtrl.isLoading.value,
+                titleText: 'sign_up'.tr,
+                firstGradient: AppColors.orange300,
+                secondGradient: AppColors.orange500,
+                buttonRadius: 12,
+                onTap: () async {
+                  final success = await _authCtrl.createUser();
+                  if(success){
+                    Get.to(() => OtpScreen(isSignup: true,));
+                  }
                 },
-              ),
+              ),),
 
               const SizedBox(height: 30),
 
+              // Row(
+              //   children: [
+              //     Expanded(child: Divider(color: Colors.grey.shade300)),
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 12),
+              //       child: Text(
+              //         'or_continue_with'.tr,
+              //         style: const TextStyle(color: Colors.grey),
+              //       ),
+              //     ),
+              //     Expanded(child: Divider(color: Colors.grey.shade300)),
+              //   ],
+              // ),
+
+              // SocialLoginButton(
+              //   text: 'continue_with_google'.tr,
+              //   asset: 'assets/images/google.png',
+              //   onPressed: () {},
+              // ),
+              //
+              // const SizedBox(height: 16),
+              //
+              // SocialLoginButton(
+              //   text: 'continue_with_apple'.tr,
+              //   asset: 'assets/images/apple_2.png',
+              //   onPressed: () {},
+              // ),
+              //
+              // const SizedBox(height: 12),
+
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: Divider(color: Colors.grey.shade300)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      'or_continue_with'.tr,
-                      style: TextStyle(color: Colors.grey),
+                  Text(
+                    'already_have_account'.tr,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
                     ),
                   ),
-                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                  TextButton(
+                    onPressed: () {
+                      Get.offAll(() => LoginScreen());
+                    },
+                    child: Text(
+                      'sign_in'.tr,
+                      style: const TextStyle(
+                        color: AppColors.orange500,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
-              const SizedBox(height: 30),
-
-              SocialLoginButton(
-                text: 'continue_with_google'.tr,
-                asset: 'assets/images/google.png',
-                onPressed: () {},
-              ),
-
-              const SizedBox(height: 16),
-
-              SocialLoginButton(
-                text: 'continue_with_apple'.tr,
-                asset: 'assets/images/apple_2.png',
-                onPressed: () {},
-              ),
-
-              const SizedBox(height: 12),
-
-              AlreadyHaveAccountSection(),
-
               const SizedBox(height: 70),
-
             ],
           ),
         ),

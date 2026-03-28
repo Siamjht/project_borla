@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modern_animated_loader/flutter_animated_loader.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:project_borla/controllers/authController/auth_controller.dart';
+import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/features/auth/set_pass_screen.dart';
 import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import '../../gen/custom_assets/assets.gen.dart';
+import '../../theme/app_color.dart';
 import '../../theme/auth_header.dart';
+import '../../theme/otp_theme.dart';
 import '../../widgets/gradient_button.dart';
-import '../../widgets/otp_input.dart';
 
 
 class OtpScreen extends StatefulWidget {
@@ -62,11 +64,27 @@ class _OtpScreenState extends State<OtpScreen> {
               padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
               child: Column(
                 children: [
-                  OtpInput(
-                    length: 4,
-                    onChanged: (value) {
-                      setState(() => otp = value);
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                    child: PinCodeTextField(
+                      controller: _authCtrl.otpController,
+                      cursorColor: AppColors.black100,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      appContext: context,
+                      length: 4,
+                      pinTheme: appOTPStyle(),
+                      animationType: AnimationType.fade,
+                      animationDuration: const Duration(milliseconds: 300),
+                      enableActiveFill: true,
+                      hintCharacter: '-',
+                      hintStyle: const TextStyle(
+                        fontSize: 36,
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      onCompleted: (v) {},
+                      onChanged: (value) {},
+                    ),
                   ),
 
                   const SizedBox(height: 32),
@@ -82,7 +100,12 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      GestureDetector(
+                      Obx(() => _authCtrl.isOtpSending.value? Center(
+                        child: FlutterAnimatedLoader.staggerWave(
+                          color: AppColors.orange500,
+                          size: 20,
+                        ),
+                      ) :GestureDetector(
                         onTap: () {
                           _authCtrl.resendOtp(_authCtrl.emailController.text);
                         },
@@ -110,19 +133,24 @@ class _OtpScreenState extends State<OtpScreen> {
                             ),
                           ),
                         ),
-                      ),
+                      ),),
                     ],
                   ),
 
                   SizedBox(height: 36),
 
                   GradientButton(
+                    isLoading: _authCtrl.isLoading,
                     text: "verify".tr,
                     onPressed: () async {
                       if (widget.isSignup) {
-                        Get.to(() => UserNavBar());
+                        final success = await _authCtrl.verifyEmailOTP(_authCtrl.otpController.text,);
+                        if(success){
+                          Get.offAll(()=> LoginScreen());
+                          // Get.to(() => UserNavBar());
+                        }
                       } else {
-                        final success = await _authCtrl.verifyEmailOTP(otp);
+                        final success = await _authCtrl.verifyEmailOTP(_authCtrl.otpController.text,);
                         if(success){
                           Get.to(() => SetPassScreen());
                         }

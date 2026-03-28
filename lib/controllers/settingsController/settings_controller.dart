@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../helpers/prefs_helper.dart';
 import '../../../services/api_service.dart';
+import '../../models/api_response_model.dart';
+import '../../models/contentModel/content_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../utils/app_urls.dart';
 
@@ -17,6 +19,59 @@ class SettingController extends GetxController {
   final confirmPasswordController = TextEditingController();
 
   RxBool isLoading = false.obs;
+
+
+  // Loading states
+  final RxBool isAboutUsLoading = false.obs;
+  final RxBool isTermsLoading = false.obs;
+  final RxBool isPrivacyLoading = false.obs;
+
+  // Content data
+  final Rx<ContentPageModel?> aboutUs = Rx<ContentPageModel?>(null);
+  final Rx<ContentPageModel?> termsCondition = Rx<ContentPageModel?>(null);
+  final Rx<ContentPageModel?> privacyPolicy = Rx<ContentPageModel?>(null);
+
+  Future<void> getAboutUs() async {
+    isAboutUsLoading.value = true;
+    try {
+      final response = await SettingsService.getAboutUs();
+      if (response.statusCode == 200) {
+        aboutUs.value = ContentPageModel.fromJson(response.body['data']);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isAboutUsLoading.value = false;
+    }
+  }
+
+  Future<void> getTermsCondition() async {
+    isTermsLoading.value = true;
+    try {
+      final response = await SettingsService.getTermsCondition();
+      if (response.statusCode == 200) {
+        termsCondition.value = ContentPageModel.fromJson(response.body['data']);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isTermsLoading.value = false;
+    }
+  }
+
+  Future<void> getPrivacyPolicy() async {
+    isPrivacyLoading.value = true;
+    try {
+      final response = await SettingsService.getPrivacyPolicy();
+      if (response.statusCode == 200) {
+        privacyPolicy.value = ContentPageModel.fromJson(response.body['data']);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isPrivacyLoading.value = false;
+    }
+  }
 
 // ── Delete Account ──
   Future<void> deleteAccount() async {
@@ -40,10 +95,9 @@ class SettingController extends GetxController {
     }
   }
 
-// ── Change Password ──
+  // ── Change Password ──
   Future<void> changePassword(context) async {
     isLoading.value = true;
-
     try {
       final response = await ApiService.patch(
         AppUrls.changePassword,
@@ -66,5 +120,21 @@ class SettingController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+}
+
+
+class SettingsService {
+  static Future<ApiResponseModel> getAboutUs() async {
+    return await ApiService.get(AppUrls.aboutUs);
+  }
+
+  static Future<ApiResponseModel> getTermsCondition() async {
+    return await ApiService.get(AppUrls.termsCondition);
+  }
+
+  static Future<ApiResponseModel> getPrivacyPolicy() async {
+    return await ApiService.get(AppUrls.privacyPolicy);
   }
 }

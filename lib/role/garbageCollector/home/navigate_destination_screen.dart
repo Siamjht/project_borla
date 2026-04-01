@@ -9,7 +9,7 @@ import 'package:project_borla/theme/app_color.dart';
 
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../components/commonBackButton/common_back_button.dart';
-import '../map/common_map.dart';
+import '../map/driver_common_map.dart';
 import 'innerWidget/arrived_bottom_sheet.dart';
 
 class NavigateDestinationScreen extends StatelessWidget {
@@ -21,7 +21,7 @@ class NavigateDestinationScreen extends StatelessWidget {
       body: Stack(
         children: [
           /// Google Map
-          Positioned.fill(child: CommonMap()),
+          Positioned.fill(child: DriverCommonMap()),
 
           Positioned(
             top: 60,

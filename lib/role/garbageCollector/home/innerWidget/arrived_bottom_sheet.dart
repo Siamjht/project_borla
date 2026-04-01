@@ -38,41 +38,41 @@ class ArrivedBottomSheet extends StatelessWidget {
               children: [
                 SingleChildScrollView(
                   controller: scrollController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      const SizedBox(height: 20),
-
-                      /// Title
-                      const Center(
-                        child: CommonText(
-                          text: "Arrived At Customer Location",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-                      const Divider(color: AppColors.black50, thickness: 1),
-
-                      userRow(controller),
-
-                      const Divider(color: AppColors.black50, thickness: 1),
-                      const SizedBox(height: 6),
-
-                      bottomSheetLocationSection(),
-
-                      const Divider(color: AppColors.black50, thickness: 1),
-                      const SizedBox(height: 10),
-
-                      paymentRow(),
-
-                      const SizedBox(height: 20),
-
-                      bottomSheetActionButtons(context),
-                    ],
-                  ),
+                  // child: Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //
+                  //     const SizedBox(height: 20),
+                  //
+                  //     /// Title
+                  //     const Center(
+                  //       child: CommonText(
+                  //         text: "Arrived At Customer Location",
+                  //         fontSize: 18,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     ),
+                  //
+                  //     const SizedBox(height: 12),
+                  //     const Divider(color: AppColors.black50, thickness: 1),
+                  //
+                  //     userRow(controller),
+                  //
+                  //     const Divider(color: AppColors.black50, thickness: 1),
+                  //     const SizedBox(height: 6),
+                  //
+                  //     bottomSheetLocationSection(),
+                  //
+                  //     const Divider(color: AppColors.black50, thickness: 1),
+                  //     const SizedBox(height: 10),
+                  //
+                  //     paymentRow(),
+                  //
+                  //     const SizedBox(height: 20),
+                  //
+                  //     bottomSheetActionButtons(context),
+                  //   ],
+                  // ),
                 ),
                 Positioned(
                   top: -40,

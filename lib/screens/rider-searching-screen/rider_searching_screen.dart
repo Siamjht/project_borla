@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
-import '../../role/garbageCollector/map/common_map.dart';
+import '../../role/garbageCollector/map/driver_common_map.dart';
 
 class RiderSearchingScreen extends StatefulWidget {
   const RiderSearchingScreen({super.key});
@@ -18,6 +20,7 @@ class RiderSearchingScreen extends StatefulWidget {
 
 class _RiderSearchingScreenState extends State<RiderSearchingScreen> {
 
+  final _bookingCtrl = Get.find<BookingController>();
 
 
   @override
@@ -73,9 +76,15 @@ class _RiderSearchingScreenState extends State<RiderSearchingScreen> {
         ),
       );
     });
-    Future.delayed(const Duration(seconds: 5), () {
-      Get.to(() => const BookingRequestedScreen());
-    });
+    Future.microtask(() async {
+      final isSuccess = await _bookingCtrl.createBooking();
+      if(isSuccess){
+        Get.to(() => const BookingRequestedScreen());
+      }
+    },);
+    // Future.delayed(const Duration(seconds: 5), () {
+    //   // Get.to(() => const BookingRequestedScreen());
+    // });
   }
 
 
@@ -84,7 +93,7 @@ class _RiderSearchingScreenState extends State<RiderSearchingScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: CommonMap()),
+            Positioned.fill(child: DriverCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

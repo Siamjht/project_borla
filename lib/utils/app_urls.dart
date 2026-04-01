@@ -25,4 +25,22 @@ class AppUrls {
   static const aboutUs = "$baseUrl/content-pages/about-us";
   static const termsCondition = "$baseUrl/content-pages/terms-and-conditions";
   static const privacyPolicy = "$baseUrl/content-pages/privacy-policy";
+
+  static const createBookings = "$baseUrl/bookings";
+  static const newPlaces = "$baseUrl/saved-places";
+
+  static const toggleMyStatus = "$baseUrl/users/toggle-my-status";
+  static const updateMyLocation = "$baseUrl/users/update-my-location";
+
+  static String availableBookings({bool isPopulateUser = true}) => "$baseUrl/bookings/available?populateUser=$isPopulateUser";
+  static String updatePlace({required String id}) => "$baseUrl/saved-places/$id";
+  static String getAcceptedBooking({required String status}) => "$baseUrl/bookings/rider-bookings?status=$status";
+  static String acceptBooking({required String id}) => "$baseUrl/bookings/$id/accept";
+  static String declineBooking({required String id}) => "$baseUrl/bookings/$id/decline";
+  static String arriveAtPickup({required String id}) => "$baseUrl/bookings/$id/arrive-pickup";
+  static String paymentCollection({required String id}) => "$baseUrl/bookings/$id/payment-collected";
+  static String headingStation({required String id}) => "$baseUrl/bookings/$id/heading-to-station";
+  static String bookingCompleted({required String id}) => "$baseUrl/bookings/$id/completed";
+  static String getSingleBooking({required String id}) => "$baseUrl/bookings/$id";
+  static String updateBookingStatus({required String id}) => "$baseUrl/bookings/$id/status";
 }

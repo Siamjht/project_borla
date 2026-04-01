@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_borla/bottom-sheets/finding_rider_sheet.dart';
 
 
-import 'package:project_borla/role/garbageCollector/map/common_map.dart';
+import 'package:project_borla/role/garbageCollector/map/driver_common_map.dart';
 import 'package:get/get.dart';
 
 import '../../bottom-sheets/confirm_address_sheet.dart';
@@ -43,7 +43,7 @@ class _FindingDriverScreenState extends State<FindingDriverScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: CommonMap()),
+            Positioned.fill(child: DriverCommonMap()),
 
             Positioned(
                 left: 20,

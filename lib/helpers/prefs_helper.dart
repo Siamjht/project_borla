@@ -32,6 +32,7 @@ class PrefsHelper extends GetxController {
   static List<String> interests = [];
   static List<String> photos = [];
   static bool isAccountApproved = false;
+  static bool onlineStatus = false;
 
   ///<<<======================== Get All Data Form Shared Preference ==============>
 
@@ -48,6 +49,7 @@ class PrefsHelper extends GetxController {
     isLogIn = preferences.getBool("isLogIn") ?? false;
     adminVerified = preferences.getBool("adminVerified") ?? false;
     subscription = preferences.getBool("subscription") ?? false;
+    onlineStatus = preferences.getBool("onlineStatus") ?? false;
     about = preferences.getString("about") ?? "";
     phone = preferences.getString("phone") ?? "";
 

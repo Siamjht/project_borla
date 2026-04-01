@@ -57,6 +57,7 @@ dependencies:
   socket_io_client: ^3.1.4
   flutter_modern_animated_loader: ^0.0.2
   shimmer: ^3.0.0
+  carousel_slider: ^5.1.2
 
 
 dev_dependencies:

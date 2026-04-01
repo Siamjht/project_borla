@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 
 import '../screens/waste-screens/waste_category_screen.dart';
 import '../widgets/gradient_button.dart';
@@ -14,6 +16,8 @@ class ConfirmAddressSheet extends StatefulWidget {
 }
 
 class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
+
+  final _bookingCtrl = Get.find<BookingController>();
 
 
   @override
@@ -93,20 +97,26 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
               ),
             ),
 
-            Text('1901 Thornridge Cir. Shiloh, Hawaii 81063 ', style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),),
+            Padding(
+              padding: const EdgeInsets.only(left: 50.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(_bookingCtrl.currentLocationController.text, style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey,
+                ),),
+              ),
+            ),
 
 
             Padding(
-              padding: const EdgeInsets.all(22.0),
+              padding: const EdgeInsets.all(20.0),
               child: GradientButton(
                 text: 'Confirm Location',
                 onPressed: () {
                   //Get.to(OtpScreen());
-                  Get.to(()=>WasteCategoryScreen());
+                  Get.to(()=> WasteCategoryScreen());
                 },
               ),
             ),

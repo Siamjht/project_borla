@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
-
-
-import 'package:project_borla/role/garbageCollector/map/common_map.dart';
+import 'package:project_borla/role/garbageCollector/map/driver_common_map.dart';
 import 'package:get/get.dart';
 
 import '../../bottom-sheets/confirm_address_sheet.dart';
-import '../../role/garbageCollector/home/controller/driver_home_controller.dart';
 
 class ConfirmLocationScreen extends StatefulWidget {
   const ConfirmLocationScreen({super.key});
@@ -16,42 +12,13 @@ class ConfirmLocationScreen extends StatefulWidget {
 }
 
 class _ConfirmLocationScreenState extends State<ConfirmLocationScreen> {
-  //
-  // final DriverHomeController controller =
-  // Get.put(DriverHomeController());
-
-  // void ShowConfirmAddressSheet (BuildContext context) {
-  //
-  //   showModalBottomSheet(
-  //
-  //     context: context,
-  //     barrierColor: Colors.transparent,
-  //     backgroundColor: Colors.transparent,
-  //     isScrollControlled: true,
-  //     //showDragHandle: true,
-  //     useSafeArea: true,
-  //     builder: (context) => ConfirmAddressSheet(),
-  //
-  //   );
-  //
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   Future.microtask(() {
-  //     ShowConfirmAddressSheet(context);
-  //   },);
-  //
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: CommonMap()),
+          Positioned.fill(child: DriverCommonMap()),
           Positioned(
             top: 60,
               left: 20,

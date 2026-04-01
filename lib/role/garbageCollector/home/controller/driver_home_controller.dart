@@ -1,126 +1,242 @@
 
+import 'dart:developer';
+
 import 'package:flutter/animation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_borla/controllers/mapController/driver_map_controller.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/theme/app_color.dart';
 
-class DriverHomeController extends GetxController with GetTickerProviderStateMixin{
+import '../../../../helpers/other_helper.dart';
+import '../../../../models/riderModels/bookingModels/accept_booking_model.dart';
+import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
+import '../../../../services/api_service.dart';
+import '../../../../utils/app_urls.dart';
+import '../../../components/customSnackbar/custom_snackbar.dart';
+import '../customer_info_screen.dart';
 
-  static DriverHomeController get instance => Get.put(DriverHomeController());
+class DriverHomeController extends GetxController with GetTickerProviderStateMixin {
 
-  late GoogleMapController mapController;
+  static DriverHomeController get instance => Get.find<DriverHomeController>();
 
-  final RxBool isOnline = false.obs;
-
-  /// Checking Schedule Request or General Request
+  // ── State ─────────────────────────────────────────────────
+  RxBool isOnline = false.obs;
   final RxBool isScheduleRequest = true.obs;
-
-  final Rx<LatLng> driverPosition =
-      const LatLng(5.6037, -0.1870).obs; // Accra
-
-  final Rx<ScreenCoordinate?> screenPosition =
-  Rx<ScreenCoordinate?>(null);
-
-  void onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    updateMarkerPosition();
-  }
-
-  void onCameraMove() {
-    updateMarkerPosition();
-  }
-
-  Future<void> updateMarkerPosition() async {
-    final pos = await mapController.getScreenCoordinate(driverPosition.value);
-    screenPosition.value = pos;
-  }
-
-  void toggleOnline(bool value) {
-    isOnline.value = value;
-    if(value){
-      _setupTimer();
-    }
-  }
-
-  ////////////////////////////////////
+  final RxBool isUnderReview = true.obs;
   final isExpanded = false.obs;
+  final RxBool isBottomSheet = true.obs;
 
-  void toggle() {
-    isExpanded.toggle();
-  }
-
-  ////////////////////////////////////
+  // ── Timer Animation ────────────────────────────────────────
   late AnimationController _animationController;
   late Animation<double> animation;
+  final RxInt durationInSeconds = 30.obs;
+  final RxInt remainingSeconds = 30.obs;
 
-  RxInt durationInSeconds = 30.obs; // Dynamic duration (can be changed)
-  RxInt remainingSeconds = 30.obs;
-  // RxBool isJobRequested = false.obs;
-
-  var jobRequests = <JobRequestModel>[].obs;
-  RxBool isBottomSheet = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-
-    animation = AlwaysStoppedAnimation(1.0);
-
-    jobRequests.addAll(
-      List.generate(3, (index) => JobRequestModel(id: index)),
-    );
-  }
-
-  void acceptJob(JobRequestModel job) {
-    jobRequests.remove(job);
-    // Call backend accept API here
-  }
-
-  void declineJob(JobRequestModel job) {
-    jobRequests.remove(job);
-    // Call backend decline API here
-  }
-
-  ////////////////////////////////////////////////
-
-  void _setupTimer() {
-    _animationController = AnimationController(
-      vsync: this,
       duration: Duration(seconds: durationInSeconds.value),
     );
+    animation = AlwaysStoppedAnimation(1.0);
+    isOnline.value = PrefsHelper.onlineStatus;
+  }
+
+  final Rx<LatLng> driverPosition = const LatLng(5.6037, -0.1870).obs; // default Accra
+  final RxInt currentJobIndex = 0.obs;
+
+  /// Current location fetching
+  RxBool locationFetching = false.obs;
+  Future<void> fetchCurrentLocation() async {
+    locationFetching.value = true;
+    final result = await OtherHelper.getCurrentLocationAddress();
+    final address = result.address;
+    final position = result.position;
+
+    if (result.address.isNotEmpty) {
+      driverPosition.value = position;
+      DriverMapController.instance.currentLocation.value = position;
+      updateDriverPosition(position, address);
+    }
+    locationFetching.value = false;
+  }
+
+  Future<void> updateDriverPosition(LatLng newPosition, address) async {
+    try {
+      final response = await ApiService.patch(
+        AppUrls.updateMyLocation,
+        body: {
+          'latitude': newPosition.latitude,
+          'longitude': newPosition.longitude,
+          'locationName': address,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        driverPosition.value = newPosition;
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } catch (e) {
+      log('Error updating driver position: $e');
+    }
+  }
+
+  // ── Toggle Online Status ───────────────────────────────
+  final RxBool isToggleLoading = false.obs;
+
+  Future<void> toggleOnline(bool value) async {
+    isToggleLoading.value = true;
+    try {
+      final response = await ApiService.patch(AppUrls.toggleMyStatus);
+
+      if (response.statusCode == 200) {
+        isOnline.value = value;
+        PrefsHelper.setBool('onlineStatus', value);
+        if (value) {
+          // _setupTimer();
+          // getAvailableBookings();
+        }
+        CustomSnackbar.success(response.message);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isToggleLoading.value = false;
+    }
+  }
+
+  // ── Job Actions ────────────────────────────────────────────
+
+  final RxBool isAcceptLoading = false.obs;
+  final RxBool isDeclineLoading = false.obs;
+  final Rx<AcceptedBookingModel?> acceptedBooking = Rx<AcceptedBookingModel?>(null);
+
+// ── Accept Booking ─────────────────────────────────────
+  Future<void> acceptJob(AvailableBookingModel job) async {
+    isAcceptLoading.value = true;
+    try {
+      final response = await ApiService.patch(
+        AppUrls.acceptBooking(id: job.id),
+      );
+
+      if (response.statusCode == 200) {
+        acceptedBooking.value =
+            AcceptedBookingModel.fromJson(response.body['data']);
+
+        // remove from list
+        jobRequests.remove(job);
+        currentJobIndex.value = 0;
+
+        isBottomSheet.value = true;
+        CustomSnackbar.success(response.message);
+        Get.to(() => CustomerInfoScreen());
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isAcceptLoading.value = false;
+    }
+  }
+
+// ── Decline Booking ────────────────────────────────────
+  Future<void> declineJob(AvailableBookingModel job) async {
+    isDeclineLoading.value = true;
+    try {
+      final response = await ApiService.patch(
+        AppUrls.declineBooking(id: job.id),
+      );
+
+      if (response.statusCode == 200) {
+        // remove from list
+        jobRequests.remove(job);
+        currentJobIndex.value = 0;
+        CustomSnackbar.success(response.message);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isDeclineLoading.value = false;
+    }
+  }
+  void toggle() => isExpanded.toggle();
+
+  double calculateDistanceToJob(AvailableBookingModel job) {
+    final driverLat = driverPosition.value.latitude;
+    final driverLng = driverPosition.value.longitude;
+
+    final distanceInMeters = Geolocator.distanceBetween(
+      driverLat,
+      driverLng,
+      job.pickupLatitude,
+      job.pickupLongitude,
+    );
+
+    return distanceInMeters / 1000; // convert to KM
+  }
+
+  /// ============>>> Requested Bookings <<<================
+  final RxBool isBookingsLoading = false.obs;
+  final RxList<AvailableBookingModel> jobRequests = <AvailableBookingModel>[].obs;
+
+  Future<void> getAvailableBookings() async {
+    jobRequests.clear();
+    isBookingsLoading.value = true;
+    try {
+      final response = await ApiService.get(AppUrls.availableBookings());
+
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        jobRequests.value = data.map((e) => AvailableBookingModel.fromJson(e)).toList();
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isBookingsLoading.value = false;
+    }
+  }
+
+  // ── Timer ──────────────────────────────────────────────────
+  void _setupTimer() {
+    _animationController.stop();
+    _animationController.reset();
+    _animationController.duration = Duration(seconds: durationInSeconds.value);
 
     animation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.linear),
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.linear,
+      ),
     )..addListener(() {
-      final progress = animation.value;
-      remainingSeconds.value = (progress * durationInSeconds.value).ceil();
+      remainingSeconds.value =
+          (animation.value * durationInSeconds.value).ceil();
+    });
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Get.snackbar(
+          'Time Up!',
+          'Countdown finished',
+          backgroundColor: AppColors.green500,
+          colorText: AppColors.white,
+        );
+      }
     });
 
     _animationController.forward();
-
-    // Optional: Listen for completion
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        Get.snackbar('Time Up!', 'Countdown finished',
-            backgroundColor: AppColors.green500, colorText: AppColors.white);
-      }
-    });
   }
 
-  // Restart with new duration
   void restart({int? newDuration}) {
-    _animationController.stop();
-    _animationController.reset();
-
     if (newDuration != null) {
       durationInSeconds.value = newDuration;
       remainingSeconds.value = newDuration;
     }
-
+    _animationController.stop();
+    _animationController.reset();
     _animationController.duration = Duration(seconds: durationInSeconds.value);
     _animationController.forward();
   }
@@ -132,7 +248,3 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
   }
 }
 
-class JobRequestModel {
-  final int id;
-  JobRequestModel({required this.id});
-}

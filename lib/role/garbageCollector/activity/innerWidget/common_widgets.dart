@@ -100,10 +100,10 @@ Widget locationSection() {
         children: [
           Icon(Icons.radio_button_checked,
               color: AppColors.primaryColor, size: 18),
-          SizedBox(height: 6),
-          VerticalDottedLine(),
-          SizedBox(height: 6),
-          Icon(Icons.location_on, color: AppColors.primaryColor, size: 20),
+          // SizedBox(height: 6),
+          // VerticalDottedLine(),
+          // SizedBox(height: 6),
+          // Icon(Icons.location_on, color: AppColors.primaryColor, size: 20),
         ],
       ),
       const SizedBox(width: 12),
@@ -112,21 +112,22 @@ Widget locationSection() {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
+              textAlign: TextAlign.start,
               text: '85 Ave, Street Side Road, Accra, Ghana',
               fontSize: 15,
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(child: HorizontalDottedLine()),
-                distanceChip(),
-              ],
-            ),
-            const SizedBox(height: 12),
-            const CommonText(
-              text: '1901 Thornridge Road, Accra, Ghana',
-              fontSize: 15,
-            ),
+            // const SizedBox(height: 12),
+            // Row(
+            //   children: [
+            //     Expanded(child: HorizontalDottedLine()),
+            //     distanceChip(),
+            //   ],
+            // ),
+            // const SizedBox(height: 12),
+            // const CommonText(
+            //   text: '1901 Thornridge Road, Accra, Ghana',
+            //   fontSize: 15,
+            // ),
           ],
         ),
       ),

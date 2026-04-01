@@ -42,7 +42,7 @@ class BackHomeButton extends StatelessWidget {
             //Get.to(()=>HomeScreenOne());
           },
           child: Padding(
-            padding: EdgeInsets.fromLTRB(58, 14, 58, 14),
+            padding: EdgeInsets.symmetric(horizontal: 16),
 
             child: ShaderMask(
               shaderCallback: (bounds) => LinearGradient(

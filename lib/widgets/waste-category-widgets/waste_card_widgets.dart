@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -90,14 +91,14 @@ Widget buildCategoryCard({
         ),
         child: Container(
           height: 170,
-          width: 177,
+          width: Get.width * 0.42,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: Column(
             children: [
-              Image.asset(image, scale: scale),
+              Image.asset(image, height: 105, width: 100,),
               const SizedBox(height: 6),
               Text(
                 label,

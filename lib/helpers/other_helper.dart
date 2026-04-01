@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
+import '../role/garbageCollector/map/controller/gmap_controller.dart';
 import '../theme/app_color.dart';
 
 
@@ -216,18 +218,20 @@ class OtherHelper {
   }
 
   ///Get current location
-  static Future<String> getCurrentLocationAddress() async {
+  static Future<({String address, LatLng position})> getCurrentLocationAddress() async {
     try {
       // ── Check permission ──
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          return '';
+          return (address: '', position: const LatLng(0, 0));
         }
       }
 
-      if (permission == LocationPermission.deniedForever) return '';
+      if (permission == LocationPermission.deniedForever) {
+        return (address: '', position: const LatLng(0, 0));
+      }
 
       // ── Get position ──
       final Position position = await Geolocator.getCurrentPosition(
@@ -239,14 +243,14 @@ class OtherHelper {
         position.latitude,
         position.longitude,
       );
-      // ProfileController.instance.latitude = position.latitude;
-      // ProfileController.instance.longitude = position.longitude;
-      // ProfileController.instance.updateProfile(isLocationUpdate: true);
 
-      return address;
+      final latLng = LatLng(position.latitude, position.longitude);
+      // GMapController.instance.currentLocation.value = latLng;
+      return (address: address, position: latLng);
+
     } catch (e) {
       log('Error in getCurrentLocationAddress: $e');
-      return '';
+      return (address: '', position: const LatLng(0, 0));
     }
   }
 

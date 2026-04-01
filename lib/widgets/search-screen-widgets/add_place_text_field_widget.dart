@@ -1,20 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 
-import '../../screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 import '../custom_text_field.dart';
 import '../gradient_button.dart';
 
 class AddPlaceTextFields extends StatelessWidget {
-  const AddPlaceTextFields({
-    super.key,
-    required this.addPlaceController,
-  });
-
-  final AddPlaceController addPlaceController;
+  const AddPlaceTextFields({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final bookingCtrl = Get.find<BookingController>();
+
     return Column(
 
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +28,7 @@ class AddPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 6),
 
         CustomTextField(
-          controller: addPlaceController.titleController,
+          controller: bookingCtrl.placeTitleController,
           hint: 'Hotel',
           prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5,),
         ),
@@ -46,6 +43,7 @@ class AddPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 6),
 
         CustomTextField(
+          controller: bookingCtrl.placeNameController,
           hint: 'Chittagong, Ghana',
           prefix: Image.asset('assets/images/second_pin_2.png' , scale: 3.5,),
         ),
@@ -60,13 +58,13 @@ class AddPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 6),
 
         CustomTextField(
+          controller: bookingCtrl.placeAddressController,
           hint: 'Studio 08 Jake Stream',
           prefix: Image.asset('assets/images/third_pin.png'),
           suffix: Padding(
             padding: const EdgeInsets.all(3.0),
             child: Container(
               padding: const EdgeInsets.all(2),
-              //margin: EdgeInsets.all(2),
               margin: EdgeInsets.fromLTRB(2, 2, 14, 2),
               decoration: BoxDecoration(
                   color: Colors.amber,
@@ -81,9 +79,17 @@ class AddPlaceTextFields extends StatelessWidget {
 
         GradientButton(
           text: 'Save Place',
-          onPressed: () {
-            Navigator.pop(context);
-            //Get.to(OtpScreen());
+          isLoading: bookingCtrl.isAddLoading,
+          onPressed: () async {
+            await bookingCtrl.addPlace(
+              placeType: bookingCtrl.selectedPlaceType.value,
+              placeTitle: bookingCtrl.placeTitleController.text.trim(),
+              placeName: bookingCtrl.placeNameController.text.trim(),
+              address: bookingCtrl.placeAddressController.text.trim(),
+              latitude: 0.0,
+              longitude: 0.0,
+            );
+            Get.back();
           },
         ),
 

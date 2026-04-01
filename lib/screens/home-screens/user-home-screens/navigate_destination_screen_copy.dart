@@ -8,7 +8,7 @@ import '../../../theme/common_button_copy.dart';
 import '../../../theme/custom_container_copy.dart';
 import '../../../utils/custom-gen-assets/assets.gen.dart';
 
-import '../../map-screens/common_map_copy.dart';
+import '../../map-screens/user_common_map.dart';
 
 import 'arrived_screen_copy.dart';
 

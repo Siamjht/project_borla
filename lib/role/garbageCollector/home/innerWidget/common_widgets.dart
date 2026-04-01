@@ -1,12 +1,15 @@
 // ---------------- ACTION BUTTONS ----------------
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/custom_container.dart';
+import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
 import 'package:project_borla/role/garbageCollector/call/incoming_call_screen.dart';
 import 'package:project_borla/role/garbageCollector/call/outgoing_call_screen.dart';
 import 'package:project_borla/role/garbageCollector/home/customer_info_screen.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
+import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
 import '../../../../theme/app_color.dart';
 import '../../../commonScreens/chat/chatting_screen.dart';
 import '../../../components/button/common_button.dart';
@@ -14,54 +17,60 @@ import '../../../components/dotted_line.dart';
 import '../../../components/text/common_text.dart';
 import '../controller/driver_home_controller.dart';
 
-Widget actionButtons(BuildContext context,) {
-  return Row(
+// ── Action Buttons ────────────────────────────────────────────
+
+Widget actionButtons(BuildContext context, AvailableBookingModel job) {
+  final ctrl = Get.find<DriverHomeController>();
+
+  return Obx(() => Row(
     children: [
       Expanded(
         child: CommonButton(
-          // onTap: controller.declineJob, // ✅ controller handles logic
+          onTap: ctrl.isDeclineLoading.value
+              ? null
+              : () => ctrl.declineJob(job),
           buttonRadius: 12,
-          titleText: "Decline",
+          titleText: ctrl.isDeclineLoading.value ? '...' : 'Decline',
           titleColor: AppColors.green500,
           borderColor: AppColors.green500,
+          secondGradient: AppColors.transparent,
+          firstGradient: AppColors.transparent,
         ),
       ),
-      SizedBox(width: 20,),
+      const SizedBox(width: 20),
       Expanded(
         child: CommonButton(
-          onTap: (){
-            DriverHomeController.instance.isBottomSheet.value = true;
-            Get.to(()=> CustomerInfoScreen());
-          },
-          // onTap: controller.acceptJob,
+          onTap: ctrl.isAcceptLoading.value
+              ? null
+              : () => ctrl.acceptJob(job),
           buttonRadius: 12,
-          titleText: "Accept",
+          titleText: ctrl.isAcceptLoading.value ? '...' : 'Accept',
         ),
       ),
     ],
-  );
+  ));
 }
 
 // ---------------- USER ROW ----------------
-Widget userRow(DriverHomeController controller) {
+// ── User Row ──────────────────────────────────────────────────
+Widget userRow(DriverHomeController controller, AvailableBookingModel job) {
   return Row(
     children: [
-      const CircleAvatar(
-        radius: 28,
-        backgroundImage: NetworkImage('https://shorturl.at/WSMrn'),
-      ),
+
+      ShimmerImageLoader(url: job.user.profilePicture, width: 60, height: 60, borderRadius: 50,),
       const SizedBox(width: 16),
-      const Expanded(
+      Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CommonText(
-              text: 'Jenny Wilson',
+              textAlign: TextAlign.start,
+              text: job.user.name,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 4),
-            CommonText(
+            const SizedBox(height: 4),
+            const CommonText(
               text: 'User',
               fontSize: 14,
               color: Colors.grey,
@@ -69,27 +78,27 @@ Widget userRow(DriverHomeController controller) {
           ],
         ),
       ),
-      controller.isBottomSheet.value?
-      Row(
+      Obx(() => controller.isBottomSheet.value
+          ? Row(
         children: [
           InkWell(
-              onTap: () {
-                Get.to(()=> ChattingScreen());
-              },
-              child: circleAction(Assets.icons.messageIcon.image(height: 20, width: 20))),
+            onTap: () => Get.to(() => ChattingScreen()),
+            child: circleAction(
+                Assets.icons.messageIcon.image(height: 20, width: 20)),
+          ),
           const SizedBox(width: 12),
           InkWell(
-              onTap: () {
-                // Get.to(()=> IncomingCallScreen());
-                Get.to(()=> OutgoingCallScreen());
-              },
-              child: circleAction(Assets.icons.callIcon.image(height: 20, width: 20))),
+            onTap: () => Get.to(() => OutgoingCallScreen()),
+            child: circleAction(
+                Assets.icons.callIcon.image(height: 20, width: 20)),
+          ),
         ],
       )
-      : countdownRing(controller),
+          : countdownRing(controller)),
     ],
   );
 }
+
 
 Widget circleAction(Image icon) {
   return Container(
@@ -133,19 +142,20 @@ Widget countdownRing(DriverHomeController controller) {
 }
 
 // ---------------- LOCATION ----------------
-Widget locationSection() {
+Widget locationSection(AvailableBookingModel job) {
+  final ctrl = Get.find<DriverHomeController>();
+  final distanceKm = ctrl.calculateDistanceToJob(job);
+
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Column(
         children: [
-          Icon(Icons.radio_button_checked,
-              color: AppColors.primaryColor, size: 18),
-          SizedBox(height: 6),
-          VerticalDottedLine(),
-          SizedBox(height: 6),
-          Icon(Icons.location_on,
-              color: AppColors.primaryColor, size: 20),
+          Icon(Icons.radio_button_checked, color: AppColors.primaryColor, size: 18),
+          const SizedBox(height: 6),
+          // VerticalDottedLine(),
+          // const SizedBox(height: 6),
+          // Icon(Icons.location_on, color: AppColors.primaryColor, size: 20),
         ],
       ),
       const SizedBox(width: 12),
@@ -155,22 +165,22 @@ Widget locationSection() {
           children: [
             CommonText(
               textAlign: TextAlign.start,
-              text: '85 Ave, Street Side Road, Accra, Ghana',
+              text: job.pickupAddress,
               fontSize: 14,
             ),
-            SizedBox(height: 8,),
-            Row(
-              children: [
-                Expanded(child: HorizontalDottedLine()),
-                distanceChip(),
-              ],
-            ),
-            SizedBox(height: 8),
-            CommonText(
-              textAlign: TextAlign.start,
-              text: '1901 Thornridge Road, Accra, Ghana',
-              fontSize: 14,
-            ),
+            const SizedBox(height: 8),
+            // Row(
+            //   children: [
+            //     Expanded(child: HorizontalDottedLine()),
+            //     distanceChip(distanceKm), // ✅ real distance
+            //   ],
+            // ),
+            // const SizedBox(height: 8),
+            // CommonText(
+            //   textAlign: TextAlign.start,
+            //   text: job.dropoffAddress ?? 'Dropoff not specified',
+            //   fontSize: 14,
+            // ),
           ],
         ),
       ),
@@ -178,7 +188,7 @@ Widget locationSection() {
   );
 }
 
-Widget distanceChip() {
+Widget distanceChip(double distanceKm) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
     decoration: BoxDecoration(
@@ -192,40 +202,44 @@ Widget distanceChip() {
         ),
       ],
     ),
-    child: const CommonText(
-      text: '22.6 KM',
+    child: CommonText(
+      text: '${distanceKm.toStringAsFixed(1)} KM',
       fontWeight: FontWeight.w600,
       color: AppColors.green500,
     ),
   );
 }
-// ---------------- PAYMENT ----------------
-Widget paymentRow() {
+
+
+// ── Payment Row ───────────────────────────────────────────────
+Widget paymentRow(AvailableBookingModel job) {
   return Row(
     children: [
       CustomContainer(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         borderRadius: 100,
-          color: AppColors.gray100,
-          child: Center(child: Assets.icons.creditCardIcon.image(height: 20, width: 20))),
-      SizedBox(width: 12),
+        color: AppColors.gray100,
+        child: Center(
+            child: Assets.icons.creditCardIcon.image(height: 20, width: 20)),
+      ),
+      const SizedBox(width: 12),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CommonText(
-            text: "Payment",
+          const CommonText(
+            text: 'Payment',
             fontSize: 12,
             color: AppColors.gray300,
           ),
           CommonText(
-            text: 'MTN MoMo Pay',
+            text: job.paymentMethod == 'cash' ? 'Cash' : 'MTN MoMo Pay',
             fontSize: 16,
           ),
         ],
       ),
-      Spacer(),
+      const Spacer(),
       CommonText(
-        text: 'GH₵ 50',
+        text: job.price != null ? 'GH₵ ${job.price!.toStringAsFixed(0)}' : 'TBD',
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: AppColors.primaryColor,

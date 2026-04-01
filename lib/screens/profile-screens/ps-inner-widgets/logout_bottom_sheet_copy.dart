@@ -27,28 +27,24 @@ void showUserLogoutBottomSheet(BuildContext context) {
                 width: 50,
                 decoration: BoxDecoration(
                   color: AppColors.gray200,
-                  borderRadius: BorderRadius.circular(12)
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
 
               SizedBox(height: 16.h),
 
-              // Title
-              const CommonText(
-                text: 'Logout',
+              CommonText(
+                text: 'logout'.tr,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
                 color: AppColors.red500,
               ),
               SizedBox(height: 16.h),
 
-              Divider(
-                color: AppColors.gray200,
-              ),
-              // Description
+              Divider(color: AppColors.gray200),
+
               CommonText(
-                text:
-                'Are you sure you want to logout your \naccount? This action cannot be undone.\nPlease confirm your decision.',
+                text: 'logout_confirmation'.tr,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.gray300,
@@ -57,17 +53,13 @@ void showUserLogoutBottomSheet(BuildContext context) {
               ),
               SizedBox(height: 40.h),
 
-              // Buttons
               Row(
                 spacing: 16,
                 children: [
-                  // Cancel Button
                   Expanded(
                     child: CommonButton(
-                      onTap: () {
-                        Get.back();
-                      },
-                      titleText:  'Cancel',
+                      onTap: () => Get.back(),
+                      titleText: 'cancel'.tr,
                       buttonRadius: 12,
                       titleColor: AppColors.orange300,
                       borderColor: AppColors.orange300,
@@ -78,17 +70,16 @@ void showUserLogoutBottomSheet(BuildContext context) {
                   Expanded(
                     child: CommonButton(
                       onTap: () {
-                        Get.snackbar("Log out successfully", "", snackPosition: SnackPosition.BOTTOM);
-                        Get.offAll(()=> LoginScreen());
+                        Get.snackbar('logout_success'.tr, '', snackPosition: SnackPosition.BOTTOM);
+                        Get.offAll(() => LoginScreen());
                       },
-                      titleText:  'Yes, Logout',
+                      titleText: 'yes_logout'.tr,
                       buttonRadius: 12,
                       titleColor: AppColors.white,
                       firstGradient: AppColors.orange300,
                       secondGradient: AppColors.orange500,
                     ),
                   ),
-                  // Logout Button
                 ],
               ),
             ],

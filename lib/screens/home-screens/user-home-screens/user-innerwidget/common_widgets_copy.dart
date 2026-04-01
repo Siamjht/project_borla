@@ -44,7 +44,7 @@ Widget actionButtons(BuildContext context,) {
 }
 
 // ---------------- USER ROW ----------------
-Widget userRow(UserHomeController controller, {role}) {
+Widget userRow(controller, {role}) {
   return Row(
     children: [
       const CircleAvatar(

@@ -1,0 +1,337 @@
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
+import 'package:project_borla/utils/app_urls.dart';
+
+import '../../gen/custom_assets/assets.gen.dart';
+import '../../helpers/other_helper.dart';
+import '../../models/api_response_model.dart';
+import '../../models/userModels/bookingModels/create_booking_model.dart';
+import '../../models/userModels/saved_place_model.dart';
+import '../../services/api_service.dart';
+
+class BookingController extends GetxController {
+
+  static BookingController get instance => Get.put(BookingController());
+  final RxBool isCreateBookingLoading = false.obs;
+  final Rx<CreateBookingModel?> createdBooking = Rx<CreateBookingModel?>(null);
+
+  final RxBool showSearchSheet = true.obs;
+  TextEditingController currentLocationController = TextEditingController();
+
+  /// fetch current location method
+  Future<void> fetchCurrentLocation() async {
+    final result = await OtherHelper.getCurrentLocationAddress();
+    final address = result.address;
+    final position = result.position;
+
+    if (result.address.isNotEmpty) {
+      currentLocationController.text = address;
+      selectedPlaceLat = position.latitude;
+      selectedPlaceLang = position.longitude;
+      showSearchSheet.value = false;
+    }
+  }
+
+  final RxBool isAddLoading = false.obs;
+  final RxBool isGetLoading = false.obs;
+  final RxBool isUpdateLoading = false.obs;
+
+  final RxList<SavedPlaceModel> savedPlaces = <SavedPlaceModel>[].obs;
+  final Rx<SavedPlaceModel?> updatedPlace = Rx<SavedPlaceModel?>(null);
+
+  final RxBool isMomo = false.obs ;
+  final RxBool isCash = false.obs ;
+  final RxInt selectedIndex = (-1).obs ;
+  final RxBool isPaymentPicked = false.obs ;
+  final RxString selectedPaymentMethod = ''.obs;
+
+  // ── Saved Place Form State ────────────────────────────────
+  final RxString selectedPlaceType = ''.obs;
+  final RxString selectedPlaceId = ''.obs;
+
+  final TextEditingController placeTitleController = TextEditingController();
+  final TextEditingController placeNameController = TextEditingController();
+  final TextEditingController placeAddressController = TextEditingController();
+  double selectedPlaceLat = 0.0;
+  double selectedPlaceLang = 0.0;
+
+  // ── Waste Qty Form State ──────────────────────────────
+  final RxString selectedBinSize = ''.obs;
+  final RxInt selectedBinQuantity = (-1).obs;
+  final TextEditingController wasteSizeController = TextEditingController();
+  final RxList<String> wasteImagePaths = <String>[].obs;
+
+  void addWasteImage(String path) {
+    wasteImagePaths.add(path);
+  }
+
+  void removeWasteImage(int index) {
+    wasteImagePaths.removeAt(index);
+  }
+
+  /// Call when a place type icon is tapped in SavedPlacesScreen.
+  /// Populates the form with existing data if a saved place of that type exists.
+  void selectPlaceType(String type) {
+    selectedPlaceType.value = type;
+    placeTitleController.text = type;
+
+    final matches = savedPlaces.where((p) => p.placeType == type).toList();
+    if (matches.isNotEmpty) {
+      final place = matches.first;
+      selectedPlaceId.value = place.id;
+      placeNameController.text = place.placeName;
+      placeAddressController.text = place.address;
+    } else {
+      selectedPlaceId.value = '';
+      placeNameController.clear();
+      placeAddressController.clear();
+    }
+  }
+
+  /// Clears the saved place form (use when entering AddPlaceScreen).
+  void clearPlaceForm() {
+    selectedPlaceType.value = '';
+    selectedPlaceId.value = '';
+    placeTitleController.clear();
+    placeNameController.clear();
+    placeAddressController.clear();
+  }
+
+  /// Save or update based on whether a place ID is already selected.
+  Future<void> saveOrUpdatePlace() async {
+    final type = selectedPlaceType.value;
+    final title = placeTitleController.text.trim();
+    final name = placeNameController.text.trim();
+    final address = placeAddressController.text.trim();
+
+    if (type.isEmpty || title.isEmpty || name.isEmpty || address.isEmpty) {
+      CustomSnackbar.error('Please fill in all fields');
+      return;
+    }
+
+    if (selectedPlaceId.value.isNotEmpty) {
+      await updatePlace(
+        id: selectedPlaceId.value,
+        placeType: type,
+        placeTitle: title,
+        placeName: name,
+        address: address,
+        latitude: selectedPlaceLat,
+        longitude: selectedPlaceLang,
+      );
+    } else {
+      await addPlace(
+        placeType: type,
+        placeTitle: title,
+        placeName: name,
+        address: address,
+        latitude: selectedPlaceLat,
+        longitude: selectedPlaceLang,
+      );
+    }
+  }
+
+  // ── Add Place ─────────────────────────────────────────────
+  Future<void> addPlace({
+    required String placeType,
+    required String placeTitle,
+    required String placeName,
+    required String address,
+    required double latitude,
+    required double longitude,
+  }) async {
+    isAddLoading.value = true;
+    try {
+      final response = await ApiService.post(
+        AppUrls.newPlaces,
+        body: {
+          'placeType': placeType.toLowerCase(),
+          'placeTitle': placeTitle,
+          'placeName': placeName,
+          'address': address,
+          'latitude': latitude,
+          'longitude': longitude,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        savedPlaces.add(SavedPlaceModel.fromJson(response.body['data']));
+        Get.back();
+        CustomSnackbar.success(response.message);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isAddLoading.value = false;
+    }
+  }
+
+  // ── Get Places ────────────────────────────────────────────
+  Future<void> getPlaces() async {
+    isGetLoading.value = true;
+    try {
+      final response = await ApiService.get(AppUrls.newPlaces);
+
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        savedPlaces.value = data.map((e) => SavedPlaceModel.fromJson(e)).toList();
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isGetLoading.value = false;
+    }
+  }
+
+  // ── Update Place ──────────────────────────────────────────
+  Future<void> updatePlace({
+    required String id,
+    required String placeType,
+    required String placeTitle,
+    required String placeName,
+    required String address,
+    required double latitude,
+    required double longitude,
+  }) async {
+    isUpdateLoading.value = true;
+    try {
+      final response = await ApiService.put(
+        AppUrls.updatePlace(id: id),
+        body: {
+          'placeType': placeType,
+          'placeTitle': placeTitle,
+          'placeName': placeName,
+          'address': address,
+          'latitude': latitude,
+          'longitude': longitude,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        updatedPlace.value = SavedPlaceModel.fromJson(response.body['data']);
+
+        // Update in list locally
+        final index = savedPlaces.indexWhere((p) => p.id == id);
+        if (index != -1) {
+          savedPlaces[index] = updatedPlace.value!;
+          savedPlaces.refresh();
+        }
+
+        CustomSnackbar.success(response.message);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isUpdateLoading.value = false;
+    }
+  }
+
+  /// Create booking repo
+  final RxString selectedWasteCategory = ''.obs;
+  Future<bool> createBooking({
+    // required String wasteCategory,
+    // required String binSize,
+    // required int binQuantity,
+    // required int wasteSize,
+    // required double pickupLatitude,
+    // required double pickupLongitude,
+    // required String pickupAddress,
+    // required String vehicleType,
+    // required String paymentMethod,
+    bool isScheduled = false,
+    // String? dropOffAddress,
+    // String? price,
+    String? scheduledFor,
+    String? scheduledDate,
+  }) async {
+    isCreateBookingLoading.value = true;
+    try {
+      final response = await BookingService.createBooking(
+        wasteCategory: selectedWasteCategory.value,
+        binSize: selectedBinSize.value,
+        binQuantity: selectedBinQuantity.value,
+        wasteSize: int.tryParse(wasteSizeController.text) ?? 0,
+        pickupLatitude: selectedPlaceLat,
+        pickupLongitude: selectedPlaceLang,
+        pickupAddress: currentLocationController.text,
+        vehicleType: 'Tri Cycle',
+        paymentMethod: selectedPaymentMethod.value,
+        isScheduled: isScheduled,
+        scheduledFor: scheduledFor,
+        scheduledDate: scheduledDate,
+        imagePaths: wasteImagePaths,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        createdBooking.value = CreateBookingModel.fromJson(response.body['data']);
+        CustomSnackbar.success(response.message);
+        return true;
+      } else {
+        CustomSnackbar.error(response.message);
+        return false;
+      }
+    } finally {
+      isCreateBookingLoading.value = false;
+    }
+  }
+
+}
+
+class BookingService {
+  static Future<ApiResponseModel> createBooking({
+    required String wasteCategory,
+    required String binSize,
+    required int binQuantity,
+    required int wasteSize,
+    required double pickupLatitude,
+    required double pickupLongitude,
+    required String pickupAddress,
+    required String vehicleType,
+    required String paymentMethod,
+    required bool isScheduled,
+    String? dropOffAddress,
+    String? price,
+    String? scheduledFor,
+    String? scheduledDate,
+    List<String>? imagePaths, // local file paths
+  }) async {
+    final Map<String, dynamic> body = {
+      'wasteCategory': wasteCategory,
+      'binSize': binSize,
+      'binQuantity': binQuantity,
+      'wasteSize': wasteSize,
+      'pickupLatitude': pickupLatitude,
+      'pickupLongitude': pickupLongitude,
+      'pickupAddress': pickupAddress,
+      'vehicleType': vehicleType,
+      'paymentMethod': paymentMethod,
+      'isScheduled': isScheduled,
+      if (dropOffAddress != null) 'dropoffAddress': dropOffAddress,
+      if (price != null) 'price': price,
+      if (scheduledFor != null) 'scheduledFor': scheduledFor,
+      if (scheduledDate != null) 'scheduledDate': scheduledDate,
+    };
+
+    // No images → regular POST
+    if (imagePaths == null || imagePaths.isEmpty) {
+      return await ApiService.post(AppUrls.createBookings, body: body);
+    }
+
+    // With images → multipart POST
+    final imageList = imagePaths
+        .map((path) => {
+      'imagePath': path,
+      'imageName': 'wasteImages',
+    })
+        .toList();
+
+    return await ApiService.multipartRequestWithMultipleImages(
+      url: AppUrls.createBookings,
+      body: body,
+      imageList: imageList,
+      method: HttpMethod.post,
+    );
+  }
+}

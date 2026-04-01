@@ -33,52 +33,52 @@ class CustomerInfoBottomSheet extends StatelessWidget {
           ),
           child: SingleChildScrollView(
             controller: scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// Drag Handle
-                Center(
-                  child: Container(
-                    width: 48,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: AppColors.black50,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                /// Title
-                const Center(
-                  child: CommonText(
-                    text: "Customer Information",
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-                const Divider(color: AppColors.black50, thickness: 1),
-
-                userRow(controller),
-
-                const Divider(color: AppColors.black50, thickness: 1),
-                const SizedBox(height: 6),
-
-                bottomSheetLocationSection(),
-
-                const Divider(color: AppColors.black50, thickness: 1),
-                const SizedBox(height: 10),
-
-                summarySection(),
-
-                const SizedBox(height: 20),
-
-                bottomSheetActionButtons(context),
-              ],
-            ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     /// Drag Handle
+            //     Center(
+            //       child: Container(
+            //         width: 48,
+            //         height: 5,
+            //         decoration: BoxDecoration(
+            //           color: AppColors.black50,
+            //           borderRadius: BorderRadius.circular(10),
+            //         ),
+            //       ),
+            //     ),
+            //
+            //     const SizedBox(height: 16),
+            //
+            //     /// Title
+            //     const Center(
+            //       child: CommonText(
+            //         text: "Customer Information",
+            //         fontSize: 18,
+            //         fontWeight: FontWeight.w600,
+            //       ),
+            //     ),
+            //
+            //     const SizedBox(height: 12),
+            //     const Divider(color: AppColors.black50, thickness: 1),
+            //
+            //     userRow(controller),
+            //
+            //     const Divider(color: AppColors.black50, thickness: 1),
+            //     const SizedBox(height: 6),
+            //
+            //     bottomSheetLocationSection(),
+            //
+            //     const Divider(color: AppColors.black50, thickness: 1),
+            //     const SizedBox(height: 10),
+            //
+            //     summarySection(),
+            //
+            //     const SizedBox(height: 20),
+            //
+            //     bottomSheetActionButtons(context),
+            //   ],
+            // ),
           ),
         );
       },

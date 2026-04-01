@@ -1,3 +1,4 @@
+// Developer: Dev_Siam
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/utils/app_routes.dart';
 
+import 'bindings/app_binding.dart';
 import 'language/app_translation.dart';
 import 'language/language_service.dart';
 
@@ -38,14 +40,10 @@ class _MyAppState extends State<MyApp> {
         return GetMaterialApp(
 
           debugShowCheckedModeBanner: false,
+          initialBinding: AppBinding(),
 
-           //initialRoute: '/notify',
+          //initialRoute: '/notify',
           initialRoute: AppRoute.splashScreen,
-          //initialRoute: AppRoute.startChat,
-          //initialRoute: AppRoute.riderSearch,
-          //initialRoute: AppRoute.splashScreen,
-          //initialRoute: AppRoute.homeTwo,
-          // initialRoute: AppRoute.chooseRide,
           getPages: AppRoute.pages,
 
           translations: AppTranslations(),

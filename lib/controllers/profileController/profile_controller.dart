@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
 import '../../../services/api_service.dart';
-import '../../models/authModels/login_model.dart';
+import '../../models/commonModels/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../utils/app_urls.dart';
 

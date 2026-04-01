@@ -108,6 +108,11 @@ class AppTranslations extends Translations {
       'notifications': 'Notifications',
       'logout': 'Logout',
 
+      'logout_confirmation': 'Are you sure you want to logout your \naccount? This action cannot be undone.\nPlease confirm your decision.',
+      'cancel': 'Cancel',
+      'yes_logout': 'Yes, Logout',
+      'logout_success': 'Log out successfully',
+
     },
     'ak_GH': {
       "choose_language": "Paw kasa a wobɛfa",
@@ -214,6 +219,10 @@ class AppTranslations extends Translations {
       'customer_support': 'Aboaboa',
       'notifications': 'Nkra',
       'logout': 'Pue',
+      'logout_confirmation': 'Wopɛ sɛ wupue wo account? Yei rentumi nsakra bio.\nY\u025bsra w\'adwene.',
+      'cancel': 'Gyae',
+      'yes_logout': 'Aane, Pue',
+      'logout_success': 'Wupue asomdwoe mu',
     }
   };
 }

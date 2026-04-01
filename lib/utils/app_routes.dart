@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:project_borla/features/auth/register_screen.dart';
+import 'package:project_borla/role/commonScreens/profile/change_password_screen.dart';
 import 'package:project_borla/role/garbageCollector/activity/activity_screen.dart';
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
 import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
@@ -18,9 +19,7 @@ import 'package:project_borla/screens/map-screens/map_screen_two.dart';
 import 'package:project_borla/screens/onboarding-screen/onboarding_one.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import 'package:project_borla/screens/profile-screens/address_screen.dart';
-import 'package:project_borla/screens/profile-screens/change_password_screen_copy.dart';
 import 'package:project_borla/screens/profile-screens/profile_screen_user.dart';
-// import 'package:project_borla/screens/rider-review-screen/rider_review_screen.dart';
 import 'package:project_borla/screens/rider-searching-screen/rider_searching_screen.dart';
 import 'package:project_borla/screens/scheduled-screens/cancel_ride_screen.dart';
 import 'package:project_borla/screens/scheduled-screens/schedule_ride_two.dart';
@@ -190,7 +189,7 @@ class AppRoute {
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: changePass,
-        page: () => UserChangePasswordScreen(),
+        page: () => ChangePasswordScreen(),
         transition: Transition.rightToLeftWithFade),
 
     GetPage(

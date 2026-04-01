@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_borla/bottom-sheets/rating_sheet.dart';
 
 import '../../role/components/commonBackButton/common_back_button.dart';
-import '../../role/garbageCollector/map/common_map.dart';
+import '../../role/garbageCollector/map/driver_common_map.dart';
 
 class RiderReviewScreen extends StatelessWidget {
   const RiderReviewScreen({super.key});
@@ -29,7 +29,7 @@ class RiderReviewScreen extends StatelessWidget {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: CommonMap()),
+            Positioned.fill(child: DriverCommonMap()),
 
             Positioned(
                 left: 20,

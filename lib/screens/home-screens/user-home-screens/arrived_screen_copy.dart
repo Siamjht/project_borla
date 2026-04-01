@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_borla/screens/home-screens/user-home-screens/user-innerwidget/arrived_bottom_sheet_copy.dart';
 import '../../../theme/common_back_button_copy.dart';
-import '../../map-screens/common_map_copy.dart';
+import '../../map-screens/user_common_map.dart';
 
 
 class ArrivedScreen extends StatelessWidget {

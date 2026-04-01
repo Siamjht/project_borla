@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../helpers/prefs_helper.dart';
 import '../../../services/api_service.dart';
 import '../../models/api_response_model.dart';
-import '../../models/contentModel/content_model.dart';
+import '../../models/commonModels/contentModel/content_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../utils/app_urls.dart';
 

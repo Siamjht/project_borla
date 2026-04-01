@@ -7,6 +7,8 @@ import 'package:project_borla/role/components/navBar/nav_bar.dart';
 import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/utils/app_routes.dart';
 
+import '../controllers/profileController/profile_controller.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -23,9 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
       log("Token: ${PrefsHelper.token}");
       if(PrefsHelper.token.isNotEmpty){
         if(PrefsHelper.myRole == "rider"){
-          Get.offAll(DriverNavbar());
+          Get.offAll(()=>DriverNavbar());
         }else{
-         Get.offAll(UserNavBar());
+         Get.offAll(()=>UserNavBar());
         }
       }else{
         Get.offAllNamed(AppRoute.onboard1);

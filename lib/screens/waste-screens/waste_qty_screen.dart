@@ -1,23 +1,24 @@
-import 'package:dotted_border/dotted_border.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/screens/finding-driver-screens/finding_driver_screen.dart';
-import 'package:project_borla/screens/waste-screens/waste-controllers/waste_category_controller.dart';
 import 'package:project_borla/utils/app_dropdown.dart';
 
-import '../../role/components/text/common_text.dart';
+import '../../controllers/date_time_picker_controller.dart';
+import '../../controllers/user-controllers/booking_controller.dart';
+import '../../gen/custom_assets/assets.gen.dart';
+import '../../role/components/customSnackbar/custom_snackbar.dart';
+import '../../role/components/custom_container.dart';
 import '../../theme/app_color.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/waste-category-widgets/waste_header_widgets.dart';
 import '../../widgets/waste-category-widgets/waste_photo_widgets.dart';
+import '../choose-payment-screens/choose_payment_screen.dart';
+import '../scheduled-screens/schedule_ride_two.dart';
 
 class WasteQtyScreen extends StatefulWidget {
   const WasteQtyScreen({super.key});
@@ -28,149 +29,199 @@ class WasteQtyScreen extends StatefulWidget {
 
 class _WasteQtyScreenState extends State<WasteQtyScreen> {
 
-  WasteCategoryController amountController = Get.put(WasteCategoryController());
+  final bookingCtrl = Get.find<BookingController>();
+  final dateTimeCtrl = Get.put(DateTimePickerController());
+
+  // Bin size map: display label → api value
+  final List<Map<String, String>> binSizes = [
+    {'label': 'Small (50L)',   'value': 'small (50L)'},
+    {'label': 'Medium (120L)', 'value': 'medium (120L)'},
+    {'label': 'Large (240L)',  'value': 'large (240L)'},
+    {'label': 'Extra Large (360L)', 'value': 'extra large (360L)'},
+  ];
+
+  final List<int> binQuantities = [0, 1, 2, 3, 4, 5];
+
+  void _onContinue() {
+    final binSize = bookingCtrl.selectedBinSize.value;
+    final binQty = bookingCtrl.selectedBinQuantity.value;
+    final wasteSize = bookingCtrl.wasteSizeController.text.trim();
+
+    if (binSize.isEmpty) {
+      CustomSnackbar.error('Please select a bin size');
+      return;
+    }
+    if (binQty == -1) {
+      CustomSnackbar.error('Please select a bin quantity');
+      return;
+    }
+    if (wasteSize.isEmpty) {
+      CustomSnackbar.error('Please enter waste size');
+      return;
+    }
+    if (int.tryParse(wasteSize) == null) {
+      CustomSnackbar.error('Waste size must be a valid number');
+      return;
+    }
+    Get.to(()=> ChoosePaymentScreen());
+    // Get.to(() => FindingDriverScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Stack(
+        children: [
 
-        body: Stack(
-
-          children: [
-
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Image.asset(
-                'assets/images/background.png',
-                fit: BoxFit.fitWidth,
-                //alignment: Alignment.topRight,
-              ),
+          // ── Background ────────────────────────────────────
+          Positioned(
+            top: 0, left: 0, right: 0,
+            child: Image.asset(
+              'assets/images/background.png',
+              fit: BoxFit.fitWidth,
             ),
+          ),
 
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(22, 68, 22, 22),
-                child: Column(
-                  children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(22, 68, 22, 22),
+              child: Column(
+                children: [
 
-                    WasteScreenHeader(),
+                  WasteScreenHeader(),
+                  SizedBox(height: 34),
+                  WasteScreenSubHeader(),
+                  SizedBox(height: 20),
 
-                    SizedBox(height: 34),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                    WasteScreenSubHeader(),
+                      WasteContainer(),
+                      WastePickPhoto(),
 
-                    SizedBox(height: 20),
+                      // ── Bin Size ───────────────────────────
+                      Text(
+                        'Bin Size',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      Obx(() => AppDropDownStyle(
+                        DropdownButton<String>(
+                          value: bookingCtrl.selectedBinSize.value.isEmpty
+                              ? null
+                              : bookingCtrl.selectedBinSize.value,
+                          hint: const Text('Select Bin Size'),
+                          isExpanded: true,
+                          underline: Container(),
+                          items: binSizes.map((bin) => DropdownMenuItem(
+                            value: bin['value'],
+                            child: Text(bin['label']!),
+                          )).toList(),
+                          onChanged: (value) {
+                            bookingCtrl.selectedBinSize.value = value ?? '';
+                          },
+                        ),
+                      )),
+
+                      const SizedBox(height: 14),
+
+                      // ── Bin Quantity ───────────────────────
+                      Text(
+                        'Bin Quantity',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      Obx(() => AppDropDownStyle(
+                        DropdownButton<int>(
+                          value: bookingCtrl.selectedBinQuantity.value == -1
+                              ? null
+                              : bookingCtrl.selectedBinQuantity.value,
+                          hint: const Text('Select Bin Quantity'),
+                          isExpanded: true,
+                          underline: Container(),
+                          items: binQuantities.map((qty) => DropdownMenuItem(
+                            value: qty,
+                            child: Text(qty == 5 ? 'More than 5' : qty.toString()),
+                          )).toList(),
+                          onChanged: (value) {
+                            bookingCtrl.selectedBinQuantity.value = value ?? 0;
+                          },
+                        ),
+                      )),
+
+                      const SizedBox(height: 14),
+
+                      // ── Waste Size ─────────────────────────
+                      Text(
+                        'Waste Size (KG)',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      CustomTextField(
+                        controller: bookingCtrl.wasteSizeController,
+                        hint: 'Enter waste size in kg',
+                        keyboardType: TextInputType.number,
+                        prefix: Image.asset(
+                          'assets/images/second_pin_2.png',
+                          scale: 3.5,
+                        ),
+                      ),
+
+                      SizedBox(height: 40),
+
+                      // ── Continue Button ────────────────────
+                      Row(
                         children: [
-
-                          WasteContainer(),
-
-                          WastePickPhoto(),
-
-                          Text('Bin Size', style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                            color: Colors.grey.shade600
-                          ),),
-
-                          const SizedBox(height: 10),
-
-                          Obx(() => AppDropDownStyle(
-                            DropdownButton<String>(
-                              value: (["1", "2", "3", "4"].contains(amountController.FormValues["Size"]))
-                                  ? amountController.FormValues["Size"]
-                                  : null,
-                              hint: const Text("Select Bin Size"),
-                              items: const [
-                                DropdownMenuItem(value: "1", child: Text("Small (50 L)")),
-                                DropdownMenuItem(value: "2", child: Text("Medium (120 L)")),
-                                DropdownMenuItem(value: "3", child: Text("Large (240 L)")),
-                                DropdownMenuItem(value: "4", child: Text("Extra Large (360 L)")),
-                              ],
-                              onChanged: (value) {
-                                amountController.FormValues["Size"] = value ?? "";
-                              },
-                              underline: Container(),
-                              isExpanded: true,
+                          Expanded(
+                            child: GradientButton(
+                              text: 'Continue',
+                              isLoading: bookingCtrl.isCreateBookingLoading,
+                              onPressed: _onContinue,
                             ),
-                          )),
-
-                          const SizedBox(height: 14),
-
-                          Text('Bin Quantity', style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: Colors.grey.shade600
-                          ),),
-
-                          const SizedBox(height: 10),
-
-                          Obx(() => AppDropDownStyle(
-                            DropdownButton<String>(
-                              value: (["1", "2", "3", "4", "5", "6"].contains(amountController.FormValues["Qty"]))
-                                  ? amountController.FormValues["Qty"]
-                                  : null,
-                              hint: const Text("Select Bin Quantity"),
-                              items: const [
-                                DropdownMenuItem(value: "1", child: Text("0")),
-                                DropdownMenuItem(value: "2", child: Text("1")),
-                                DropdownMenuItem(value: "3", child: Text("2")),
-                                DropdownMenuItem(value: "4", child: Text("3")),
-                                DropdownMenuItem(value: "5", child: Text("4")),
-                                DropdownMenuItem(value: "6", child: Text("More than 5")),
-                              ],
-                              onChanged: (value) {
-                                amountController.FormValues["Qty"] = value ?? "";
-                              },
-                              underline: Container(),
-                              isExpanded: true,
-                            ),
-                          )),
-
-                          const SizedBox(height: 14),
-                          Text('Waste Size', style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: Colors.grey.shade600
-                          ),),
-
-                          const SizedBox(height: 10),
-
-                          CustomTextField(
-                            hint: 'Waste Size',
-                            prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5),
                           ),
 
-                          SizedBox(height: 40),
-
-                          GradientButton(
-                            text: 'Continue',
-                            onPressed: () {
-                              print(amountController.FormValues["Size"]) ;
-                              print(amountController.FormValues["Qty"]) ;
-                              //prints values of dropdown options, not the texts on dropdowns
-                              Get.to(()=>FindingDriverScreen());
+                          SizedBox(width: 12,),
+                          InkWell(
+                            onTap: () {
+                              Get.to(()=> ScheduleRideTwo());
                             },
+                            child: CustomContainer(
+                              padding: EdgeInsets.all(12),
+                              borderRadius: 8,
+                              borderColor: AppColors.orange300,
+                              child: Assets.icons.scheduleCalenderIcon.image(
+                                  height: 24,
+                                  width: 24
+                              ),
+                            ),
                           ),
-
-                          SizedBox(height: 40),
-
-                        ]
-
-                    ),
-
-                  ],
-                ),
+                        ],
+                      ),
+                      SizedBox(height: 40),
+                    ],
+                  ),
+                ],
               ),
             ),
-
-          ],
-        )
-
+          ),
+        ],
+      ),
     );
   }
 }

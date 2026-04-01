@@ -84,6 +84,10 @@ class $AssetsIconsGen {
   AssetGenImage get driverIcon =>
       const AssetGenImage('assets/icons/driverIcon.png');
 
+  /// File path: assets/icons/driverIconWithDottedCircle.png
+  AssetGenImage get driverIconWithDottedCircle =>
+      const AssetGenImage('assets/icons/driverIconWithDottedCircle.png');
+
   /// File path: assets/icons/earningIcon.png
   AssetGenImage get earningIcon =>
       const AssetGenImage('assets/icons/earningIcon.png');
@@ -192,6 +196,10 @@ class $AssetsIconsGen {
   AssetGenImage get trasparentStarIcon =>
       const AssetGenImage('assets/icons/trasparentStarIcon.png');
 
+  /// File path: assets/icons/userLocationIcon.png
+  AssetGenImage get userLocationIcon =>
+      const AssetGenImage('assets/icons/userLocationIcon.png');
+
   /// File path: assets/icons/vanIcon.png
   AssetGenImage get vanIcon => const AssetGenImage('assets/icons/vanIcon.png');
 
@@ -219,6 +227,7 @@ class $AssetsIconsGen {
     daySunIcon,
     dobCalenderIcon,
     driverIcon,
+    driverIconWithDottedCircle,
     earningIcon,
     earningSolidIcon,
     ghanaCurrency,
@@ -246,6 +255,7 @@ class $AssetsIconsGen {
     starIcon,
     termsConditions,
     trasparentStarIcon,
+    userLocationIcon,
     vanIcon,
     wasteBoxIcon,
     weightIcon,

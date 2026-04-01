@@ -3,7 +3,7 @@ import 'package:project_borla/screens/driver-information-screens/driver_informat
 
 import '../../bottom-sheets/choose_ride_sheet.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
-import '../../role/garbageCollector/map/common_map.dart';
+import '../../role/garbageCollector/map/driver_common_map.dart';
 
 class DriverInformationScreen extends StatelessWidget {
   const DriverInformationScreen({super.key});
@@ -29,7 +29,7 @@ class DriverInformationScreen extends StatelessWidget {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: CommonMap()),
+            Positioned.fill(child: DriverCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

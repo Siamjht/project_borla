@@ -11,7 +11,7 @@ import '../../controllers/date_time_picker_controller.dart';
 import '../../role/components/button/common_button.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../role/components/text/common_text.dart';
-import '../map-screens/common_map_copy.dart';
+import '../map-screens/user_common_map.dart';
 
 
 class ScheduleRideTwo extends StatelessWidget {

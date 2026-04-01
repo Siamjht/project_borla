@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../helpers/prefs_helper.dart';
-import '../../models/authModels/create_user_model.dart';
-import '../../models/authModels/login_model.dart';
+
+import '../../models/commonModels/authModels/create_user_model.dart';
+import '../../models/commonModels/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../role/components/navBar/nav_bar.dart';
 import '../../screens/home-screens/user_nav_bar.dart';

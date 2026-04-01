@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
 import 'package:project_borla/role/garbageCollector/home/innerWidget/customer_info_bottom_sheet.dart';
-import 'package:project_borla/role/garbageCollector/map/common_map.dart';
+import 'package:project_borla/role/garbageCollector/map/driver_common_map.dart';
 
 class CustomerInfoScreen extends StatelessWidget {
   const CustomerInfoScreen({super.key});
@@ -13,7 +13,7 @@ class CustomerInfoScreen extends StatelessWidget {
       body: Stack(
         children: [
           /// Google Map
-          Positioned.fill(child: CommonMap()),
+          Positioned.fill(child: DriverCommonMap()),
 
           Positioned(
             top: 60,

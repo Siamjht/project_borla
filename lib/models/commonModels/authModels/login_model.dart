@@ -61,6 +61,7 @@ class User {
   String createdAt;
   String updatedAt;
   Verification verification;
+  List<DocumentModel> documents;
 
   User({
     this.id = '',
@@ -84,10 +85,16 @@ class User {
     this.createdAt = '',
     this.updatedAt = '',
     Verification? verification,
+    this.documents = const [],
   })  : location = location ?? Location(),
         verification = verification ?? Verification();
 
   factory User.fromJson(Map<String, dynamic> json) {
+    String parseDate(dynamic value) {
+      if (value == null) return '';
+      if (value is Map) return value['\$date'] ?? '';
+      return value.toString();
+    }
     return User(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -98,7 +105,7 @@ class User {
       role: json['role'] ?? '',
       profilePicture: json['profilePicture'] ?? '',
       phoneNumber: json['phoneNumber'] ?? '',
-      dateOfBirth: json['dateOfBirth'] ?? '',
+      dateOfBirth: parseDate(json['dateOfBirth']),
       ghanaCardId: (json['ghanaCardId'] as List<dynamic>?)
           ?.map((e) => e.toString())
           .toList() ??
@@ -110,12 +117,49 @@ class User {
       isDeleted: json['isDeleted'] ?? false,
       location: Location.fromJson(json['location'] ?? {}),
       locationName: json['locationName'] ?? '',
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
+      createdAt: parseDate(json['createdAt']),
+      updatedAt: parseDate(json['updatedAt']),
       verification: Verification.fromJson(json['verification'] ?? {}),
+      documents: (json['documents'] as List<dynamic>?)
+          ?.map((e) => DocumentModel.fromJson(e))
+          .toList() ??
+          [],
     );
   }
 }
+
+class DocumentModel {
+  final String id;
+  final String userId;
+  final String document;
+  final String status;
+  final String type;
+  final String createdAt;
+  final String updatedAt;
+
+  DocumentModel({
+    this.id = '',
+    this.userId = '',
+    this.document = '',
+    this.status = '',
+    this.type = '',
+    this.createdAt = '',
+    this.updatedAt = '',
+  });
+
+  factory DocumentModel.fromJson(Map<String, dynamic> json) {
+    return DocumentModel(
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      document: json['document'] ?? '',
+      status: json['status'] ?? '',
+      type: json['type'] ?? '',
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+    );
+  }
+}
+
 
 class Location {
   String type;

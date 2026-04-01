@@ -4,9 +4,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
+import 'package:project_borla/theme/common_button_copy.dart';
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
-import '../../role/garbageCollector/map/common_map.dart';
+import '../../role/garbageCollector/map/driver_common_map.dart';
 import '../../widgets/booking-requested-screen-widgets/booking_requested_button_widgets.dart';
 import '../home-screens/user_nav_bar.dart';
 
@@ -72,7 +73,18 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
 
                     SizedBox( height: 15),
 
-                    BackHomeButton(),
+                    CommonButton(
+                      titleText: "Back To Home",
+                      titleColor: AppColors.orange500,
+                      buttonRadius: 12,
+                      borderColor: AppColors.orange500,
+                      firstGradient: AppColors.transparent,
+                      secondGradient: AppColors.transparent,
+                      onTap: () {
+                        Get.to(()=> BookingAcceptedScreen());
+                      },
+                    ),
+                    // BackHomeButton(),
 
                     SizedBox( height: 20),
                   ],
@@ -98,7 +110,7 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: CommonMap()),
+            Positioned.fill(child: DriverCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

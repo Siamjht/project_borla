@@ -1,8 +1,10 @@
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project_borla/utils/app_urls.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerImageLoader extends StatelessWidget {
@@ -28,7 +30,7 @@ class ShimmerImageLoader extends StatelessWidget {
   });
 
   // ── Detect image type ──
-  bool get _isNetwork => url.startsWith('http://') || url.startsWith('https://');
+  bool get _isNetwork => url.startsWith('http://') || url.startsWith('https://') || url.startsWith('public/uploads') ;
   bool get _isFile => url.startsWith('/') || url.startsWith('file://');
   bool get _isAsset => url.startsWith('assets/');
 
@@ -73,9 +75,10 @@ class ShimmerImageLoader extends StatelessWidget {
     }
 
     if (_isNetwork) {
+      log("NetworkImage: ${AppUrls.imageBase}$url");
       // ── Network image ──
       return Image.network(
-        url,
+        "${AppUrls.imageBase}$url",
         width: width.w,
         height: height.w,
         fit: fit,

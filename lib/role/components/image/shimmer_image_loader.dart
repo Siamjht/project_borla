@@ -8,7 +8,7 @@ import 'package:project_borla/utils/app_urls.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerImageLoader extends StatelessWidget {
-  final String url;
+  final String? url; // ✅ nullable
   final double width;
   final double height;
   final double borderRadius;
@@ -29,10 +29,17 @@ class ShimmerImageLoader extends StatelessWidget {
     this.defaultWidget,
   });
 
-  // ── Detect image type ──
-  bool get _isNetwork => url.startsWith('http://') || url.startsWith('https://') || url.startsWith('public/uploads') ;
-  bool get _isFile => url.startsWith('/') || url.startsWith('file://');
-  bool get _isAsset => url.startsWith('assets/');
+  // ✅ safe null checks
+  bool get _isNetwork =>
+      url != null &&
+          (url!.startsWith('http://') ||
+              url!.startsWith('https://') ||
+              url!.startsWith('public/uploads'));
+  bool get _isFile =>
+      url != null &&
+          (url!.startsWith('/') || url!.startsWith('file://'));
+  bool get _isAsset =>
+      url != null && url!.startsWith('assets/');
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +57,12 @@ class ShimmerImageLoader extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    if (url.isEmpty) return _errorWidget();
+    // ✅ null or empty → show error widget, no crash
+    if (url == null || url!.isEmpty) return _errorWidget();
 
     if (_isFile) {
-      // ── Local file ──
       return Image.file(
-        File(url.replaceFirst('file://', '')),
+        File(url!.replaceFirst('file://', '')),
         width: width.w,
         height: height.w,
         fit: fit,
@@ -64,9 +71,8 @@ class ShimmerImageLoader extends StatelessWidget {
     }
 
     if (_isAsset) {
-      // ── Asset image ──
       return Image.asset(
-        url,
+        url!,
         width: width.w,
         height: height.w,
         fit: fit,
@@ -76,7 +82,6 @@ class ShimmerImageLoader extends StatelessWidget {
 
     if (_isNetwork) {
       log("NetworkImage: ${AppUrls.imageBase}$url");
-      // ── Network image ──
       return Image.network(
         "${AppUrls.imageBase}$url",
         width: width.w,

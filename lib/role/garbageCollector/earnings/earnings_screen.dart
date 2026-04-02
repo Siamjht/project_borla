@@ -242,8 +242,8 @@ class EarningsScreen extends StatelessWidget {
                           showWithdrawDialog(context, WithdrawDialog());
                         },
                         buttonRadius: 8,
-                        firstGradient: AppColors.green400,
-                        secondGradient: AppColors.green400,
+                        firstGradient: AppColors.green300,
+                        secondGradient: AppColors.green300,
                         titleText: 'Withdraw',
                       ),
                     ),

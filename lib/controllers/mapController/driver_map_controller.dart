@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,11 @@ import 'package:project_borla/map_key.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../theme/app_color.dart';
-import '../../role/garbageCollector/home/controller/driver_home_controller.dart';
+import '../../models/riderModels/wasteStationModel/waste_station_model.dart';
 import 'base_map_controller.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 
 /// Driver phases:
 /// 1. idle       — driver browsing, just show their location
@@ -64,13 +68,12 @@ class DriverMapController extends BaseMapController {
     _remainingRoutePoints = [];
     targetPosition.value = pickupPoint;
 
-    // Place pickup marker
+    // ✅ pickup marker with correct icon
     await placeMarker(
       id: 'pickup',
       position: pickupPoint,
-      iconPath: Assets.icons.locationCirclePointer.path,
+      iconPath: 'assets/icons/pickUpLocation.png',
       iconWidthPx: 60,
-      color: AppColors.green500,
     );
 
     await _fetchAndDrawRoute(origin: currentLocation.value);
@@ -103,6 +106,37 @@ class DriverMapController extends BaseMapController {
     removeMarker('destination');
     removeMarker('pickup');
     clearRoute();
+
+    _showNearbyStations();
+  }
+
+  void _showNearbyStations() {
+    // TODO: replace with real API data
+    final stations = [
+      WasteStationModel(
+        id: '1',
+        name: 'West Waste Station',
+        latitude: 5.6050,
+        longitude: -0.1890,
+        distanceKm: 2.4,
+      ),
+      WasteStationModel(
+        id: '2',
+        name: 'East Waste Station',
+        latitude: 5.6070,
+        longitude: -0.1820,
+        distanceKm: 2.5,
+      ),
+      WasteStationModel(
+        id: '3',
+        name: 'Central Waste Station',
+        latitude: 5.6020,
+        longitude: -0.1900,
+        distanceKm: 2.3,
+      ),
+    ];
+
+    Get.find<DriverMapController>().showNearbyStations(stations);
   }
 
   // =============================================================
@@ -117,6 +151,7 @@ class DriverMapController extends BaseMapController {
       'https://maps.googleapis.com/maps/api/directions/json'
           '?origin=${origin.latitude},${origin.longitude}'
           '&destination=${destination.latitude},${destination.longitude}'
+          '&mode=driving'        // ✅ driving mode
           '&key=${MapApiKey.mapKey.trim()}',
     );
 
@@ -133,12 +168,16 @@ class DriverMapController extends BaseMapController {
       return;
     }
 
-    final overviewPolyline =
-    routes[0]['overview_polyline']['points'] as String;
-    final fullRoutePoints = decodePolyline(overviewPolyline);
+    // ✅ decode each step's polyline separately for accurate road-following
+    final steps = routes[0]['legs'][0]['steps'] as List;
+    final List<LatLng> fullRoutePoints = [];
 
-    final firstStepEnd =
-    routes[0]['legs'][0]['steps'][0]['end_location'] as Map;
+    for (final step in steps) {
+      final points = step['polyline']['points'] as String;
+      fullRoutePoints.addAll(decodePolyline(points));
+    }
+
+    final firstStepEnd = routes[0]['legs'][0]['steps'][0]['end_location'] as Map;
     _firstStepEnd = LatLng(
       (firstStepEnd['lat'] as num).toDouble(),
       (firstStepEnd['lng'] as num).toDouble(),
@@ -149,7 +188,7 @@ class DriverMapController extends BaseMapController {
     }
 
     _redrawPolyline();
-    _placeDriverSelfMarker(origin);
+    await _placeDriverSelfMarker(origin);
   }
 
   // =============================================================
@@ -158,14 +197,101 @@ class DriverMapController extends BaseMapController {
 
   Future<void> _placeDriverSelfMarker(LatLng position) async {
     log("Driver position: $position");
+
+    // ✅ icon changes based on trip phase
+    final iconPath = tripPhase.value == DriverTripPhase.idle
+        ? 'assets/icons/driverIconWithDottedCircle.png'  // before accept
+        : 'assets/icons/tryCycleIcon.png';               // after accept
+
     await placeMarker(
       id: 'driver_self',
       position: position,
-      iconPath: "assets/icons/driverIconWithDottedCircle.png",
+      iconPath: iconPath,
       rotation: calculateBearing(position, _firstStepEnd),
-      color: AppColors.green500,
-      iconWidthPx: 80,
+      iconWidthPx: 60,
     );
+  }
+
+  Future<void> _drawRouteToStation(WasteStationModel station) async {
+    final origin = currentLocation.value;
+    final destination = station.latLng;
+
+    final uri = Uri.parse(
+      'https://maps.googleapis.com/maps/api/directions/json'
+          '?origin=${origin.latitude},${origin.longitude}'
+          '&destination=${destination.latitude},${destination.longitude}'
+          '&mode=driving'
+          '&key=${MapApiKey.mapKey.trim()}',
+    );
+
+    final response = await http.get(uri);
+    if (response.statusCode != 200) return;
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final routes = data['routes'] as List?;
+    if (routes == null || routes.isEmpty) return;
+
+    // ✅ decode each step for road-following polyline
+    final steps = routes[0]['legs'][0]['steps'] as List;
+    final List<LatLng> points = [];
+    for (final step in steps) {
+      points.addAll(decodePolyline(step['polyline']['points'] as String));
+    }
+
+    polyLines.add(Polyline(
+      polylineId: PolylineId('route_${station.id}'),
+      points: points,
+      color: AppColors.green500,
+      width: 4,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      jointType: JointType.round,
+    ));
+  }
+
+
+  Future<void> startToStationPhase(LatLng stationPosition) async {
+    // ✅ clear previous markers except driver
+    markers.removeWhere((m) => m.markerId.value != 'driver_self');
+    polyLines.clear();
+
+    targetPosition.value = stationPosition;
+
+    // ✅ place station marker
+    await placeMarker(
+      id: 'station',
+      position: stationPosition,
+      iconPath: 'assets/icons/pickUpLocation.png',
+      iconWidthPx: 60,
+      color: AppColors.green500,
+    );
+
+    // ✅ draw route driver → station
+    await _fetchAndDrawRoute(origin: currentLocation.value);
+  }
+
+  Future<void> _placeStationMarker(WasteStationModel station) async {
+    // ✅ just use asset icon directly — no widget rendering needed
+    await placeMarker(
+      id: 'station_${station.id}',
+      position: station.latLng,
+      iconPath: 'assets/icons/pickUpLocation.png',
+      iconWidthPx: 60,
+      color: AppColors.green500,
+    );
+  }
+
+  Future<void> showNearbyStations(List<WasteStationModel> stations) async {
+    await mapCompleter.future;
+
+    // ✅ clear previous markers except driver
+    markers.removeWhere((m) => m.markerId.value != 'driver_self');
+    polyLines.clear();
+
+    for (final station in stations) {
+      await _placeStationMarker(station);
+      await _drawRouteToStation(station);
+    }
   }
 
   // =============================================================
@@ -187,8 +313,11 @@ class DriverMapController extends BaseMapController {
     polyLines.add(Polyline(
       polylineId: const PolylineId('route'),
       points: List.from(_remainingRoutePoints),
-      color: Colors.black,
+      color: AppColors.green500, // ✅ green
       width: 5,
+      startCap: Cap.roundCap,   // ✅ rounded ends
+      endCap: Cap.roundCap,
+      jointType: JointType.round, // ✅ smooth corners
     ));
   }
 }

@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/choose_payment_sheet_controllers.dart';
 import 'package:project_borla/screens/driver-information-screens/driver_information_screen.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
+import '../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../role/components/text/common_text.dart';
 import '../../role/garbageCollector/activity/controller/activity_controller.dart';
 import '../../role/garbageCollector/call/outgoing_call_screen.dart';
@@ -126,6 +127,64 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
             child: Image.asset('assets/images/user_large_pin_2.png', scale: 6.4,)
         ),
       ],
+    );
+  }
+
+
+  // ── Summary Section ───────────────────────────────────────────
+  Widget summarySection({RiderBookingModel? booking}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CommonText(text: 'Total Price', fontSize: 13, color: Colors.grey),
+              const SizedBox(height: 4),
+              CommonText(
+                text: booking?.price != null
+                    ? 'GH₵ ${booking!.price!.toStringAsFixed(0)}'
+                    : 'TBD', // ✅ real data
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ],
+          ),
+          Container(height: 40, width: 1, color: Colors.grey),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CommonText(text: 'Total Distance', fontSize: 13, color: Colors.grey),
+              const SizedBox(height: 4),
+              CommonText(
+                text: booking?.estimatedDistance != null
+                    ? '${booking!.estimatedDistance!.toStringAsFixed(1)} KM'
+                    : '—', // ✅ real data
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ],
+          ),
+          Container(height: 40, width: 1, color: Colors.grey),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const CommonText(text: 'Avg. Time', fontSize: 13, color: Colors.grey),
+              const SizedBox(height: 4),
+              CommonText(
+                text: booking?.estimatedTime ?? '—', // ✅ real data
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

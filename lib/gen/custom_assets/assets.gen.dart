@@ -28,10 +28,6 @@ class $AssetsIconCopyGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/Location.png
-  AssetGenImage get location =>
-      const AssetGenImage('assets/icons/Location.png');
-
   /// File path: assets/icons/aboutUsIcon.png
   AssetGenImage get aboutUsIcon =>
       const AssetGenImage('assets/icons/aboutUsIcon.png');
@@ -116,6 +112,10 @@ class $AssetsIconsGen {
   AssetGenImage get hotelIcon =>
       const AssetGenImage('assets/icons/hotelIcon.png');
 
+  /// File path: assets/icons/location.png
+  AssetGenImage get location =>
+      const AssetGenImage('assets/icons/location.png');
+
   /// File path: assets/icons/locationCirclePointer.png
   AssetGenImage get locationCirclePointer =>
       const AssetGenImage('assets/icons/locationCirclePointer.png');
@@ -151,6 +151,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/paymentSuccess.png
   AssetGenImage get paymentSuccess =>
       const AssetGenImage('assets/icons/paymentSuccess.png');
+
+  /// File path: assets/icons/pickUpLocation.png
+  AssetGenImage get pickUpLocation =>
+      const AssetGenImage('assets/icons/pickUpLocation.png');
 
   /// File path: assets/icons/privacyPolicy.png
   AssetGenImage get privacyPolicy =>
@@ -196,6 +200,10 @@ class $AssetsIconsGen {
   AssetGenImage get trasparentStarIcon =>
       const AssetGenImage('assets/icons/trasparentStarIcon.png');
 
+  /// File path: assets/icons/tryCycleIcon.png
+  AssetGenImage get tryCycleIcon =>
+      const AssetGenImage('assets/icons/tryCycleIcon.png');
+
   /// File path: assets/icons/userLocationIcon.png
   AssetGenImage get userLocationIcon =>
       const AssetGenImage('assets/icons/userLocationIcon.png');
@@ -213,7 +221,6 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    location,
     aboutUsIcon,
     activityIcon,
     activitySolidIcon,
@@ -235,6 +242,7 @@ class $AssetsIconsGen {
     homeIcon,
     homeSolidIcon,
     hotelIcon,
+    location,
     locationCirclePointer,
     locationPointer,
     lockIcon,
@@ -244,6 +252,7 @@ class $AssetsIconsGen {
     notification,
     officeIcon,
     paymentSuccess,
+    pickUpLocation,
     privacyPolicy,
     profileIcon,
     profileSolidIcon,
@@ -255,6 +264,7 @@ class $AssetsIconsGen {
     starIcon,
     termsConditions,
     trasparentStarIcon,
+    tryCycleIcon,
     userLocationIcon,
     vanIcon,
     wasteBoxIcon,

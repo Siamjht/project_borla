@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../theme/app_color.dart';
 import '../../../features/fragments/dotted_line_copy.dart';
+import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../role/components/text/common_text.dart';
-import '../../../utils/custom-gen-assets/assets.gen.dart';
 import '../../chat-screen/chat_screen_copy.dart';
 import '../activity-controller/activity_controller_copy.dart';
 

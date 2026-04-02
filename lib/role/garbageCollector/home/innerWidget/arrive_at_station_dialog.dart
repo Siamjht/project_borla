@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import 'package:project_borla/screens/home-screens/user-home-screens/user-innerwidget/payment_receive_dialog_copy.dart';
+import 'package:project_borla/role/garbageCollector/home/innerWidget/waste_drop_completed_dialog.dart';
+
 import '../../../../gen/custom_assets/assets.gen.dart';
-import '../../../../role/components/text/common_text.dart';
-import '../../../../theme/common_button_copy.dart';
+import '../../../components/button/common_button.dart';
+import '../../../components/text/common_text.dart';
 
-
-class ArriveAtPickupDialog extends StatelessWidget {
-  const ArriveAtPickupDialog({super.key});
+class ArriveAtStationDialog extends StatelessWidget {
+  const ArriveAtStationDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ArriveAtPickupDialog extends StatelessWidget {
                       const SizedBox(height: 16),
                       // Title
                       const CommonText(
-                        text: 'Arrive at pickup',
+                        text: 'Arrive at Station',
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
@@ -44,7 +44,7 @@ class ArriveAtPickupDialog extends StatelessWidget {
                       const SizedBox(height: 8),
                       // Description
                       CommonText(
-                        text: 'Passenger has been notified, they’ll \nbe out shortly',
+                        text: "You've arrived!, The station is ready to receive your waste",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
@@ -58,7 +58,7 @@ class ArriveAtPickupDialog extends StatelessWidget {
                           showDialog(
                             context: context,
                             barrierDismissible: true,
-                            builder: (_) => const PaymentReceiveDialog(),
+                            builder: (_) => const WasteDropCompletedDialog(),
                           );
                         },
                         buttonRadius: 12,

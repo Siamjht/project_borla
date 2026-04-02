@@ -4,8 +4,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../../../gen/custom_assets/assets.gen.dart';
 
-import '../../../../utils/custom-gen-assets/assets.gen.dart';
 
 class PulsingCircleWithIcon extends StatelessWidget {
   const PulsingCircleWithIcon({super.key});

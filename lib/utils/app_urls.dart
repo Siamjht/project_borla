@@ -31,6 +31,7 @@ class AppUrls {
 
   static const toggleMyStatus = "$baseUrl/users/toggle-my-status";
   static const updateMyLocation = "$baseUrl/users/update-my-location";
+  static const stations = "$baseUrl/stations";
 
   static String availableBookings({bool isPopulateUser = true}) => "$baseUrl/bookings/available?populateUser=$isPopulateUser";
   static String updatePlace({required String id}) => "$baseUrl/saved-places/$id";

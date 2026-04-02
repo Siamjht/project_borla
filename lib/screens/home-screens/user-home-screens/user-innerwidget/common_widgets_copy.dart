@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../features/fragments/dotted_line_copy.dart';
+import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/app_color.dart';
 import '../../../../theme/common_button_copy.dart';
 import '../../../../theme/custom_container_copy.dart';
 import '../../../../theme/user_outgoing_call_screen.dart';
-import '../../../../utils/custom-gen-assets/assets.gen.dart';
 import '../../../activity-screens/activity-controller/activity_controller_copy.dart';
 import '../../../chat-screen/chat_screen_copy.dart';
 

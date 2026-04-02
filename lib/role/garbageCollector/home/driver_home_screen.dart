@@ -1,6 +1,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/gen/custom_assets/assets.gen.dart';
 import 'package:project_borla/role/components/custom_container.dart';
@@ -130,16 +131,123 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             ),
           ),
 
+          // Positioned(
+          //   top: 250,
+          //   left: 30,
+          //   right: 30,
+          //   child: Obx(() {
+          //     if (_driverHomeCtrl.jobRequests.isEmpty) return const SizedBox.shrink();
+          //
+          //     return Column(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //
+          //         // ── Job counter indicator ─────────────────────────
+          //         if (_driverHomeCtrl.jobRequests.length > 1)
+          //           Padding(
+          //             padding: const EdgeInsets.only(bottom: 8),
+          //             child: Obx(() => Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: List.generate(
+          //                 _driverHomeCtrl.jobRequests.length,
+          //                     (index) => AnimatedContainer(
+          //                   duration: const Duration(milliseconds: 300),
+          //                   margin: const EdgeInsets.symmetric(horizontal: 4),
+          //                   width: _driverHomeCtrl.currentJobIndex.value == index ? 16 : 8,
+          //                   height: 8,
+          //                   decoration: BoxDecoration(
+          //                     color: _driverHomeCtrl.currentJobIndex.value == index
+          //                         ? AppColors.green500
+          //                         : AppColors.gray200,
+          //                     borderRadius: BorderRadius.circular(4),
+          //                   ),
+          //                 ),
+          //               ),
+          //             )),
+          //           ),
+          //
+          //         // ── Swipeable job cards ───────────────────────────
+          //         SizedBox(
+          //           height: MediaQuery.of(context).size.height * 0.52,
+          //           child: CarouselSlider.builder(
+          //             itemCount: _driverHomeCtrl.jobRequests.length,
+          //             options: CarouselOptions(
+          //               height: MediaQuery.of(context).size.height * 0.52,
+          //               viewportFraction: 1,
+          //               enlargeCenterPage: true,
+          //               enlargeFactor: 0.2,
+          //               enableInfiniteScroll: false,
+          //               scrollPhysics: const BouncingScrollPhysics(),
+          //               onPageChanged: (index, reason) {
+          //                 _driverHomeCtrl.currentJobIndex.value = index;
+          //               },
+          //             ),
+          //             itemBuilder: (context, index, realIndex) {
+          //               final job = _driverHomeCtrl.jobRequests[index];
+          //               return JobRequestCard(job: job);
+          //             },
+          //           ),
+          //         ),
+          //
+          //       ],
+          //     );
+          //   }),
+          // ),
+
           Positioned(
             top: 250,
             left: 30,
             right: 30,
             child: Obx(() {
-              if (_driverHomeCtrl.jobRequests.isEmpty) return const SizedBox.shrink();
+              if (!_driverHomeCtrl.showJobCards.value ||
+                  _driverHomeCtrl.jobRequests.isEmpty) {
+                return const SizedBox.shrink();
+              }
 
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+
+                  // ── Swipe able job cards ───────────────────────────
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.52,
+                    child: CardSwiper(
+                      key: ValueKey(_driverHomeCtrl.jobRequests.length),
+                      controller: _driverHomeCtrl.cardSwiperController,
+                      cardsCount: _driverHomeCtrl.jobRequests.length,
+                      numberOfCardsDisplayed: _driverHomeCtrl.jobRequests.length.clamp(1, 5),
+                      allowedSwipeDirection: const AllowedSwipeDirection.only(
+                        left: true,
+                        right: true,
+                      ),
+                      isLoop: true,
+                      padding: EdgeInsets.zero,
+                      scale: 0.95,
+                      backCardOffset: const Offset(0, -20),
+                      onSwipe: (previousIndex, currentIndex, direction) {
+                        _driverHomeCtrl.currentJobIndex.value = currentIndex ?? previousIndex;
+
+                        if (direction == CardSwiperDirection.right) {
+                          // Accept job
+                          // _driverHomeCtrl.onJobAccepted(_driverHomeCtrl.jobRequests[previousIndex]);
+                        } else if (direction == CardSwiperDirection.left) {
+                          // Decline job
+                          // _driverHomeCtrl.onJobDeclined(_driverHomeCtrl.jobRequests[previousIndex]);
+                        }
+                        return true;
+                      },
+                      onEnd: () {
+                        _driverHomeCtrl.currentJobIndex.value = 0;
+                      },
+                      cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                        if (index >= _driverHomeCtrl.jobRequests.length) {
+                          return const SizedBox.shrink();
+                        }
+                        final job = _driverHomeCtrl.jobRequests[index];
+                        return JobRequestCard(job: job);
+                      },
+                    ),
+                  ),
 
                   // ── Job counter indicator ─────────────────────────
                   if (_driverHomeCtrl.jobRequests.length > 1)
@@ -157,7 +265,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                             decoration: BoxDecoration(
                               color: _driverHomeCtrl.currentJobIndex.value == index
                                   ? AppColors.green500
-                                  : AppColors.gray200,
+                                  : AppColors.gray300,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),
@@ -165,33 +273,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                       )),
                     ),
 
-                  // ── Swipeable job cards ───────────────────────────
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.52,
-                    child: CarouselSlider.builder(
-                      itemCount: _driverHomeCtrl.jobRequests.length,
-                      options: CarouselOptions(
-                        height: MediaQuery.of(context).size.height * 0.52,
-                        viewportFraction: 1,
-                        enlargeCenterPage: true,
-                        enlargeFactor: 0.2,
-                        enableInfiniteScroll: false,
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        onPageChanged: (index, reason) {
-                          _driverHomeCtrl.currentJobIndex.value = index;
-                        },
-                      ),
-                      itemBuilder: (context, index, realIndex) {
-                        final job = _driverHomeCtrl.jobRequests[index];
-                        return JobRequestCard(job: job);
-                      },
-                    ),
-                  ),
-
                 ],
               );
             }),
           ),
+
           Positioned(
             top: 0,
             right: 0,

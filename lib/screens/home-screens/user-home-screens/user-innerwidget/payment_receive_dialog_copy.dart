@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 
+import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../role/components/text/common_text.dart';
 import '../../../../theme/app_color.dart';
 import '../../../../theme/common_button_copy.dart';
-import '../../../../utils/custom-gen-assets/assets.gen.dart';
 
 import 'arrived_bottom_sheet_copy.dart';
 

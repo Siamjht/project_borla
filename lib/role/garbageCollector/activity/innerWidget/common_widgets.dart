@@ -6,30 +6,36 @@ import 'package:project_borla/role/garbageCollector/activity/controller/activity
 import 'package:project_borla/role/garbageCollector/call/ongoing_call_screen.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
+import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../../../theme/app_color.dart';
 import '../../../commonScreens/chat/chatting_screen.dart';
 import '../../../components/dotted_line.dart';
+import '../../../components/image/shimmer_image_loader.dart';
 import '../../../components/text/common_text.dart';
 
-Widget userRow() {
+Widget userRow(RiderBookingModel booking) {
+  final activityCtrl = Get.find<ActivityController>();
+
   return Row(
     children: [
-      const CircleAvatar(
-        radius: 28,
-        backgroundImage: NetworkImage('https://shorturl.at/WSMrn'),
+      ShimmerImageLoader(
+        url: booking.user.profilePicture,
+        width: 56,
+        height: 56,
+        isCircle: true,
       ),
       const SizedBox(width: 16),
-      const Expanded(
+      Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CommonText(
-              text: 'Jenny Wilson',
+              text: booking.user.name, // ✅ real data
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 4),
-            CommonText(
+            const SizedBox(height: 4),
+            const CommonText(
               text: 'User',
               fontSize: 14,
               color: Colors.grey,
@@ -37,30 +43,41 @@ Widget userRow() {
           ],
         ),
       ),
-      ActivityController.instance.selectedIndex.value == 0?
-      Row(
+
+      // ✅ real tab index check
+      Obx(() => activityCtrl.selectedIndex.value == 0
+          ? Row(
         children: [
           InkWell(
-              onTap: () {
-                Get.to(()=> ChattingScreen());
-              },
-              child: circleAction(Assets.icons.messageIcon.image(height: 20, width: 20))),
+            onTap: () => Get.to(() => ChattingScreen()),
+            child: circleAction(
+                Assets.icons.messageIcon.image(height: 20, width: 20)),
+          ),
           const SizedBox(width: 12),
           InkWell(
-            onTap: () {
-              Get.to(()=> OngoingCallScreen());
-            },
-              child: circleAction(Assets.icons.callIcon.image(height: 20, width: 20))),
+            onTap: () => Get.to(() => OngoingCallScreen()),
+            child: circleAction(
+                Assets.icons.callIcon.image(height: 20, width: 20)),
+          ),
         ],
-      ) : ActivityController.instance.selectedIndex.value == 1?
-      Column(
+      )
+          : activityCtrl.selectedIndex.value == 1
+          ? Column(
         children: [
-          CommonText(text: "Dec 23" , color: AppColors.green500,),
-          CommonText(text: "10:00 PM", color: AppColors.gray300, fontSize: 14,),
+          CommonText(
+            text: booking.scheduledDate ?? '—', // ✅ real data
+            color: AppColors.green500,
+          ),
+          CommonText(
+            text: _formatTime(booking.scheduledFor), // ✅ real data
+            color: AppColors.gray300,
+            fontSize: 14,
+          ),
         ],
-      ) :
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      )
+          : Container(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
           color: AppColors.green500,
           borderRadius: BorderRadius.circular(30),
@@ -73,10 +90,28 @@ Widget userRow() {
             ),
           ],
         ),
-        child: CommonText(text: "Completed", color: AppColors.white, fontSize: 12, fontWeight: FontWeight.w600,),
-      )
+        child: CommonText(
+          text: booking.status.capitalize ?? 'Completed', // ✅ real data
+          color: AppColors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      )),
     ],
   );
+}
+
+String _formatTime(String? isoDate) {
+  if (isoDate == null || isoDate.isEmpty) return '—';
+  try {
+    final dt = DateTime.parse(isoDate).toLocal();
+    final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+    final minute = dt.minute.toString().padLeft(2, '0');
+    final period = dt.hour >= 12 ? 'PM' : 'AM';
+    return '$hour:$minute $period';
+  } catch (_) {
+    return '—';
+  }
 }
 
 Widget circleAction(Image icon) {
@@ -91,8 +126,8 @@ Widget circleAction(Image icon) {
   );
 }
 
-// ---------------- LOCATION ----------------
-Widget locationSection() {
+// ── Location ──────────────────────────────────────────────────
+Widget locationSection(RiderBookingModel booking) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -100,10 +135,6 @@ Widget locationSection() {
         children: [
           Icon(Icons.radio_button_checked,
               color: AppColors.primaryColor, size: 18),
-          // SizedBox(height: 6),
-          // VerticalDottedLine(),
-          // SizedBox(height: 6),
-          // Icon(Icons.location_on, color: AppColors.primaryColor, size: 20),
         ],
       ),
       const SizedBox(width: 12),
@@ -111,23 +142,11 @@ Widget locationSection() {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CommonText(
+            CommonText(
               textAlign: TextAlign.start,
-              text: '85 Ave, Street Side Road, Accra, Ghana',
+              text: booking.pickupAddress, // ✅ real data
               fontSize: 15,
             ),
-            // const SizedBox(height: 12),
-            // Row(
-            //   children: [
-            //     Expanded(child: HorizontalDottedLine()),
-            //     distanceChip(),
-            //   ],
-            // ),
-            // const SizedBox(height: 12),
-            // const CommonText(
-            //   text: '1901 Thornridge Road, Accra, Ghana',
-            //   fontSize: 15,
-            // ),
           ],
         ),
       ),
@@ -135,7 +154,7 @@ Widget locationSection() {
   );
 }
 
-Widget distanceChip() {
+Widget distanceChip(RiderBookingModel booking) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
     decoration: BoxDecoration(
@@ -149,16 +168,18 @@ Widget distanceChip() {
         ),
       ],
     ),
-    child: const CommonText(
-      text: '22.6 KM',
+    child: CommonText(
+      text: booking.estimatedDistance != null
+          ? '${booking.estimatedDistance!.toStringAsFixed(1)} KM'
+          : '—', // ✅ real data
       fontWeight: FontWeight.w600,
       color: AppColors.primaryColor,
     ),
   );
 }
 
-// ---------------- PAYMENT ----------------
-Widget paymentRow() {
+// ── Payment ───────────────────────────────────────────────────
+Widget paymentRow(RiderBookingModel booking) {
   return Row(
     children: [
       Container(
@@ -178,19 +199,23 @@ Widget paymentRow() {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CommonText(
-            text: "Payment",
+            text: 'Payment',
             fontSize: 12,
             color: AppColors.gray300,
           ),
-          const CommonText(
-            text: 'MTN MoMo Pay',
+          CommonText(
+            text: booking.paymentMethod == 'cash'
+                ? 'Cash'
+                : 'MTN MoMo Pay', // ✅ real data
             fontSize: 16,
           ),
         ],
       ),
       const Spacer(),
-      const CommonText(
-        text: 'GH₵ 50',
+      CommonText(
+        text: booking.price != null
+            ? 'GH₵ ${booking.price!.toStringAsFixed(0)}'
+            : 'TBD', // ✅ real data
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: AppColors.primaryColor,

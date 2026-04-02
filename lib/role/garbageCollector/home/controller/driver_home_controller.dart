@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/animation.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:project_borla/theme/app_color.dart';
 import '../../../../helpers/other_helper.dart';
 import '../../../../models/riderModels/bookingModels/accept_booking_model.dart';
 import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
+import '../../../../models/riderModels/wasteStationModel/waste_station_model.dart';
 import '../../../../services/api_service.dart';
 import '../../../../utils/app_urls.dart';
 import '../../../components/customSnackbar/custom_snackbar.dart';
@@ -34,6 +36,11 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
   final RxInt durationInSeconds = 30.obs;
   final RxInt remainingSeconds = 30.obs;
 
+  final cardSwiperController = CardSwiperController();
+
+  // Trigger swipe programmatically (e.g., from Accept/Decline buttons)
+  void swipeRight() => cardSwiperController.swipe(CardSwiperDirection.right);
+  void swipeLeft()  => cardSwiperController.swipe(CardSwiperDirection.left);
 
   @override
   void onInit() {
@@ -44,6 +51,13 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     );
     animation = AlwaysStoppedAnimation(1.0);
     isOnline.value = PrefsHelper.onlineStatus;
+  }
+
+  @override
+  void onClose() {
+    cardSwiperController.dispose();
+    _animationController.dispose();
+    super.onClose();
   }
 
   final Rx<LatLng> driverPosition = const LatLng(5.6037, -0.1870).obs; // default Accra
@@ -116,6 +130,7 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
   final RxBool isDeclineLoading = false.obs;
   final Rx<AcceptedBookingModel?> acceptedBooking = Rx<AcceptedBookingModel?>(null);
 
+  final RxBool showJobCards = true.obs;
 // ── Accept Booking ─────────────────────────────────────
   Future<void> acceptJob(AvailableBookingModel job) async {
     isAcceptLoading.value = true;
@@ -129,8 +144,11 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
             AcceptedBookingModel.fromJson(response.body['data']);
 
         // remove from list
-        jobRequests.remove(job);
+        showJobCards.value = false;
+        jobRequests.clear();
+        // jobRequests.remove(job);
         currentJobIndex.value = 0;
+
 
         isBottomSheet.value = true;
         CustomSnackbar.success(response.message);
@@ -152,9 +170,15 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
       );
 
       if (response.statusCode == 200) {
-        // remove from list
-        jobRequests.remove(job);
+        // ✅ hide cards BEFORE modifying the list
+        showJobCards.value = false;
         currentJobIndex.value = 0;
+        jobRequests.remove(job);
+
+        // ✅ show again if still have jobs
+        if (jobRequests.isNotEmpty) {
+          showJobCards.value = true;
+        }
         CustomSnackbar.success(response.message);
       } else {
         CustomSnackbar.error(response.message);
@@ -200,6 +224,52 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     }
   }
 
+
+
+  // ── Stations ───────────────────────────────────────────
+  final RxBool isStationsLoading = false.obs;
+  final RxList<StationModel> stations = <StationModel>[].obs;
+
+  Future<void> getStations() async {
+    isStationsLoading.value = true;
+    try {
+      final response = await ApiService.get(AppUrls.stations);
+
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        stations.value =
+            data.map((e) => StationModel.fromJson(e)).toList();
+
+        // ✅ show stations on map after fetching
+        if (stations.isNotEmpty) {
+          final stationList = stations.map((s) => WasteStationModel(
+            id: s.id,
+            name: s.name,
+            latitude: s.latitude,
+            longitude: s.longitude,
+            distanceKm: calculateDistanceToStation(s),
+          )).toList();
+
+          Get.find<DriverMapController>().showNearbyStations(stationList);
+        }
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isStationsLoading.value = false;
+    }
+  }
+
+  double calculateDistanceToStation(StationModel station) {
+    final distanceInMeters = Geolocator.distanceBetween(
+      driverPosition.value.latitude,
+      driverPosition.value.longitude,
+      station.latitude,
+      station.longitude,
+    );
+    return distanceInMeters / 1000;
+  }
+
   // ── Timer ──────────────────────────────────────────────────
   void _setupTimer() {
     _animationController.stop();
@@ -241,10 +311,5 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     _animationController.forward();
   }
 
-  @override
-  void onClose() {
-    _animationController.dispose();
-    super.onClose();
-  }
 }
 

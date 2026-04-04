@@ -1,14 +1,14 @@
 
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/controllers/profileController/profile_controller.dart';
-import 'package:project_borla/features/auth/login_screen.dart';
+import 'package:project_borla/role/commonScreens/chat/chat_list_screen.dart';
 import 'package:project_borla/role/commonScreens/notification/notification_screen.dart';
 import 'package:project_borla/role/commonScreens/privacyPolicy/privacy_policy_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/change_password_screen.dart';
+import 'package:project_borla/role/commonScreens/profile/customer_support_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/edit_profile_screen.dart';
 import 'package:project_borla/role/commonScreens/termsOfConditions/terms_of_conditions.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
@@ -129,13 +129,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
 
                     SettingsListItemTwo(
+                      img: Assets.icons.messageIcon.image(
+                        height: 26,
+                        width: 26,
+                        color: AppColors.green500,
+                      ),
+                      title: 'Chat Messages'.tr,
+                      onTap: () => Get.to(() => ChatListScreen()),
+                    ),
+                    SettingsListItemTwo(
                       img: Assets.icons.customerSupportIcon.image(
                         height: 26,
                         width: 26,
                         color: AppColors.green500,
                       ),
                       title: 'customer_support'.tr,
-                      onTap: () => Get.to(() => StartChatScreen()),
+                      onTap: () => Get.to(() => CustomerSupportScreen()),
                     ),
 
                     SettingsListItem(

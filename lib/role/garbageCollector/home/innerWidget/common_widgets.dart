@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
 import 'package:project_borla/role/garbageCollector/call/incoming_call_screen.dart';
@@ -82,13 +83,14 @@ Widget userRow(DriverHomeController controller, AvailableBookingModel job) {
           ? Row(
         children: [
           InkWell(
-            onTap: () => Get.to(() => ChattingScreen()),
+            onTap: () => Get.to(() => ChattingScreen(bookingId: job.id, participantPhone: job.user.phoneNumber, participantName: job.user.name,)),
             child: circleAction(
                 Assets.icons.messageIcon.image(height: 20, width: 20)),
           ),
           const SizedBox(width: 12),
           InkWell(
-            onTap: () => Get.to(() => OutgoingCallScreen()),
+            onTap: ()=> ChatController.instance.makePhoneCall(job.user.phoneNumber),
+            // onTap: () => Get.to(() => OutgoingCallScreen()),
             child: circleAction(
                 Assets.icons.callIcon.image(height: 20, width: 20)),
           ),

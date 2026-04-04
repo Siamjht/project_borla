@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
 import 'package:project_borla/role/garbageCollector/home/customer_info_screen.dart';
@@ -100,14 +101,15 @@ class ActivityCard extends StatelessWidget {
           children: [
             InkWell(
                 onTap: () {
-                  Get.to(() => ChattingScreen());
+                  Get.to(() => ChattingScreen(bookingId: booking.id, participantName: booking.user.name, participantPhone: booking.user.phoneNumber,));
                 },
                 child: circleAction(
                     Assets.icons.messageIcon.image(height: 20, width: 20))),
             const SizedBox(width: 12),
             InkWell(
                 onTap: () {
-                  Get.to(() => OngoingCallScreen());
+                  ChatController.instance.makePhoneCall(booking.user.phoneNumber);
+                  // Get.to(() => OngoingCallScreen());
                 },
                 child: circleAction(
                     Assets.icons.callIcon.image(height: 20, width: 20))),

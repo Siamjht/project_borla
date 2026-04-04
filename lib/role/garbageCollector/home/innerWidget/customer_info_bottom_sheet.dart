@@ -120,7 +120,7 @@ Widget userRow(DriverHomeController controller, RiderBookingModel? booking) {
           ? Row(
         children: [
           InkWell(
-            onTap: () => Get.to(() => ChattingScreen()),
+            onTap: () => Get.to(() => ChattingScreen(bookingId: booking.id, participantName: booking.user.name, participantPhone: booking.user.phoneNumber,)),
             child: circleAction(
                 Assets.icons.messageIcon.image(height: 20, width: 20)),
           ),

@@ -1,10 +1,13 @@
-import 'dart:async';
+
 import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
-import '../helpers/other_helper.dart';
 import '../helpers/prefs_helper.dart';
+import '../models/commonModels/chatMessageModels/chat_list_model.dart';
+import '../models/commonModels/chatMessageModels/chat_message_model.dart';
+import '../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../utils/app_urls.dart';
 
 
@@ -25,7 +28,7 @@ class SocketServices {
     );
 
     socket.onConnect((data) {
-      // listenForNewMessages();
+      listenForNewMessages();
       debugPrint("=============================> Connection $data");
     });
     socket.onConnectError((data) {
@@ -41,6 +44,46 @@ class SocketServices {
         print("================> get Data on socket: $data");
       }
     });
+  }
+
+
+  static void listenForNewMessages() {
+    socket.off(SocketEvents.newMessageOn);
+    socket.on(SocketEvents.newMessageOn, (data) {
+      log('new_message received: $data');
+
+      try {
+        final messageData = Map<String, dynamic>.from(data['message'] ?? {});
+        final newMessage = ChatMessageModel.fromJson(messageData);
+
+        // ✅ Only add if it's from the other person
+        if (newMessage.senderId == PrefsHelper.userId) return;
+
+        // ✅ Only add if message belongs to current open chat
+        final isChatOpen = Get.isRegistered<ChatController>();
+        if (isChatOpen) {
+          final chatCtrl = ChatController.instance;
+          final isCurrentChat = newMessage.bookingId == chatCtrl.currentBookingId;
+          if (isCurrentChat) {
+            final newMessage = ChatMessageModel.fromJson(messageData);
+            chatCtrl.messages.add(newMessage);
+            chatCtrl.scrollToBottom();
+          }
+        }
+
+        // ✅ Always show global snackbar notification
+        // _showMessageSnackbar(sentMessage);
+
+      } catch (e) {
+        log('Error parsing new_message: $e');
+      }
+    });
+  }
+
+  static void joinChat({required String chatId}) {
+    if (!socket.connected) return;
+    socket.emit(SocketEvents.joinChatEmit, {chatId});
+    log('typing emitted for chatId: $chatId');
   }
 
   // static void listenForNewMessages() {

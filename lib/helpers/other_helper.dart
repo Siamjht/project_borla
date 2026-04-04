@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
-import '../role/garbageCollector/map/controller/gmap_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_color.dart';
 
 
@@ -251,6 +250,19 @@ class OtherHelper {
     } catch (e) {
       log('Error in getCurrentLocationAddress: $e');
       return (address: '', position: const LatLng(0, 0));
+    }
+  }
+
+  Future<void> makePhoneCall(String phoneNumber) async {
+    final Uri uri = Uri.parse('tel:$phoneNumber');
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw 'Could not launch $uri';
     }
   }
 

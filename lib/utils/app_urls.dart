@@ -33,6 +33,10 @@ class AppUrls {
   static const updateMyLocation = "$baseUrl/users/update-my-location";
   static const stations = "$baseUrl/stations";
 
+  static const getChatList = "$baseUrl/messages/my-chats";
+  static String getMessages({required String bookingId}) => "$baseUrl/messages/booking/$bookingId";
+  static String sendMessages({required String bookingId}) => "$baseUrl/messages/booking/$bookingId?";
+
   static String availableBookings({bool isPopulateUser = true}) => "$baseUrl/bookings/available?populateUser=$isPopulateUser";
   static String updatePlace({required String id}) => "$baseUrl/saved-places/$id";
   static String getAcceptedBooking({required String status}) => "$baseUrl/bookings/rider-bookings?status=$status";
@@ -44,4 +48,12 @@ class AppUrls {
   static String bookingCompleted({required String id}) => "$baseUrl/bookings/$id/completed";
   static String getSingleBooking({required String id}) => "$baseUrl/bookings/$id";
   static String updateBookingStatus({required String id}) => "$baseUrl/bookings/$id/status";
+}
+
+class SocketEvents{
+  static String joinChatEmit = "chat:join";
+  static String newMessageOn = "message:new";
+  static String chatTypingOn = "chat:typing";
+  static String chatTypingEmit = "chat:typing";
+  static String leaveChatRoomEmit = "chat:leave";
 }

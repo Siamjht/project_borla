@@ -31,21 +31,23 @@ Widget actionButtons(BuildContext context, AvailableBookingModel job) {
               ? null
               : () => ctrl.declineJob(job),
           buttonRadius: 12,
-          titleText: ctrl.isDeclineLoading.value ? '...' : 'Decline',
+          titleText: ctrl.isDeclineLoading.value ? '...' : 'decline'.tr,
           titleColor: AppColors.green500,
           borderColor: AppColors.green500,
           secondGradient: AppColors.transparent,
           firstGradient: AppColors.transparent,
         ),
       ),
+
       const SizedBox(width: 20),
+
       Expanded(
         child: CommonButton(
           onTap: ctrl.isAcceptLoading.value
               ? null
               : () => ctrl.acceptJob(job),
           buttonRadius: 12,
-          titleText: ctrl.isAcceptLoading.value ? '...' : 'Accept',
+          titleText: ctrl.isAcceptLoading.value ? '...' : 'accept'.tr,
         ),
       ),
     ],
@@ -71,8 +73,8 @@ Widget userRow(DriverHomeController controller, AvailableBookingModel job) {
               fontWeight: FontWeight.w600,
             ),
             const SizedBox(height: 4),
-            const CommonText(
-              text: 'User',
+            CommonText(
+              text: 'user'.tr,
               fontSize: 14,
               color: Colors.grey,
             ),
@@ -228,13 +230,14 @@ Widget paymentRow(AvailableBookingModel job) {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CommonText(
-            text: 'Payment',
+          CommonText(
+            text: 'payment'.tr,
             fontSize: 12,
             color: AppColors.gray300,
           ),
+
           CommonText(
-            text: job.paymentMethod == 'cash' ? 'Cash' : 'MTN MoMo Pay',
+            text: job.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
             fontSize: 16,
           ),
         ],

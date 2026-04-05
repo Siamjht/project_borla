@@ -25,7 +25,7 @@ class ActivityScreen extends StatelessWidget {
         child: Column(
           children: [
             CommonText(
-              text: "Activity",
+              text: 'activity'.tr,
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.textDark,

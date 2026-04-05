@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
@@ -21,14 +22,14 @@ class TermsOfConditions extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CommonBackButton(),
-                CommonText(text: "Terms & Conditions", color: AppColors.textDark, fontSize: 18, fontWeight: FontWeight.w600,),
+                CommonText(text: "terms_and_conditions".tr, color: AppColors.textDark, fontSize: 18, fontWeight: FontWeight.w600,),
                 SizedBox(width: 50,)
               ],
             ),
             SizedBox(
               height: 20,
             ),
-            CommonText(text: "Terms & Conditions", color: AppColors.textDark,),
+            CommonText(text: "terms_and_conditions".tr, color: AppColors.textDark,),
             SizedBox(height: 20,),
             CommonText(
               textAlign: TextAlign.start,

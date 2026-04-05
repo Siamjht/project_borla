@@ -20,7 +20,6 @@ class AppUrls {
   static const createUser = "$baseUrl/auth/signup";
   static const deleteMyAccount = "$baseUrl/users/delete-my-account";
   static const createEvent = "$baseUrl/events";
-  static const notifications = "$baseUrl/notifications";
   static const myRequests = "$baseUrl/join-request/my-requests";
   static const aboutUs = "$baseUrl/content-pages/about-us";
   static const termsCondition = "$baseUrl/content-pages/terms-and-conditions";
@@ -32,8 +31,14 @@ class AppUrls {
   static const toggleMyStatus = "$baseUrl/users/toggle-my-status";
   static const updateMyLocation = "$baseUrl/users/update-my-location";
   static const stations = "$baseUrl/stations";
-
   static const getChatList = "$baseUrl/messages/my-chats";
+  static const notifications = "$baseUrl/notifications/my";
+  static const readNotifications = "$baseUrl/notifications/read-all";
+  static const getSupportChatID = "$baseUrl/messages/support/my-chats";
+  static const sendSupportChat = "$baseUrl/messages/support";
+
+  static String getSupportMessages({String chatId = ''}) => "$baseUrl/messages/support/my-chats/$chatId/messages";
+
   static String getMessages({required String bookingId}) => "$baseUrl/messages/booking/$bookingId";
   static String sendMessages({required String bookingId}) => "$baseUrl/messages/booking/$bookingId?";
 

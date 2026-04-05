@@ -253,6 +253,19 @@ class OtherHelper {
     }
   }
 
+  static String getTimeFromIso(String? isoDate) {
+    try {
+      if (isoDate == null || isoDate.isEmpty) {
+        return '--:--';
+      }
+
+      DateTime dateTime = DateTime.parse(isoDate).toLocal();
+      return DateFormat('hh:mm a').format(dateTime);
+    } catch (e) {
+      return '--:--';
+    }
+  }
+
   Future<void> makePhoneCall(String phoneNumber) async {
     final Uri uri = Uri.parse('tel:$phoneNumber');
 

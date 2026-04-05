@@ -52,8 +52,8 @@ class JobRequestCard extends StatelessWidget {
                 Center(
                   child: CommonText(
                     text: "job.scheduledFor" == null
-                        ? 'Scheduled garbage pickup'
-                        : 'Garbage Pickup Request',
+                        ? 'scheduled_garbage_pickup'.tr
+                        : 'garbage_pickup_request'.tr,
                     fontSize: 18,
                   ),
                 ),

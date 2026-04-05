@@ -5,6 +5,7 @@ import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../components/gradient_scafold.dart';
+import 'package:get/get.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -21,14 +22,14 @@ class AboutUs extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CommonBackButton(),
-                CommonText(text: "About Us", color: AppColors.textDark, fontSize: 18, fontWeight: FontWeight.w600,),
+                CommonText(text: "about_us".tr, color: AppColors.textDark, fontSize: 18, fontWeight: FontWeight.w600,),
                 SizedBox(width: 50,)
               ],
             ),
             SizedBox(
               height: 20,
             ),
-            CommonText(text: "About Us", color: AppColors.textDark,),
+            CommonText(text: "about_us".tr, color: AppColors.textDark,),
             SizedBox(height: 20,),
             CommonText(
               textAlign: TextAlign.start,

@@ -91,14 +91,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           children: [
                             CommonText(
                               text: _driverHomeCtrl.isOnline.value
-                                  ? 'Online'
-                                  : 'Offline',
+                                  ? 'online'.tr
+                                  : 'offline'.tr,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textDark,
                             ),
                             CommonText(
-                              text: 'Go online to start accepting jobs',
+                              text: 'go_online_jobs'.tr,
                               fontSize: 12,
                               color: AppColors.gray300,
                               textAlign: TextAlign.center,

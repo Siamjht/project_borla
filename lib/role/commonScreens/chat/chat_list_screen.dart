@@ -47,7 +47,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 children: [
                   CommonBackButton(),
                   CommonText(
-                    text: "Message", fontWeight: FontWeight.w600, fontSize: 20, color: AppColors.black500,
+                    text: "message".tr, fontWeight: FontWeight.w600, fontSize: 20, color: AppColors.black500,
                   ),
                   20.horizontalSpace
                 ],

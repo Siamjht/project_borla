@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
@@ -69,6 +70,7 @@ class ActivityCard extends StatelessWidget {
 
   Widget userRow() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ShimmerImageLoader(
           url: booking.user.profilePicture,
@@ -89,7 +91,7 @@ class ActivityCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               CommonText(
-                text: 'User',
+                text: 'user'.tr,
                 fontSize: 14,
                 color: Colors.grey,
               ),
@@ -117,15 +119,17 @@ class ActivityCard extends StatelessWidget {
         )
             : ActivityController.instance.selectedIndex.value == 1
             ? Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CommonText(
               text: booking.scheduledDate ?? '',
               color: AppColors.green500,
+              fontSize: 12,
             ),
             CommonText(
-              text: booking.scheduledFor ?? '',
+              text: OtherHelper.getTimeFromIso(booking.scheduledFor ?? ""),
               color: AppColors.gray300,
-              fontSize: 14,
+              fontSize: 12,
             ),
           ],
         )
@@ -218,15 +222,14 @@ class ActivityCard extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CommonText(
-              text: 'Payment',
+            CommonText(
+              text: 'payment'.tr,
               fontSize: 12,
               color: AppColors.gray300,
             ),
+
             CommonText(
-              text: booking.paymentMethod == 'cash'
-                  ? 'Cash'
-                  : 'MTN MoMo Pay',
+              text: booking.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
               fontSize: 16,
             ),
           ],
@@ -266,8 +269,8 @@ class ActivityCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: const CommonText(
-          text: 'View Details',
+        child: CommonText(
+          text: 'view_details'.tr,
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Colors.white,

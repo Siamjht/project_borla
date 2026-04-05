@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/controllers/profileController/profile_controller.dart';
 import 'package:project_borla/role/commonScreens/chat/chat_list_screen.dart';
-import 'package:project_borla/role/commonScreens/notification/notification_screen.dart';
 import 'package:project_borla/role/commonScreens/privacyPolicy/privacy_policy_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/change_password_screen.dart';
 import 'package:project_borla/role/commonScreens/profile/customer_support_screen.dart';
@@ -16,9 +15,9 @@ import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../gen/custom_assets/assets.gen.dart';
-import '../../../screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../components/gradient_scafold.dart';
 import '../aboutUs/about_us.dart';
+import '../notifcation/notification_screen.dart';
 import 'innerWidget/language_bottom_sheet.dart';
 import 'innerWidget/logout_bottom_sheet.dart';
 import 'innerWidget/settingsListItems.dart';
@@ -134,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 26,
                         color: AppColors.green500,
                       ),
-                      title: 'Chat Messages'.tr,
+                      title: 'chat_messages'.tr,
                       onTap: () => Get.to(() => ChatListScreen()),
                     ),
                     SettingsListItemTwo(

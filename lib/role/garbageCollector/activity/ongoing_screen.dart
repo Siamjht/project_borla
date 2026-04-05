@@ -20,7 +20,7 @@ class OngoingScreen extends StatelessWidget {
 
       if (ctrl.ongoingBookings.isEmpty) {
         return Center(
-          child: CommonText(text: 'No ongoing bookings', fontSize: 16),
+          child: CommonText(text: 'no_ongoing_bookings'.tr, fontSize: 16),
         );
       }
 

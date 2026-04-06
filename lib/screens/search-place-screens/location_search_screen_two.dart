@@ -16,7 +16,7 @@ class LocationSearchScreenTwo extends StatefulWidget {
 }
 
 class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
-  final LocationSearchTwoController locationSearchCtrl = Get.put(LocationSearchTwoController());
+  final _locationSearchCtrl = Get.find<LocationSearchTwoController>();
   
   @override
   Widget build(BuildContext context) {
@@ -42,11 +42,11 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
 
                 // ── Search Field ──────────────────────────────
                 CustomTextField(
-                  controller: locationSearchCtrl.addressController,
+                  controller: _locationSearchCtrl.addressController,
                   hint: '2nd Crescent Link, Ghana',
                   prefix: Image.asset('assets/images/fourth_pin.png'),
                   suffix: InkWell(
-                    onTap: () => locationSearchCtrl.addressController.clear(),
+                    onTap: () => _locationSearchCtrl.addressController.clear(),
                     child: Image.asset('assets/images/cross.png'),
                   ),
                 ),
@@ -56,7 +56,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                 SizedBox(height: 22),
 
                 // ── List Header ───────────────────────────────
-                Obx(() => locationSearchCtrl.isSearching.value
+                Obx(() => _locationSearchCtrl.isSearching.value
                     ? const SizedBox()
                     : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +70,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                       ),
                     ),
                     InkWell(
-                      onTap: locationSearchCtrl.clearAll,
+                      onTap: _locationSearchCtrl.clearAll,
                       child: Text(
                         'Clear All',
                         style: TextStyle(
@@ -90,12 +90,12 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                   child: Obx(() {
 
                     // Show suggestions when searching
-                    if (locationSearchCtrl.isSearching.value) {
-                      if (locationSearchCtrl.isLoadingSuggestions.value) {
+                    if (_locationSearchCtrl.isSearching.value) {
+                      if (_locationSearchCtrl.isLoadingSuggestions.value) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      if (locationSearchCtrl.suggestions.isEmpty) {
+                      if (_locationSearchCtrl.suggestions.isEmpty) {
                         return Center(
                           child: CommonText(
                             text: 'No results found',
@@ -107,11 +107,11 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
 
                       return ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: locationSearchCtrl.suggestions.length,
+                        itemCount: _locationSearchCtrl.suggestions.length,
                         itemBuilder: (context, index) {
-                          final suggestion = locationSearchCtrl.suggestions[index];
+                          final suggestion = _locationSearchCtrl.suggestions[index];
                           return InkWell(
-                            onTap: () => locationSearchCtrl.selectSuggestion(suggestion),
+                            onTap: () => _locationSearchCtrl.selectSuggestion(suggestion),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               child: Row(
@@ -152,7 +152,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                     }
 
                     // Show recent searches when not searching
-                    if (locationSearchCtrl.recentSearches.isEmpty) {
+                    if (_locationSearchCtrl.recentSearches.isEmpty) {
                       return Center(
                         child: CommonText(
                           text: 'No recent searches',
@@ -164,11 +164,11 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
 
                     return ListView.builder(
                       padding: EdgeInsets.zero,
-                      itemCount: locationSearchCtrl.recentSearches.length,
+                      itemCount: _locationSearchCtrl.recentSearches.length,
                       itemBuilder: (context, index) {
-                        final recent = locationSearchCtrl.recentSearches[index];
+                        final recent = _locationSearchCtrl.recentSearches[index];
                         return InkWell(
-                          onTap: () => locationSearchCtrl.selectRecent(recent),
+                          onTap: () => _locationSearchCtrl.selectRecent(recent),
                           child: Padding(
                             padding:
                             const EdgeInsets.symmetric(vertical: 12.0),

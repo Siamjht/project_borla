@@ -12,8 +12,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class BaseMapController extends GetxController {
   // ── Map Controller ────────────────────────────────────────────
-  final Completer<GoogleMapController> mapCompleter = Completer();
+  Completer<GoogleMapController> _mapCompleter = Completer();
+  Completer<GoogleMapController> get mapCompleter => _mapCompleter;
   GoogleMapController? mapController;
+
+  /// Set this before navigating to a screen with a new GoogleMap.
+  /// The map will animate to this location once onMapCreated fires.
+  LatLng? pendingCameraTarget;
 
   // ── Observable State ──────────────────────────────────────────
   final RxSet<Marker> markers = <Marker>{}.obs;
@@ -44,6 +49,19 @@ abstract class BaseMapController extends GetxController {
     mapController = controller;
     if (!mapCompleter.isCompleted) mapCompleter.complete(controller);
     _updateScreenCoordinate();
+    if (pendingCameraTarget != null) {
+      final target = pendingCameraTarget!;
+      pendingCameraTarget = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) => animateCameraTo(target));
+    }
+  }
+
+  /// Call when navigating back from a screen that had its own GoogleMap
+  /// (e.g. ConfirmLocationScreen). Resets the stale controller so the
+  /// underlying screen's map can re-register via onMapCreated.
+  void resetForNewMap() {
+    mapController = null;
+    _mapCompleter = Completer();
   }
 
   void onCameraMove(CameraPosition position) {
@@ -63,16 +81,22 @@ abstract class BaseMapController extends GetxController {
   );
 
   Future<void> animateCameraTo(LatLng target) async {
-    await mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: target,
-          zoom: zoom,
-          tilt: tilt,
-          bearing: currentBearing,
+    try {
+      if (mapController == null) return;
+      await mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: target,
+            zoom: zoom,
+            tilt: tilt,
+            bearing: currentBearing,
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      log('Camera animation skipped — map disposed: $e');
+      mapController = null; // ✅ clear disposed controller
+    }
   }
 
   Future<void> placeMarker({
@@ -97,6 +121,7 @@ abstract class BaseMapController extends GetxController {
 
     markers.removeWhere((m) => m.markerId.value == id);
     markers.add(marker);
+    markers.refresh();
 
     log("🗺️ markers after: ${markers.length}");
   }

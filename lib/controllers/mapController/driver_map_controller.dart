@@ -91,7 +91,7 @@ class DriverMapController extends BaseMapController {
     await placeMarker(
       id: 'destination',
       position: destination,
-      iconPath: Assets.icons.location.path,
+      iconPath: Assets.icons.locationCircleRider.path,
       iconWidthPx: 80,
       color: AppColors.green500,
     );

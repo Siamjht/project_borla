@@ -120,6 +120,14 @@ class $AssetsIconsGen {
   AssetGenImage get locationCirclePointer =>
       const AssetGenImage('assets/icons/locationCirclePointer.png');
 
+  /// File path: assets/icons/locationCircleRider.png
+  AssetGenImage get locationCircleRider =>
+      const AssetGenImage('assets/icons/locationCircleRider.png');
+
+  /// File path: assets/icons/locationCircleUser.png
+  AssetGenImage get locationCircleUser =>
+      const AssetGenImage('assets/icons/locationCircleUser.png');
+
   /// File path: assets/icons/locationPointer.png
   AssetGenImage get locationPointer =>
       const AssetGenImage('assets/icons/locationPointer.png');
@@ -244,6 +252,8 @@ class $AssetsIconsGen {
     hotelIcon,
     location,
     locationCirclePointer,
+    locationCircleRider,
+    locationCircleUser,
     locationPointer,
     lockIcon,
     logOutIcon,

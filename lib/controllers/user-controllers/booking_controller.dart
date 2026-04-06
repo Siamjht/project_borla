@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
 import 'package:project_borla/utils/app_urls.dart';
-
-import '../../gen/custom_assets/assets.gen.dart';
 import '../../helpers/other_helper.dart';
 import '../../models/api_response_model.dart';
 import '../../models/userModels/bookingModels/create_booking_model.dart';
@@ -13,7 +13,7 @@ import '../../services/api_service.dart';
 
 class BookingController extends GetxController {
 
-  static BookingController get instance => Get.put(BookingController());
+  static BookingController get instance => Get.find<BookingController>();
   final RxBool isCreateBookingLoading = false.obs;
   final Rx<CreateBookingModel?> createdBooking = Rx<CreateBookingModel?>(null);
 
@@ -28,6 +28,7 @@ class BookingController extends GetxController {
 
     if (result.address.isNotEmpty) {
       currentLocationController.text = address;
+      UserMapController.instance.currentLocation.value = LatLng(position.latitude, position.longitude);
       selectedPlaceLat = position.latitude;
       selectedPlaceLang = position.longitude;
       showSearchSheet.value = false;
@@ -230,22 +231,10 @@ class BookingController extends GetxController {
 
   /// Create booking repo
   final RxString selectedWasteCategory = ''.obs;
-  Future<bool> createBooking({
-    // required String wasteCategory,
-    // required String binSize,
-    // required int binQuantity,
-    // required int wasteSize,
-    // required double pickupLatitude,
-    // required double pickupLongitude,
-    // required String pickupAddress,
-    // required String vehicleType,
-    // required String paymentMethod,
-    bool isScheduled = false,
-    // String? dropOffAddress,
-    // String? price,
-    String? scheduledFor,
-    String? scheduledDate,
-  }) async {
+  RxBool isScheduled = false.obs;
+  String? scheduledFor;
+  String? scheduledDate;
+  Future<bool> createBooking() async {
     isCreateBookingLoading.value = true;
     try {
       final response = await BookingService.createBooking(
@@ -258,7 +247,7 @@ class BookingController extends GetxController {
         pickupAddress: currentLocationController.text,
         vehicleType: 'Tri Cycle',
         paymentMethod: selectedPaymentMethod.value,
-        isScheduled: isScheduled,
+        isScheduled: isScheduled.value,
         scheduledFor: scheduledFor,
         scheduledDate: scheduledDate,
         imagePaths: wasteImagePaths,
@@ -266,6 +255,7 @@ class BookingController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         createdBooking.value = CreateBookingModel.fromJson(response.body['data']);
+        resetSchedule();
         CustomSnackbar.success(response.message);
         return true;
       } else {
@@ -275,6 +265,12 @@ class BookingController extends GetxController {
     } finally {
       isCreateBookingLoading.value = false;
     }
+  }
+
+  void resetSchedule() {
+    isScheduled.value = false;
+    scheduledFor = null;
+    scheduledDate = null;
   }
 
 }

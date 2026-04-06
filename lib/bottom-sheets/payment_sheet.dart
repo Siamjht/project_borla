@@ -22,7 +22,7 @@ class PaymentSheet extends StatefulWidget {
 
 class _PaymentSheetState extends State<PaymentSheet> {
   // final ChoosePaymentSheetControllers paymentController = Get.put(ChoosePaymentSheetControllers());
-  final DateTimePickerController controller = Get.put(DateTimePickerController());
+  final dateTimeCtrl = Get.find<DateTimePickerController>();
   final bookingCtrl = Get.find<BookingController>();
 
   @override

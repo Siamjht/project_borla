@@ -9,6 +9,7 @@ import '../../bottom-sheets/current_location_sheet.dart';
 import '../../bottom-sheets/search_location_sheet.dart';
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../theme/custom_container_copy.dart';
+import '../../controllers/mapController/user_map_controller.dart';
 import '../map-screens/user_common_map.dart';
 import '../search-place-screens/location_search_screen_two.dart';
 
@@ -23,7 +24,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
 
   final UserNavBarController userNavBarController = Get.find<UserNavBarController>();
   final ProfileController _profileCtl = Get.find<ProfileController>();
-  final _bookingCtrl = Get.put(BookingController());
+  final _bookingCtrl = Get.find<BookingController>();
 
   final ValueNotifier<double> sheetExtent = ValueNotifier(0.2);
 
@@ -44,10 +45,12 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          /// MAP
-          Positioned.fill(
+          /// MAP — key changes when ConfirmLocationScreen pops so the
+          /// GoogleMap rebuilds and re-fires onMapCreated with a fresh controller.
+          Obx(() => Positioned.fill(
+            key: ValueKey(UserMapController.instance.homeMapKey.value),
             child: UserCommonMap(),
-          ),
+          )),
 
           /// TOP CONTENT
           SafeArea(

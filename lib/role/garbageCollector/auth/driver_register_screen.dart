@@ -183,7 +183,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                             borderRadius: 16,
                             prefixIcon: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12),
-                              child: Assets.icons.location.image(height: 20, width: 20),
+                              child: Assets.icons.locationPointer.image(height: 20, width: 20),
                             ),
                             onSelected: (suggestion) async {
                               final latLang = await OtherHelper.getCoordinatesFromAddress(suggestion.description);

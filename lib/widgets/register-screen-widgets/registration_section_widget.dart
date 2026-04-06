@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -110,7 +109,7 @@ class RegistrationSection extends StatelessWidget {
                     borderRadius: 16,
                     prefixIcon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Assets.icons.location.image(height: 20, width: 20),
+                      child: Assets.icons.locationPointer.image(height: 20, width: 20, color: AppColors.orange300),
                     ),
                     onSelected: (suggestion) async {
                       final latLang = await OtherHelper.getCoordinatesFromAddress(suggestion.description);

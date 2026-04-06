@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/map_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -137,6 +139,10 @@ class LocationSearchTwoController extends GetxController {
       lng = location['lng'];
       BookingController.instance.selectedPlaceLat = lat;
       BookingController.instance.selectedPlaceLang = lng;
+      BookingController.instance.currentLocationController.text = suggestion.address;
+      final latLng = LatLng(lat, lng);
+      await UserMapController.instance.placeUserMarker(latLng);
+      UserMapController.instance.pendingCameraTarget = latLng;
     }
 
     final recent = RecentSearchModel(
@@ -147,7 +153,6 @@ class LocationSearchTwoController extends GetxController {
     );
 
     await _saveRecentSearch(recent);
-    BookingController.instance.currentLocationController.text = suggestion.title;
     suggestions.clear();
     isSearching.value = false;
 
@@ -156,6 +161,9 @@ class LocationSearchTwoController extends GetxController {
 
   Future<void> selectRecent(RecentSearchModel recent) async {
     addressController.text = recent.title;
+    final latLng = LatLng(recent.latitude, recent.longitude);
+    await UserMapController.instance.placeUserMarker(latLng);
+    UserMapController.instance.pendingCameraTarget = latLng;
     Get.to(() => ConfirmLocationScreen());
   }
 
@@ -193,11 +201,11 @@ class LocationSearchTwoController extends GetxController {
     recentSearches.clear();
   }
 
-  @override
-  void onClose() {
-    _debouncer?.cancel();
-    addressController.removeListener(_onSearchChanged);
-    addressController.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   _debouncer?.cancel();
+  //   addressController.removeListener(_onSearchChanged);
+  //   addressController.dispose();
+  //   super.onClose();
+  // }
 }

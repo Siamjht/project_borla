@@ -12,17 +12,21 @@ class UserCommonMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-          () => GoogleMap(
+    return Obx(() {
+      // access value inside Obx to register dependency
+      final markers = Set<Marker>.from(controller.markers);
+      final polyLines = Set<Polyline>.from(controller.polyLines);
+
+      return GoogleMap(
         initialCameraPosition: controller.initialCameraPosition,
         myLocationEnabled: false,
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
-        markers: controller.markers,
-        polylines: controller.polyLines,
+        markers: markers,
+        polylines: polyLines,
         onMapCreated: controller.onMapCreated,
         onCameraMove: controller.onCameraMove,
-      ),
-    );
+      );
+    });
   }
 }

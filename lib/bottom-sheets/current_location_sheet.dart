@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/screens/search-place-screens/add_place_screen.dart';
@@ -20,6 +22,7 @@ class CurrentLocationSheet extends StatefulWidget {
 
 class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
   final _bookingCtrl = Get.find<BookingController>();
+  final _userMapCtrl = Get.find<UserMapController>();
 
   @override
   void initState() {
@@ -154,29 +157,42 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
                 padding: const EdgeInsets.fromLTRB(22, 0, 22, 0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Row(
+                  child: Obx(() => Row(
                     spacing: 10,
                     children: _bookingCtrl.savedPlaces.map((place) {
+                      // each chip checks its own id
+                      final isSelected = _bookingCtrl.selectedPlaceId.value == place.id;
+
                       return InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          // update selected id — triggers Obx rebuild for all chips
+                          _bookingCtrl.selectedPlaceId.value = place.id;
                           _bookingCtrl.currentLocationController.text = place.address;
                           _bookingCtrl.selectedPlaceLat = place.latitude;
                           _bookingCtrl.selectedPlaceLang = place.longitude;
+
+                          final latLng = LatLng(place.latitude, place.longitude);
+                          await _userMapCtrl.placeUserMarker(latLng);
+                          _userMapCtrl.animateCameraTo(latLng);
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: isSelected
+                                ? AppColors.orange300.withAlpha(20)
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: AppColors.orange300),
+                            border: Border.all(
+                              color: isSelected ? AppColors.orange500 : AppColors.orange300,
+                              width: isSelected ? 1.5 : 1.0,
+                            ),
                           ),
                           child: Row(
                             spacing: 6,
                             children: [
                               Icon(
                                 _getPlaceIcon(place.placeType),
-                                color: AppColors.orange300,
+                                color: isSelected ? AppColors.orange500 : AppColors.orange300,
                                 size: 18,
                               ),
                               Text(
@@ -184,7 +200,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.textDark,
+                                  color: isSelected ? AppColors.orange500 : AppColors.textDark,
                                 ),
                               ),
                             ],
@@ -192,7 +208,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
                         ),
                       );
                     }).toList(),
-                  ),
+                  )),
                 ),
               );
             }),

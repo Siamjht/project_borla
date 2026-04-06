@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_borla/role/garbageCollector/map/driver_common_map.dart';
 import 'package:get/get.dart';
-
 import '../../bottom-sheets/confirm_address_sheet.dart';
+import '../../controllers/mapController/user_map_controller.dart';
+import '../map-screens/user_common_map.dart';
 
 class ConfirmLocationScreen extends StatefulWidget {
   const ConfirmLocationScreen({super.key});
@@ -15,17 +15,21 @@ class _ConfirmLocationScreenState extends State<ConfirmLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: DriverCommonMap()),
-          Positioned(
-            top: 60,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) UserMapController.instance.onConfirmLocationPopped();
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(child: UserCommonMap()),
+            Positioned(
+              top: 60,
               left: 20,
               child: Container(
                 width: 38,
                 height: 38,
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
                   boxShadow: [
@@ -36,23 +40,21 @@ class _ConfirmLocationScreenState extends State<ConfirmLocationScreen> {
                     ),
                   ],
                 ),
-
                 child: IconButton(
                   padding: EdgeInsets.zero,
                   iconSize: 22,
                   icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Get.back();
-                  },
+                  onPressed: () => Get.back(),
                 ),
               ),
-          ),
-          Align(
+            ),
+            Align(
               alignment: Alignment.bottomCenter,
-              child: ConfirmAddressSheet()
-          )
-        ],
-      )
+              child: ConfirmAddressSheet(),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

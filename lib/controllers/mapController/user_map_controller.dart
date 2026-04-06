@@ -23,6 +23,15 @@ class UserMapController extends BaseMapController {
 
   // ── State ─────────────────────────────────────────────────────
   final Rx<UserTripPhase> tripPhase = UserTripPhase.idle.obs;
+
+  /// Incremented when ConfirmLocationScreen pops so HomeMapScreen's
+  /// GoogleMap rebuilds with a fresh key and re-fires onMapCreated.
+  final RxInt homeMapKey = 0.obs;
+
+  void onConfirmLocationPopped() {
+    resetForNewMap();
+    homeMapKey.value++;
+  }
   final Rx<LatLng> destinationPosition = const LatLng(0, 0).obs;
   final RxMap<String, LatLng> nearbyDrivers = <String, LatLng>{}.obs;
 
@@ -41,7 +50,7 @@ class UserMapController extends BaseMapController {
     ever(currentLocation, (LatLng loc) async {
       if (loc.latitude != 0 || loc.longitude != 0) {
         await mapCompleter.future;
-        await _placeUserMarker(loc);
+        await placeUserMarker(loc);
         await animateCameraTo(loc);
       }
     });
@@ -106,7 +115,7 @@ class UserMapController extends BaseMapController {
     await placeMarker(
       id: 'destination',
       position: destination,
-      iconPath: Assets.icons.location.path,
+      iconPath: Assets.icons.locationCircleUser.path,
       iconWidthPx: 80,
       color: AppColors.green500,
     );
@@ -180,23 +189,23 @@ class UserMapController extends BaseMapController {
     }
 
     _redrawPolyline();
-    _placeDriverMarker(origin);
+    placeDriverMarker(origin);
   }
 
   // =============================================================
   // ── Markers
   // =============================================================
 
-  Future<void> _placeUserMarker(LatLng position) async {
+  Future<void> placeUserMarker(LatLng position) async {
     await placeMarker(
       id: 'user',
       position: position,
-      iconPath: Assets.icons.locationCirclePointer.path,
-      iconWidthPx: 50,
+      iconPath: Assets.icons.locationCircleUser.path,
+      iconWidthPx: 80,
     );
   }
 
-  void _placeDriverMarker(LatLng position) {
+  void placeDriverMarker(LatLng position) {
     placeMarker(
       id: 'driver',
       position: position,
@@ -221,7 +230,7 @@ class UserMapController extends BaseMapController {
         from.latitude + (to.latitude - from.latitude) * t,
         from.longitude + (to.longitude - from.longitude) * t,
       );
-      _placeDriverMarker(interpolated);
+      placeDriverMarker(interpolated);
       _trimPolylineTo(interpolated);
       await Future.delayed(Duration(milliseconds: stepMs));
     }

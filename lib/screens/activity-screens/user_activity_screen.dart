@@ -1,16 +1,17 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:project_borla/screens/activity-screens/schedule_screen_copy.dart';
+import 'package:project_borla/screens/activity-screens/user_schedule_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../role/components/text/common_text.dart';
 import '../../theme/gradient_scaffold_copy.dart';
-import 'activity-controller/activity_controller_copy.dart';
-import 'activity-widgets/job_tabbar_copy.dart';
-import 'history_screen_copy.dart';
+import 'activity-controller/user_activity_controller.dart';
+import 'activity-widgets/user_job_tabBar.dart';
+import 'user_history_screen.dart';
 
-import 'ongoing_screen_copy.dart';
+import 'user_ongoing_screen.dart';
 
 
 class UserActivityScreen extends StatelessWidget {
@@ -24,14 +25,15 @@ class UserActivityScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
+            20.verticalSpace,
             CommonText(
               text: "Activity",
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.w600,
               color: AppColors.textDark,
             ),
             SizedBox(height: 20,),
-            JobsTabBar(),
+            UserJobsTabBar(),
 
             /// Animated content
             Expanded(
@@ -63,11 +65,11 @@ class UserActivityScreen extends StatelessWidget {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
-        return OngoingScreen(key: ValueKey(0),);
+        return UserOngoingScreen(key: ValueKey(0),);
       case 1:
-        return const ScheduleScreen(key: ValueKey(1));
+        return const UserScheduleScreen(key: ValueKey(1));
       case 2:
-        return const HistoryScreen(key: ValueKey(2));
+        return const UserHistoryScreen(key: ValueKey(2));
       default:
         return const SizedBox();
     }

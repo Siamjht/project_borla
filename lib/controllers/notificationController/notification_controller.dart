@@ -12,6 +12,7 @@ class NotificationController extends GetxController {
   final isLoading = false.obs;
   final isPaginationLoading = false.obs;
   final hasError = false.obs;
+  final RxInt unreadCount = 0.obs;
 
   // Pagination
   int _currentPage = 1;
@@ -64,12 +65,13 @@ class NotificationController extends GetxController {
 
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
-        final meta = NotificationMeta.fromJson(response.body['meta']);
+        final meta = NotificationMeta.fromJson(response.body['meta'] ?? {});
 
         notifications.assignAll(
           data.map((e) => NotificationModel.fromJson(e)).toList(),
         );
 
+        unreadCount.value = meta.unreadCount;
         _hasMoreData = _currentPage < meta.totalPage;
       } else {
         hasError.value = true;
@@ -97,12 +99,13 @@ class NotificationController extends GetxController {
 
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
-        final meta = NotificationMeta.fromJson(response.body['meta']);
+        final meta = NotificationMeta.fromJson(response.body['meta'] ?? {});
 
         notifications.addAll(
           data.map((e) => NotificationModel.fromJson(e)).toList(),
         );
 
+        unreadCount.value = meta.unreadCount;
         _hasMoreData = _currentPage < meta.totalPage;
       } else {
         _currentPage--; // Revert on failure
@@ -120,25 +123,28 @@ class NotificationController extends GetxController {
   Future<void> markAsRead(String id) async {
     try {
       final response = await ApiService.patch(
-        '${AppUrls.notifications}/$id/read',
+        AppUrls.markNotificationByID(id: id),
       );
 
       if (response.statusCode == 200) {
         final index = notifications.indexWhere((n) => n.id == id);
         if (index != -1) {
-          final updated = NotificationModel(
+          notifications[index] = NotificationModel(
             id: notifications[index].id,
-            receiver: notifications[index].receiver,
-            reference: notifications[index].reference,
-            modelType: notifications[index].modelType,
+            userId: notifications[index].userId,
+            type: notifications[index].type,
+            title: notifications[index].title,
             message: notifications[index].message,
-            description: notifications[index].description,
-            read: true, // ← updated
-            isDeleted: notifications[index].isDeleted,
+            data: notifications[index].data,
+            isRead: true,
             createdAt: notifications[index].createdAt,
             updatedAt: notifications[index].updatedAt,
           );
-          notifications[index] = updated;
+          
+          // Decrement unread count
+          if (unreadCount.value > 0) {
+            unreadCount.value--;
+          }
         }
       }
     } catch (e) {
@@ -146,25 +152,28 @@ class NotificationController extends GetxController {
     }
   }
 
-  // ─── Mark All notification as read ────────────────────────────────────
+  // ─── Mark all notifications as read ────────────────────────────────────
   Future<void> markAllAsRead() async {
     try {
-      final response = await ApiService.patch(AppUrls.notifications);
+      final response = await ApiService.patch(AppUrls.readNotifications);
       if (response.statusCode == 200) {
         notifications.assignAll(
           notifications.map((n) => NotificationModel(
-            id: n.id, receiver: n.receiver, reference: n.reference,
-            modelType: n.modelType, message: n.message, description: n.description,
-            read: true, isDeleted: n.isDeleted,
-            createdAt: n.createdAt, updatedAt: n.updatedAt,
+            id: n.id,
+            userId: n.userId,
+            type: n.type,
+            title: n.title,
+            message: n.message,
+            data: n.data,
+            isRead: true,
+            createdAt: n.createdAt,
+            updatedAt: n.updatedAt,
           )).toList(),
         );
+        unreadCount.value = 0;
       }
     } catch (e) {
       debugPrint('Mark all as read error: $e');
     }
   }
-
-  // ─── Unread count helper ──────────────────────────────────────────────────
-  int get unreadCount => notifications.where((n) => !n.read).length;
 }

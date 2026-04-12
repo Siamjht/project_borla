@@ -47,7 +47,7 @@ class ActivityController extends GetxController {
     isOngoingLoading.value = true;
     try {
       final response = await ApiService.get(
-        AppUrls.getAcceptedBooking(status: 'accepted'),
+        AppUrls.getAcceptedBookings(status: 'ongoing'),
       );
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
@@ -66,7 +66,7 @@ class ActivityController extends GetxController {
     isScheduleLoading.value = true;
     try {
       final response = await ApiService.get(
-        AppUrls.getAcceptedBooking(status: 'scheduled'),
+        AppUrls.getAcceptedBookings(status: 'scheduled'),
       );
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
@@ -85,7 +85,7 @@ class ActivityController extends GetxController {
     isHistoryLoading.value = true;
     try {
       final response = await ApiService.get(
-        AppUrls.getAcceptedBooking(status: 'completed'),
+        AppUrls.getAcceptedBookings(status: 'completed'),
       );
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];

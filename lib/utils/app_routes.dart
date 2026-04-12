@@ -12,7 +12,7 @@ import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/screens/home-screens/payment_screen.dart';
 import 'package:project_borla/screens/home-screens/thank_you_screen.dart';
 import 'package:project_borla/screens/info-screens/about_us_screen.dart';
-import 'package:project_borla/screens/info-screens/notification_screen_copy.dart';
+import 'package:project_borla/screens/info-screens/user_notification_screen.dart';
 import 'package:project_borla/screens/info-screens/policy_screen.dart';
 import 'package:project_borla/screens/info-screens/terms_and_conditions_screen.dart';
 import 'package:project_borla/screens/map-screens/map_screen_two.dart';
@@ -177,7 +177,7 @@ class AppRoute {
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: notify,
-        page: () => NotificationsScreenCopy(),
+        page: () => UserNotificationScreen(),
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: profile,

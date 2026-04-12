@@ -35,14 +35,11 @@ class NotificationsScreen extends StatelessWidget {
 
               // ── Mark all as read ──────────────────────────────────────
               Obx(() {
-                final hasUnread = controller.unreadCount > 0;
+                final hasUnread = controller.unreadCount.value > 0;
                 return Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed:() {
-                      controller.markAllAsRead();
-                      hasUnread ? controller.markAllAsRead : null;
-                    },
+                    onPressed: hasUnread ? () => controller.markAllAsRead() : null,
                     child: CommonText(
                       text: 'Mark all as read',
                       fontSize: 14,
@@ -143,9 +140,7 @@ class NotificationsScreen extends StatelessWidget {
                             12.verticalSpace,
                             ...items.map((notification) =>
                                 NotificationItem(
-                                  title: notification.message,
-                                  time: _formatTime(notification.createdAt),
-                                  isRead: notification.read,
+                                  notification: notification,
                                   onTap: () => _handleNotificationTap(
                                     context,
                                     controller,
@@ -191,28 +186,29 @@ class NotificationsScreen extends StatelessWidget {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  String _formatTime(DateTime date) {
-    final hour = date.hour % 12 == 0 ? 12 : date.hour % 12;
-    final minute = date.minute.toString().padLeft(2, '0');
-    final period = date.hour >= 12 ? 'PM' : 'AM';
-    return '$hour:$minute $period';
-  }
-
-  // ── Handle tap based on model_type ───────────────────────────────────────
+  // ── Handle tap based on notification type ───────────────────────────────
   Future<void> _handleNotificationTap(
       BuildContext context,
       NotificationController controller,
       NotificationModel notification,
       ) async {
     // Mark as read
-    if (!notification.read) {
-      controller.markAsRead(notification.id);
+    if (!notification.isRead) {
+      await controller.markAsRead(notification.id);
     }
 
     // Route based on type
-    switch (notification.modelType) {
-      case NotificationModelType.joinRequest:
-        controller.markAsRead(notification.id);
+    switch (notification.type) {
+      case NotificationType.bookingCompleted:
+      case NotificationType.bookingHeadingToStation:
+      case NotificationType.bookingPaymentCollected:
+      case NotificationType.bookingPaymentInitiated:
+      case NotificationType.riderArrivedPickup:
+      case NotificationType.bookingAccepted:
+        // Navigate to booking detail if bookingId exists
+        if (notification.bookingId != null) {
+          // Get.to(() => BookingDetailScreen(bookingId: notification.bookingId!));
+        }
         break;
       default:
         break;

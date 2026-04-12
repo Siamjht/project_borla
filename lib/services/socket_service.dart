@@ -5,18 +5,16 @@ import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
 import '../helpers/prefs_helper.dart';
-import '../models/commonModels/chatMessageModels/chat_list_model.dart';
 import '../models/commonModels/chatMessageModels/chat_message_model.dart';
 import '../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../utils/app_urls.dart';
-
 
 
 class SocketServices {
   static late io.Socket socket;
   bool show = false;
 
-  ///<<<============ Connect with socket ====================>>>
+  // <<<============ Connect with socket ====================>>>
   static void connectToSocket() {
     socket = io.io(
       AppUrls.socketUrl,
@@ -29,8 +27,11 @@ class SocketServices {
 
     socket.onConnect((data) {
       listenForNewMessages();
+      listenForBookingEvents();   // ✅ Register all booking/payment listeners on connect
+      listenForNotificationEvents();
       debugPrint("=============================> Connection $data");
     });
+
     socket.onConnectError((data) {
       if (kDebugMode) {
         print("============================>Connection Error $data");
@@ -46,7 +47,7 @@ class SocketServices {
     });
   }
 
-
+  // <<<============ Listen for new chat messages ====================>>>
   static void listenForNewMessages() {
     socket.off(SocketEvents.newMessageOn);
     socket.on(SocketEvents.newMessageOn, (data) {
@@ -71,7 +72,7 @@ class SocketServices {
           }
         }
 
-        // ✅ Always show global snackbar notification
+        // TODO: Show global snackbar notification if needed
         // _showMessageSnackbar(sentMessage);
 
       } catch (e) {
@@ -80,113 +81,157 @@ class SocketServices {
     });
   }
 
+  // <<<============ Join a chat room ====================>>>
   static void joinChat({required String chatId}) {
     if (!socket.connected) return;
     socket.emit(SocketEvents.joinChatEmit, {chatId});
-    log('typing emitted for chatId: $chatId');
+    log('joinChat emitted for chatId: $chatId');
   }
 
-  // static void listenForNewMessages() {
-  //   socket.off('new_message');
-  //   socket.on('new_message', (data) {
-  //     log('new_message received: $data');
-  //
-  //     try {
-  //       final messageData = Map<String, dynamic>.from(data['message'] ?? {});
-  //       final sentMessage = SentMessageModel.fromJson(messageData);
-  //
-  //       // ✅ Only add if it's from the other person
-  //       if (sentMessage.sender != PrefsHelper.userId) {
-  //         ChatController.instance.messages.add(MessageModel(
-  //           id: DateTime.now().millisecondsSinceEpoch.toString(),
-  //           text: sentMessage.text,
-  //           imageUrl: sentMessage.imageUrl,
-  //           seen: false,
-  //           sender: sentMessage.sender,
-  //           receiver: sentMessage.receiver,
-  //           chat: sentMessage.chat,
-  //           createdAt: sentMessage.createdAt,
-  //           updatedAt: sentMessage.createdAt,
-  //         ));
-  //
-  //         ChatController.instance.scrollToBottom();
-  //       }
-  //     } catch (e) {
-  //       log('Error parsing new_message: $e');
-  //     }
-  //   });
-  // }
-  //
-  //
-  // /// Get Chat List
-  // static Future<List<CustomChatListItem>> getChatList({
-  //   int page = 1,
-  //   int limit = 20,
-  // }) async {
-  //   try {
-  //     log('get chat list is being called');
-  //
-  //     if (!socket.connected) {
-  //       log('Socket is not connected. Unable to emit event.');
-  //       return [];
-  //     }
-  //
-  //     log('Socket is connected. Emitting my_chat_list...');
-  //
-  //     final completer = Completer<List<CustomChatListItem>>();
-  //
-  //     socket.emitWithAck(
-  //       "my_chat_list",
-  //       {"page": page, "limit": limit}, // ✅ send pagination
-  //       ack: (response) {
-  //         if (response == null) {
-  //           log('No acknowledgment received or timeout occurred.');
-  //           completer.complete([]);
-  //           return;
-  //         }
-  //
-  //         log('Acknowledgment received: $response');
-  //
-  //         final model = ChatListResponseModel.fromJson(
-  //           Map<String, dynamic>.from(response),
-  //         );
-  //
-  //         final List<CustomChatListItem> items = model.data.map((item) {
-  //           final participant = item.chat.participants.isNotEmpty
-  //               ? item.chat.participants.first
-  //               : ChatParticipantModel.fromJson({});
-  //
-  //           return CustomChatListItem(
-  //             chatId: item.chat.id,
-  //             participantId: participant.id,
-  //             participantName: participant.name,
-  //             participantProfile: participant.profile,
-  //             lastMessage: item.message.text.isNotEmpty
-  //                 ? item.message.text
-  //                 : item.message.imageUrl.isNotEmpty
-  //                 ? '📷 Image'
-  //                 : '',
-  //             unreadCount: item.unreadMessageCount,
-  //             isSeen: item.message.seen,
-  //             time: OtherHelper.timeAgo(item.message.createdAt),
-  //           );
-  //         }).toList();
-  //
-  //         completer.complete(items);
-  //       },
-  //     );
-  //
-  //     return completer.future;
-  //
-  //   } catch (error, stackTrace) {
-  //     log('Error in getChatList: $error');
-  //     log('Stack Trace: $stackTrace');
-  //     return [];
-  //   }
-  // }
+  // <<<============ Listen for all Booking Events ====================>>>
+  static void listenForBookingEvents() {
+
+    // ── booking:new ──
+    // Fired when a new booking is created
+    socket.off('booking:new');
+    socket.on('booking:new', (data) {
+      log('booking:new received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:new: $e');
+      }
+    });
+
+    // ── booking:accepted ──
+    // Fired when the driver/provider accepts the booking
+    socket.off('booking:accepted');
+    socket.on('booking:accepted', (data) {
+      log('booking:accepted received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:accepted: $e');
+      }
+    });
+
+    // ── booking:arrived_pickup ──
+    // Fired when the driver has arrived at the pickup location
+    socket.off('booking:arrived_pickup');
+    socket.on('booking:arrived_pickup', (data) {
+      log('booking:arrived_pickup received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:arrived_pickup: $e');
+      }
+    });
+
+    // ── booking:heading_to_station ──
+    // Fired when the driver is heading to the station/destination
+    socket.off('booking:heading_to_station');
+    socket.on('booking:heading_to_station', (data) {
+      log('booking:heading_to_station received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:heading_to_station: $e');
+      }
+    });
+
+    // ── booking:payment_collected ──
+    // Fired when payment is collected for the booking (e.g. cash collected by driver)
+    socket.off('booking:payment_collected');
+    socket.on('booking:payment_collected', (data) {
+      log('booking:payment_collected received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingPaymentModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:payment_collected: $e');
+      }
+    });
+
+    // ── booking:completed ──
+    // Fired when the booking/ride is fully completed
+    socket.off('booking:completed');
+    socket.on('booking:completed', (data) {
+      log('booking:completed received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing booking:completed: $e');
+      }
+    });
+  }
+
+  // <<<============ Listen for all Payment Events ====================>>>
+  static void listenForPaymentEvents() {
+
+    // ── payment:initiated ──
+    // Fired when a payment is initiated/started
+    socket.off('payment:initiated');
+    socket.on('payment:initiated', (data) {
+      log('payment:initiated received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = PaymentModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing payment:initiated: $e');
+      }
+    });
+
+    // ── payment:cash_completed ──
+    // Fired when a cash payment is successfully completed
+    socket.off('payment:cash_completed');
+    socket.on('payment:cash_completed', (data) {
+      log('payment:cash_completed received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = PaymentModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing payment:cash_completed: $e');
+      }
+    });
+
+    // ── payment:callback ──
+    // Fired as a callback after an online/gateway payment attempt (success or failure)
+    socket.off('payment:callback');
+    socket.on('payment:callback', (data) {
+      log('payment:callback received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = PaymentCallbackModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing payment:callback: $e');
+      }
+    });
+  }
+
+  // <<<============ Listen for Notification Events ====================>>>
+  static void listenForNotificationEvents() {
+
+    // ── notification:new ──
+    // Fired when a new in-app notification arrives for the user
+    socket.off('notification:new');
+    socket.on('notification:new', (data) {
+      log('notification:new received: $data');
+      try {
+        // TODO: Parse with model when response structure is known
+        // final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing notification:new: $e');
+      }
+    });
+  }
 
   /// Get Chat Messages
-//   static Future<ChatMessageData> getChatMessages({
+  //   static Future<ChatMessageData> getChatMessages({
 //     required String userId,
 //     String? chatId,
 //     int page = 1,

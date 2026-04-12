@@ -1,41 +1,68 @@
-
 class NotificationModel {
   final String id;
-  final String receiver;
-  final String reference;
-  final String modelType;
+  final String userId;
+  final NotificationType type;
+  final String title;
   final String message;
-  final String description;
-  final bool read;
-  final bool isDeleted;
+  final NotificationData data;
+  final bool isRead;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   NotificationModel({
     required this.id,
-    required this.receiver,
-    required this.reference,
-    required this.modelType,
+    required this.userId,
+    required this.type,
+    required this.title,
     required this.message,
-    required this.description,
-    required this.read,
-    required this.isDeleted,
+    required this.data,
+    required this.isRead,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
-      id: json['_id'] ?? '',
-      receiver: json['receiver'] ?? '',
-      reference: json['refference'] ?? '',
-      modelType: json['model_type'] ?? '',
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      type: NotificationType.fromString(json['type'] ?? ''),
+      title: json['title'] ?? '',
       message: json['message'] ?? '',
-      description: json['description'] ?? '',
-      read: json['read'] ?? false,
-      isDeleted: json['isDeleted'] ?? false,
+      data: NotificationData.fromJson(json['data'] ?? {}),
+      isRead: json['isRead'] ?? false,
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
+    );
+  }
+}
+
+class NotificationData {
+  final String? bookingId;
+  final String? riderId;
+  final String? userId;
+  final String? status;
+  final DateTime? completedAt;
+  final String? stationId;
+
+  NotificationData({
+    this.bookingId,
+    this.riderId,
+    this.userId,
+    this.status,
+    this.completedAt,
+    this.stationId,
+  });
+
+  factory NotificationData.fromJson(Map<String, dynamic> json) {
+    return NotificationData(
+      bookingId: json['bookingId'],
+      riderId: json['riderId'],
+      userId: json['userId'],
+      status: json['status'],
+      completedAt: json['completedAt'] != null
+          ? DateTime.tryParse(json['completedAt'])
+          : null,
+      stationId: json['stationId'],
     );
   }
 }
@@ -45,12 +72,14 @@ class NotificationMeta {
   final int limit;
   final int total;
   final int totalPage;
+  final int unreadCount;
 
   NotificationMeta({
     required this.page,
     required this.limit,
     required this.total,
     required this.totalPage,
+    required this.unreadCount,
   });
 
   factory NotificationMeta.fromJson(Map<String, dynamic> json) {
@@ -59,34 +88,68 @@ class NotificationMeta {
       limit: json['limit'] ?? 10,
       total: json['total'] ?? 0,
       totalPage: json['totalPage'] ?? 1,
+      unreadCount: json['unreadCount'] ?? 0,
     );
   }
 }
 
-// ── Model Type Constants ──
-class NotificationModelType {
-  static const joinRequest = 'JoinRequest';
-  static const event = 'Event';
-// add more as needed
+// ── Notification Type Enum ──
+enum NotificationType {
+  bookingCompleted,
+  bookingHeadingToStation,
+  bookingPaymentCollected,
+  bookingPaymentInitiated,
+  riderArrivedPickup,
+  bookingAccepted,
+  bookingCancelled,
+  unknown;
+
+  static NotificationType fromString(String value) {
+    switch (value) {
+      case 'booking_completed':
+        return NotificationType.bookingCompleted;
+      case 'booking_heading_to_station':
+        return NotificationType.bookingHeadingToStation;
+      case 'booking_payment_collected':
+        return NotificationType.bookingPaymentCollected;
+      case 'booking_payment_initiated':
+        return NotificationType.bookingPaymentInitiated;
+      case 'rider_arrived_pickup':
+        return NotificationType.riderArrivedPickup;
+      case 'booking_accepted':
+        return NotificationType.bookingAccepted;
+      case 'booking_cancelled':
+        return NotificationType.bookingCancelled;
+      default:
+        return NotificationType.unknown;
+    }
+  }
 }
 
-// ── Message Constants ──
-class NotificationMessage {
-  static const approved = 'Great news! Your request was approved 🎉';
-  static const declined = 'Your join request was declined';
-  static const newRequest = 'You Have a New Event Join Request 🎉';
-}
-
-// ── Check model type and message ──
+// ── Helper Extensions ──
 extension NotificationExtension on NotificationModel {
-  bool get isJoinRequest => modelType == NotificationModelType.joinRequest;
+  String get typeLabel {
+    switch (type) {
+      case NotificationType.bookingCompleted:
+        return 'Booking Completed';
+      case NotificationType.bookingHeadingToStation:
+        return 'Heading to Station';
+      case NotificationType.bookingPaymentCollected:
+        return 'Payment Collected';
+      case NotificationType.bookingPaymentInitiated:
+        return 'Payment Initiated';
+      case NotificationType.riderArrivedPickup:
+        return 'Rider Arrived';
+      case NotificationType.bookingAccepted:
+        return 'Booking Accepted';
+      case NotificationType.bookingCancelled:
+        return 'Booking Cancelled';
+      default:
+        return 'Notification';
+    }
+  }
 
-  bool get isApproved =>
-      isJoinRequest && message.contains('Your request was approved');
+  bool get isBookingRelated => type != NotificationType.unknown;
 
-  bool get isDeclined =>
-      isJoinRequest && message.contains('Your join request was declined');
-
-  bool get isNewRequest =>
-      isJoinRequest && message.contains('You Have a New Event Join Request');
+  String? get bookingId => data.bookingId;
 }

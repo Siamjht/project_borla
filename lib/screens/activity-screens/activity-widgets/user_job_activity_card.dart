@@ -1,26 +1,32 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_borla/screens/home-screens/user-home-screens/user-controller/user_home_controller.dart';
+import 'package:project_borla/helpers/other_helper.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import 'package:project_borla/screens/track-screen/track_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
+import '../../../role/components/image/shimmer_image_loader.dart';
 import '../../../role/components/text/common_text.dart';
-import '../../home-screens/user-home-screens/user-innerwidget/common_widgets_copy.dart';
-import '../activity-controller/activity_controller_copy.dart';
-import '../schedule_detail_screen_copy.dart';
+import '../../../theme/user_outgoing_call_screen.dart';
+import '../../chat-screen/chat_screen_copy.dart';
+import '../activity-controller/user_activity_controller.dart';
+import '../user_schedule_detail_screen.dart';
 
 
 class UserActivityCard extends StatelessWidget {
-  bool isDetailScreen;
-  String? role;
-  UserActivityCard({super.key, this.isDetailScreen = false, this.role = "rider"});
+  final bool isDetailScreen;
+  final RiderBookingModel booking;
 
-  UserActivityController activityController = Get.put(UserActivityController());
-  UserHomeController controller = Get.put(UserHomeController());
+  const UserActivityCard({
+    super.key,
+    this.isDetailScreen = false,
+    required this.booking,
+  });
+
+  UserActivityController get activityController => Get.find<UserActivityController>();
 
   @override
   Widget build(BuildContext context) {
-    controller.isBottomSheet.value = true;
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
@@ -39,7 +45,7 @@ class UserActivityCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          userRow(controller, role: role),
+          userRow(),
           const SizedBox(height: 10),
           const Divider(color: AppColors.gray200, thickness: 1),
           const SizedBox(height: 10),
@@ -48,28 +54,214 @@ class UserActivityCard extends StatelessWidget {
           const Divider(color: AppColors.gray200, thickness: 1),
           const SizedBox(height: 10),
           paymentRow(),
-          isDetailScreen? SizedBox.shrink() : const SizedBox(height: 20),
-          isDetailScreen? SizedBox.shrink() : _viewDetailsButton(),
+          if (isDetailScreen) ...[
+            const SizedBox(height: 20),
+            _viewDetailsButton(),
+          ],
         ],
       ),
     );
   }
 
-  // ---------------- BUTTON ----------------
+  Widget userRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ShimmerImageLoader(
+          url: booking.rider.profilePicture,
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(
+                textAlign: TextAlign.start,
+                text: booking.rider.name,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.star_rounded, color: AppColors.orange300,),
+                  CommonText(
+                    text: booking.rider.totalRatings.toString(),
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  CommonText(
+                    text: " (${booking.rider.completedBookings.toString()} Rides)",
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        UserActivityController.instance.selectedIndex.value == 0
+            ? Row(
+          children: [
+            InkWell(
+                onTap: () {
+                  Get.to(() => UserChattingScreen());
+                },
+                child: circleAction(
+                    Icons.chat_bubble_outline, AppColors.orange300)),
+            const SizedBox(width: 12),
+            InkWell(
+                onTap: () {
+                  Get.to(() => UserOutgoingCallScreen());
+                },
+                child: circleAction(
+                    Icons.phone_outlined, AppColors.orange300)),
+          ],
+        )
+            : UserActivityController.instance.selectedIndex.value == 1
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CommonText(
+              text: booking.scheduledDate ?? '',
+              color: AppColors.orange300,
+              fontSize: 12,
+            ),
+            CommonText(
+              text: OtherHelper.getTimeFromIso(booking.scheduledFor ?? ""),
+              color: AppColors.gray300,
+              fontSize: 12,
+            ),
+          ],
+        )
+            : Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            color: AppColors.orange300,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: AppColors.orange100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(13),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: CommonText(
+            text: booking.status.isEmpty ? 'Unknown' : booking.status[0].toUpperCase() + booking.status.substring(1),
+            color: AppColors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget circleAction(IconData icon, Color color) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: color),
+      ),
+      child: Icon(icon, color: color, size: 20),
+    );
+  }
+
+  Widget locationSection() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Icon(Icons.radio_button_checked,
+                color: AppColors.orange300, size: 18),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(
+                textAlign: TextAlign.start,
+                text: booking.pickupAddress,
+                fontSize: 14,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget paymentRow() {
+    return Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.gray100,
+          ),
+          child: Icon(
+            Icons.payment_outlined,
+            color: AppColors.orange300,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CommonText(
+              text: 'Payment',
+              fontSize: 12,
+              color: AppColors.gray300,
+            ),
+
+            CommonText(
+              text: booking.paymentMethod == 'cash' ? 'Cash' : 'MTN MoMo Pay',
+              fontSize: 16,
+            ),
+          ],
+        ),
+        const Spacer(),
+        CommonText(
+          text: booking.price != null
+              ? 'GH₵ ${booking.price!.toStringAsFixed(0)}'
+              : 'TBD',
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.orange300,
+        ),
+      ],
+    );
+  }
+
   Widget _viewDetailsButton() {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          if(activityController.selectedIndex.value == 1){
-            Get.to(() => ScheduleDetailScreen());
-          }else if(activityController.selectedIndex.value == 0){
+          activityController.selectedBooking.value = booking;
+
+          if (activityController.selectedIndex.value == 1) {
+            Get.to(() => UserScheduleDetailScreen());
+          } else if (activityController.selectedIndex.value == 0) {
             Get.to(() => UserTrackScreen());
           }
         },
         style: ElevatedButton.styleFrom(
-          //backgroundColor: AppColors.primaryColor,
-          backgroundColor: Colors.amber,
+          backgroundColor: AppColors.orange300,
           elevation: 0,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(

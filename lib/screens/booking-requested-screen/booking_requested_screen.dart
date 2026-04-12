@@ -81,7 +81,9 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
                       firstGradient: AppColors.transparent,
                       secondGradient: AppColors.transparent,
                       onTap: () {
-                        Get.to(()=> BookingAcceptedScreen());
+                        navbarController.tabIndex.value = 0;
+                        Get.to(()=>UserNavBar());
+                        // Get.to(()=> BookingAcceptedScreen());
                       },
                     ),
                     // BackHomeButton(),

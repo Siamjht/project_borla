@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
+import 'package:project_borla/screens/map-screens/user_common_map.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
@@ -82,9 +83,6 @@ class _RiderSearchingScreenState extends State<RiderSearchingScreen> {
         Get.to(() => const BookingRequestedScreen());
       }
     },);
-    // Future.delayed(const Duration(seconds: 5), () {
-    //   // Get.to(() => const BookingRequestedScreen());
-    // });
   }
 
 
@@ -93,7 +91,7 @@ class _RiderSearchingScreenState extends State<RiderSearchingScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: DriverCommonMap()),
+            Positioned.fill(child: UserCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/screens/info-screens/about_us_screen.dart';
-import 'package:project_borla/screens/info-screens/notification_screen_copy.dart';
+import 'package:project_borla/screens/info-screens/user_notification_screen.dart';
 import 'package:project_borla/screens/info-screens/policy_screen.dart';
 import 'package:project_borla/screens/profile-screens/address_screen.dart';
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/logout_bottom_sheet_copy.dart';
@@ -81,12 +81,24 @@ class _ProfileScreenUserState extends State<ProfileScreenUser> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    CommonText(
-                      text: _profileCtrl.profile.value.name,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      textAlign: TextAlign.left,
-                      maxLines: 1,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: _profileCtrl.profile.value.name,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                        ),
+                        CommonText(
+                          text: _profileCtrl.profile.value.email,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          textAlign: TextAlign.left,
+                          maxLines: 2,
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     InkWell(
@@ -137,7 +149,7 @@ class _ProfileScreenUserState extends State<ProfileScreenUser> {
               SettingsListItem(
                 icon: Icons.notifications_outlined,
                 title: 'notifications'.tr,
-                onTap: () => Get.to(() => NotificationsScreenCopy(isFromProfile: true)),
+                onTap: () => Get.to(() => UserNotificationScreen(isFromProfile: true)),
               ),
 
               SettingsListItem(

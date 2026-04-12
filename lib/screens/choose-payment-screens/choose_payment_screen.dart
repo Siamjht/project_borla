@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_borla/bottom-sheets/payment_sheet.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
-
-import '../../role/garbageCollector/map/driver_common_map.dart';
+import 'package:project_borla/screens/map-screens/user_common_map.dart';
 
 class ChoosePaymentScreen extends StatefulWidget {
   const ChoosePaymentScreen({super.key});
@@ -34,7 +33,7 @@ class _ChoosePaymentScreenState extends State<ChoosePaymentScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: DriverCommonMap()),
+            Positioned.fill(child: UserCommonMap()),
 
             Positioned(
               left: 20,

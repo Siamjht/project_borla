@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/screens/activity-screens/user_activity_screen.dart';
 import 'package:project_borla/screens/home-screens/home_map_screen.dart';
-import 'package:project_borla/screens/info-screens/notification_screen_copy.dart';
+import 'package:project_borla/screens/info-screens/user_notification_screen.dart';
 import 'package:project_borla/screens/profile-screens/profile_screen_user.dart';
 
 import '../../features/fragments/bottom_nav_bar.dart';
@@ -23,7 +23,7 @@ class UserNavBar extends StatelessWidget {
   final List<Widget> widgetOptions = [
     HomeMapScreen(),
     UserActivityScreen(),
-    NotificationsScreenCopy(),
+    UserNotificationScreen(isFromProfile: false,),
     ProfileScreenUser(),
   ];
 

@@ -1,19 +1,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../role/components/image/common_image.dart';
 import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/custom_container_copy.dart';
 import '../../theme/gradient_scaffold_copy.dart';
-import 'activity-widgets/job_activity_card_copy.dart';
+import 'activity-controller/user_activity_controller.dart';
+import 'activity-widgets/user_job_activity_card.dart';
 
-class ScheduleDetailScreen extends StatelessWidget {
-  const ScheduleDetailScreen({super.key});
+class UserScheduleDetailScreen extends StatelessWidget {
+  const UserScheduleDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = Get.find<UserActivityController>();
+    final booking = ctrl.selectedBooking.value;
+
+    if (booking == null) {
+      return UserGradientScaffold(
+        child: SafeArea(
+          child: Center(
+            child: CommonText(text: 'No booking selected', fontSize: 16),
+          ),
+        ),
+      );
+    }
+
     return UserGradientScaffold(
       child: SafeArea(
         child: Column(
@@ -44,7 +59,10 @@ class ScheduleDetailScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CommonText(text: "Ride scheduled!",  fontSize: 20,),
-                              CommonText(text: "Monday, Dec 23 - 16:00 PM", color: AppColors.gray300,),
+                              CommonText(
+                                text: '${booking.scheduledDate ?? ''} - ${OtherHelper.getTimeFromIso(booking.scheduledFor ?? "")}',
+                                color: AppColors.gray300,
+                              ),
                             ],
                           ),
                         ),
@@ -60,7 +78,7 @@ class ScheduleDetailScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16,),
-                  UserActivityCard(isDetailScreen: true,)
+                  UserActivityCard(booking: booking, isDetailScreen: true,)
                 ],
               ),
             ),

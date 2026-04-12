@@ -86,12 +86,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           const SizedBox(width: 16),
-                          CommonText(
-                            text: _profileCtrl.profile.value.name,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: _profileCtrl.profile.value.name,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                textAlign: TextAlign.left,
+                                maxLines: 1,
+                              ),
+                              CommonText(
+                                text: _profileCtrl.profile.value.email,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                textAlign: TextAlign.left,
+                                maxLines: 2,
+                              ),
+                            ],
                           ),
                           const Spacer(),
                           InkWell(

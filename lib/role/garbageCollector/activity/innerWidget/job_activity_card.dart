@@ -159,15 +159,6 @@ class ActivityCard extends StatelessWidget {
     );
   }
 
-  Color _statusColor(String status) {
-    switch (status) {
-      case 'accepted': return AppColors.green500;
-      case 'completed': return AppColors.blue;
-      case 'cancelled': return AppColors.red500;
-      default: return AppColors.gray300;
-    }
-  }
-
   Widget locationSection() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,11 +167,6 @@ class ActivityCard extends StatelessWidget {
           children: [
             Icon(Icons.radio_button_checked,
                 color: AppColors.primaryColor, size: 18),
-            // const SizedBox(height: 6),
-            // VerticalDottedLine(),
-            // const SizedBox(height: 6),
-            // Icon(Icons.location_on,
-            //     color: AppColors.primaryColor, size: 20),
           ],
         ),
         const SizedBox(width: 12),
@@ -193,12 +179,6 @@ class ActivityCard extends StatelessWidget {
                 text: booking.pickupAddress,
                 fontSize: 14,
               ),
-              // const SizedBox(height: 20),
-              // CommonText(
-              //   textAlign: TextAlign.start,
-              //   text: booking.dropoffAddress ?? 'Dropoff not specified',
-              //   fontSize: 14,
-              // ),
             ],
           ),
         ),
@@ -252,7 +232,7 @@ class ActivityCard extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // ✅ store selected booking before navigating
+          //store selected booking before navigating
           activityController.selectedBooking.value = booking;
 
           if (activityController.selectedIndex.value == 0) {

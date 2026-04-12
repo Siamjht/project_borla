@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/theme/app_color.dart';
 
-import '../activity-controller/activity_controller_copy.dart';
+import '../activity-controller/user_activity_controller.dart';
 
 
-class JobsTabBar extends StatelessWidget {
-  JobsTabBar({super.key});
+class UserJobsTabBar extends StatelessWidget {
+  UserJobsTabBar({super.key});
 
   final UserActivityController controller = Get.put(UserActivityController());
 

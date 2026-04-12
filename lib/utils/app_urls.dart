@@ -37,6 +37,7 @@ class AppUrls {
   static const getSupportChatID = "$baseUrl/messages/support/my-chats";
   static const sendSupportChat = "$baseUrl/messages/support";
 
+  static String markNotificationByID({id}) => "$baseUrl/notifications/$id/read";
   static String getSupportMessages({String chatId = ''}) => "$baseUrl/messages/support/my-chats/$chatId/messages";
 
   static String getMessages({required String bookingId}) => "$baseUrl/messages/booking/$bookingId";
@@ -44,7 +45,8 @@ class AppUrls {
 
   static String availableBookings({bool isPopulateUser = true}) => "$baseUrl/bookings/available?populateUser=$isPopulateUser";
   static String updatePlace({required String id}) => "$baseUrl/saved-places/$id";
-  static String getAcceptedBooking({required String status}) => "$baseUrl/bookings/rider-bookings?status=$status";
+  static String getAcceptedBookings({required String status}) => "$baseUrl/bookings/rider-bookings?status=$status";
+  static String getMyBookings({required String status}) => "$baseUrl/bookings/my-bookings?status=$status";
   static String acceptBooking({required String id}) => "$baseUrl/bookings/$id/accept";
   static String declineBooking({required String id}) => "$baseUrl/bookings/$id/decline";
   static String arriveAtPickup({required String id}) => "$baseUrl/bookings/$id/arrive-pickup";

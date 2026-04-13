@@ -77,11 +77,11 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
             Padding(
               padding: const EdgeInsets.fromLTRB(22, 0, 22, 0),
               child: CustomTextField(
-                controller: _bookingCtrl.currentLocationController,
+                controller: _bookingCtrl.bookingLocationTextCtrl,
                 hint: 'Enter the Location...',
                 prefix: Image.asset('assets/images/fourth_pin.png'),
                 suffix: InkWell(
-                  onTap: () => _bookingCtrl.currentLocationController.clear(),
+                  onTap: () => _bookingCtrl.bookingLocationTextCtrl.clear(),
                   child: Image.asset('assets/images/cross.png'),
                 ),
               ),
@@ -167,7 +167,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
                         onTap: () async {
                           // update selected id — triggers Obx rebuild for all chips
                           _bookingCtrl.selectedPlaceId.value = place.id;
-                          _bookingCtrl.currentLocationController.text = place.address;
+                          _bookingCtrl.bookingLocationTextCtrl.text = place.address;
                           _bookingCtrl.selectedPlaceLat = place.latitude;
                           _bookingCtrl.selectedPlaceLang = place.longitude;
 

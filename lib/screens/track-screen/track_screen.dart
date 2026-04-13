@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_borla/screens/map-screens/user_common_map.dart';
 import 'package:project_borla/screens/track-screen/track_screen_sheet.dart';
 
 import '../../role/components/commonBackButton/common_back_button.dart';
@@ -35,7 +36,7 @@ class _UserTrackScreenState extends State<UserTrackScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: DriverCommonMap()),
+            Positioned.fill(child: UserCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

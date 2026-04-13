@@ -23,13 +23,6 @@ class UserActivityController extends GetxController {
   // ── Selected booking for detail screen ─────────────────
   final Rx<RiderBookingModel?> selectedBooking = Rx<RiderBookingModel?>(null);
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchOngoing();
-    fetchScheduled();
-    fetchHistory();
-  }
 
   void changeTab(int index) {
     selectedIndex.value = index;

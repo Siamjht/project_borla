@@ -9,13 +9,14 @@ import 'package:project_borla/utils/app_routes.dart';
 import 'bindings/app_binding.dart';
 import 'language/app_translation.dart';
 import 'language/language_service.dart';
+import 'services/socket_service.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final Locale savedLocale = await LanguageService.getLocale();
-  PrefsHelper.getAllPrefData();
-
+  await PrefsHelper.getAllPrefData();
+  SocketServices.connectToSocket();
   runApp(MyApp(locale: savedLocale));
 }
 

@@ -9,6 +9,7 @@ import '../../../role/components/image/shimmer_image_loader.dart';
 import '../../../role/components/text/common_text.dart';
 import '../../../theme/user_outgoing_call_screen.dart';
 import '../../chat-screen/chat_screen_copy.dart';
+import '../../rider-arrived-screens/rider_arrived_screen.dart';
 import '../activity-controller/user_activity_controller.dart';
 import '../user_schedule_detail_screen.dart';
 
@@ -257,7 +258,9 @@ class UserActivityCard extends StatelessWidget {
           if (activityController.selectedIndex.value == 1) {
             Get.to(() => UserScheduleDetailScreen());
           } else if (activityController.selectedIndex.value == 0) {
-            Get.to(() => UserTrackScreen());
+            if(booking.status == "arrived_pickup"){
+              Get.to(()=> RiderArrivedScreen());
+            }
           }
         },
         style: ElevatedButton.styleFrom(

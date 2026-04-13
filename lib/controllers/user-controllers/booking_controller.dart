@@ -18,7 +18,7 @@ class BookingController extends GetxController {
   final Rx<CreateBookingModel?> createdBooking = Rx<CreateBookingModel?>(null);
 
   final RxBool showSearchSheet = true.obs;
-  TextEditingController currentLocationController = TextEditingController();
+  TextEditingController bookingLocationTextCtrl = TextEditingController();
 
   /// fetch current location method
   Future<void> fetchCurrentLocation() async {
@@ -27,7 +27,7 @@ class BookingController extends GetxController {
     final position = result.position;
 
     if (result.address.isNotEmpty) {
-      currentLocationController.text = address;
+      bookingLocationTextCtrl.text = address;
       UserMapController.instance.currentLocation.value = LatLng(position.latitude, position.longitude);
       selectedPlaceLat = position.latitude;
       selectedPlaceLang = position.longitude;
@@ -244,7 +244,7 @@ class BookingController extends GetxController {
         wasteSize: int.tryParse(wasteSizeController.text) ?? 0,
         pickupLatitude: selectedPlaceLat,
         pickupLongitude: selectedPlaceLang,
-        pickupAddress: currentLocationController.text,
+        pickupAddress: bookingLocationTextCtrl.text,
         vehicleType: 'Tri Cycle',
         paymentMethod: selectedPaymentMethod.value,
         isScheduled: isScheduled.value,

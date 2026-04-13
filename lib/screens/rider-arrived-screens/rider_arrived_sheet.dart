@@ -1,22 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/choose_payment_sheet_controllers.dart';
-import 'package:project_borla/screens/driver-information-screens/driver_information_screen.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import '../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../role/components/text/common_text.dart';
-import '../../role/garbageCollector/activity/controller/activity_controller.dart';
-import '../../role/garbageCollector/call/outgoing_call_screen.dart';
-import '../../role/garbageCollector/home/innerWidget/customer_info_bottom_sheet.dart';
-import '../../theme/app_color.dart';
 import '../../widgets/booking-accepted-sheet-widgets/user_section_widget.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/rider-arrived-sheet-widget/user_payment_row_widget.dart';
-import '../chat-screen/chat_screen_copy.dart';
-import '../choose-payment-screens/choose_payment_screen.dart';
+
 
 class RiderArrivedSheet extends StatefulWidget {
   const RiderArrivedSheet({super.key});

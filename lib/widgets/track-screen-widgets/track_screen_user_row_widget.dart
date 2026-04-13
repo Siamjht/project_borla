@@ -4,8 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 import '../../role/components/text/common_text.dart';
-import '../../role/garbageCollector/activity/controller/activity_controller.dart';
 import '../../role/garbageCollector/call/outgoing_call_screen.dart';
+import '../../screens/activity-screens/activity-controller/user_activity_controller.dart';
 import '../../screens/chat-screen/chat_screen_copy.dart';
 import '../../theme/app_color.dart';
 import '../../theme/user_outgoing_call_screen.dart';
@@ -51,7 +51,7 @@ Widget userRowMod() {
           ],
         ),
       ),
-      ActivityController.instance.selectedIndex.value == 0?
+      UserActivityController.instance.selectedIndex.value == 0?
       Row(
         children: [
           InkWell(
@@ -75,7 +75,7 @@ Widget userRowMod() {
           ),
 
         ],
-      ) : ActivityController.instance.selectedIndex.value == 1?
+      ) : UserActivityController.instance.selectedIndex.value == 1?
       Column(
         children: [
           CommonText(text: "Dec 23" , color: AppColors.green500,),

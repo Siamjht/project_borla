@@ -139,7 +139,7 @@ class LocationSearchTwoController extends GetxController {
       lng = location['lng'];
       BookingController.instance.selectedPlaceLat = lat;
       BookingController.instance.selectedPlaceLang = lng;
-      BookingController.instance.currentLocationController.text = suggestion.address;
+      BookingController.instance.bookingLocationTextCtrl.text = suggestion.address;
       final latLng = LatLng(lat, lng);
       await UserMapController.instance.placeUserMarker(latLng);
       UserMapController.instance.pendingCameraTarget = latLng;
@@ -161,6 +161,12 @@ class LocationSearchTwoController extends GetxController {
 
   Future<void> selectRecent(RecentSearchModel recent) async {
     addressController.text = recent.title;
+    
+    // Update BookingController with the selected address
+    BookingController.instance.bookingLocationTextCtrl.text = recent.address;
+    BookingController.instance.selectedPlaceLat = recent.latitude;
+    BookingController.instance.selectedPlaceLang = recent.longitude;
+    
     final latLng = LatLng(recent.latitude, recent.longitude);
     await UserMapController.instance.placeUserMarker(latLng);
     UserMapController.instance.pendingCameraTarget = latLng;

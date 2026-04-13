@@ -185,24 +185,39 @@ class _StatItem extends StatelessWidget {
       borderWidth: 0.5,
       color: AppColors.white,
       height: 70,
-      child: Column(
-        children: [
-          const SizedBox(height: 4),
-          icon,
-          8.verticalSpace,
-          CommonText(
-            text: value,
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-          ),
-          2.verticalSpace,
-          CommonText(
-            text: label,
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-            color: Colors.grey,
-          ),
-        ],
+      padding: EdgeInsets.symmetric(horizontal: 2),
+      child: OverflowBox(
+        alignment: Alignment.center,
+        minHeight: 0,
+        maxHeight: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            icon,
+            6.verticalSpace,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: CommonText(
+                text: value,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                maxLines: 1,
+              ),
+            ),
+            2.verticalSpace,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: CommonText(
+                text: label,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey,
+                maxLines: 1,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

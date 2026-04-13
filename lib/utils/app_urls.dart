@@ -57,10 +57,27 @@ class AppUrls {
   static String updateBookingStatus({required String id}) => "$baseUrl/bookings/$id/status";
 }
 
-class SocketEvents{
+class SocketEvents {
+  // Chat Events
   static String joinChatEmit = "chat:join";
   static String newMessageOn = "message:new";
   static String chatTypingOn = "chat:typing";
   static String chatTypingEmit = "chat:typing";
   static String leaveChatRoomEmit = "chat:leave";
+
+  // Booking Events
+  static String bookingNewOn = "booking:new";
+  static String bookingAcceptedOn = "booking:accepted";
+  static String bookingArrivedPickupOn = "booking:arrived_pickup";
+  static String bookingHeadingToStationOn = "booking:heading_to_station";
+  static String bookingPaymentCollectedOn = "booking:payment_collected";
+  static String bookingCompletedOn = "booking:completed";
+
+  // Payment Events
+  static String paymentInitiatedOn = "payment:initiated";
+  static String paymentCallbackOn = "payment:callback";
+  static String paymentCashCompletedOn = "payment:cash_completed";
+
+  // Notification Events
+  static String notificationNewOn = "notification:new";
 }

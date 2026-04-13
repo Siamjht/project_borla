@@ -7,7 +7,7 @@ import '../controller/activity_controller.dart';
 class JobsTabBar extends StatelessWidget {
   JobsTabBar({super.key});
 
-  final ActivityController controller = Get.put(ActivityController());
+  final ActivityController controller = Get.find<ActivityController>();
 
   @override
   Widget build(BuildContext context) {

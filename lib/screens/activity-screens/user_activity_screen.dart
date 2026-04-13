@@ -14,11 +14,23 @@ import 'user_history_screen.dart';
 import 'user_ongoing_screen.dart';
 
 
-class UserActivityScreen extends StatelessWidget {
+class UserActivityScreen extends StatefulWidget {
   UserActivityScreen({super.key});
 
-  final UserActivityController activityController = Get.put(UserActivityController());
+  @override
+  State<UserActivityScreen> createState() => _UserActivityScreenState();
+}
 
+class _UserActivityScreenState extends State<UserActivityScreen> {
+  final UserActivityController userActivityCtrl = Get.find<UserActivityController>();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      userActivityCtrl.fetchOngoing();
+    },);
+  }
   @override
   Widget build(BuildContext context) {
     return UserGradientScaffold(
@@ -51,7 +63,7 @@ class UserActivityScreen extends StatelessWidget {
 
                   /// IMPORTANT: key changes when tab changes
                   child: _buildTabContent(
-                    activityController.selectedIndex.value,
+                    userActivityCtrl.selectedIndex.value,
                   ),
                 ),
               ),
@@ -65,10 +77,13 @@ class UserActivityScreen extends StatelessWidget {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
+        userActivityCtrl.fetchOngoing();
         return UserOngoingScreen(key: ValueKey(0),);
       case 1:
+        userActivityCtrl.fetchScheduled();
         return const UserScheduleScreen(key: ValueKey(1));
       case 2:
+        userActivityCtrl.fetchHistory();
         return const UserHistoryScreen(key: ValueKey(2));
       default:
         return const SizedBox();

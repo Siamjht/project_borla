@@ -101,7 +101,7 @@ class _ConfirmAddressSheetState extends State<ConfirmAddressSheet> {
               padding: const EdgeInsets.only(left: 50.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(_bookingCtrl.currentLocationController.text, style: TextStyle(
+                child: Text(_bookingCtrl.bookingLocationTextCtrl.text, style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,

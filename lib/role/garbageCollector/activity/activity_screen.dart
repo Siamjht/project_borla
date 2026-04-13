@@ -16,7 +16,7 @@ class ActivityScreen extends StatelessWidget {
   ActivityScreen({super.key});
 
   final ActivityController activityController =
-  Get.put(ActivityController());
+  Get.find<ActivityController>();
 
   @override
   Widget build(BuildContext context) {

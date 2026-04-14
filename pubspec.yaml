@@ -59,6 +59,7 @@ dependencies:
   shimmer: ^3.0.0
   carousel_slider: ^5.1.2
   flutter_card_swiper: ^7.0.0
+  audioplayers: ^6.5.0
 
 
 dev_dependencies:
@@ -92,6 +93,7 @@ flutter:
     - assets/map_style.json
     - assets/icons/
     - assets/icon-copy/
+    - assets/sounds/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

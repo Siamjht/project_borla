@@ -13,6 +13,7 @@ import '../../../../models/commonModels/chatMessageModels/chat_message_model.dar
 import '../../../../models/commonModels/chatMessageModels/support_chat_model.dart';
 import '../../../../services/api_service.dart';
 import '../../../../services/socket_service.dart';
+import '../../../../services/sound_service.dart';
 import '../../../../utils/app_urls.dart';
 import '../../../components/customSnackbar/custom_snackbar.dart';
 
@@ -268,6 +269,9 @@ class ChatController extends GetxController {
 
         // ✅ scroll to bottom
         scrollToBottom();
+        
+        // ✅ Play message send tone (only when user is in app)
+        SoundService.instance.playMessageSend();
       } else {
         CustomSnackbar.error(response.message);
       }

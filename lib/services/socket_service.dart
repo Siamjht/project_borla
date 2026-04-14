@@ -8,6 +8,7 @@ import '../helpers/prefs_helper.dart';
 import '../models/commonModels/chatMessageModels/chat_message_model.dart';
 import '../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../utils/app_urls.dart';
+import 'sound_service.dart';
 
 
 class SocketServices {
@@ -80,6 +81,9 @@ class SocketServices {
           }
         }
 
+        // ✅ Play message receive tone (only when user is in app)
+        SoundService.instance.playMessageReceive();
+
         // TODO: Show global snackbar notification if needed
         // _showMessageSnackbar(sentMessage);
 
@@ -147,6 +151,10 @@ class SocketServices {
     socket.off(SocketEvents.notificationNewOn);
     socket.on(SocketEvents.notificationNewOn, (data) {
       log('notification:new received: $data');
+      
+      // ✅ Play message receive tone for notifications (only when user is in app)
+      SoundService.instance.playMessageReceive();
+      
       try {
         // TODO: Parse with model when response structure is known
         // final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
@@ -228,6 +236,10 @@ class SocketServices {
     socket.off(SocketEvents.bookingNewOn);
     socket.on(SocketEvents.bookingNewOn, (data) {
       log('booking:new received: $data');
+      
+      // ✅ Play dispatch tone for new booking (only when user is in app)
+      SoundService.instance.playDispatch();
+      
       try {
         // TODO: Parse with BookingModel when response structure is known
         // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));

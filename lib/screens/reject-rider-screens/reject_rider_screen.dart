@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 import 'package:project_borla/screens/reject-rider-screens/reject_rider_sheet.dart';
 
 import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../role/garbageCollector/map/driver_common_map.dart';
 
 class RejectRiderScreen extends StatefulWidget {
-  const RejectRiderScreen({super.key});
+  UserBookingModel booking;
+  RejectRiderScreen({super.key, required this.booking});
 
   @override
   State<RejectRiderScreen> createState() => _RejectRiderScreenState();
@@ -23,7 +25,7 @@ class _RejectRiderScreenState extends State<RejectRiderScreen> {
       isScrollControlled: true,
       //showDragHandle: true,
       useSafeArea: true,
-      builder: (context) => RejectRiderSheet(),
+      builder: (context) => RejectRiderSheet(booking: widget.booking,),
 
     );
   }
@@ -41,7 +43,7 @@ class _RejectRiderScreenState extends State<RejectRiderScreen> {
                 child: CommonBackButton()),
             Align(
                 alignment: Alignment.bottomCenter,
-                child:RejectRiderSheet()
+                child:RejectRiderSheet(booking: widget.booking,)
             )
           ],
         )

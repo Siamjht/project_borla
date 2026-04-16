@@ -13,7 +13,6 @@ import '../../components/text/common_text.dart';
 import '../map/driver_common_map.dart';
 import 'controller/driver_home_controller.dart';
 import 'innerWidget/application_review_dialog.dart';
-import 'innerWidget/pulsing_cycle.dart';
 
 class DriverHomeScreen extends StatefulWidget {
   DriverHomeScreen({super.key});
@@ -47,6 +46,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _driverHomeCtrl. showJobCards.value = true;
     return Scaffold(
       body: Stack(
         children: [

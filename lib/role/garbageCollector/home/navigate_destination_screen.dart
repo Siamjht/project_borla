@@ -16,41 +16,12 @@ import 'controller/driver_home_controller.dart';
 import 'innerWidget/arrived_bottom_sheet.dart';
 
 class NavigateDestinationScreen extends StatelessWidget {
-  const NavigateDestinationScreen({super.key});
+  RiderBookingModel booking;
+  NavigateDestinationScreen({super.key, required this.booking});
 
-  RiderBookingModel? _getBooking() {
-    final activityCtrl = Get.isRegistered<ActivityController>()
-        ? Get.find<ActivityController>()
-        : null;
-    if (activityCtrl?.selectedBooking.value != null) {
-      return activityCtrl!.selectedBooking.value;
-    }
-
-    final homeCtrl = Get.isRegistered<DriverHomeController>()
-        ? Get.find<DriverHomeController>()
-        : null;
-    if (homeCtrl?.acceptedBooking.value != null) {
-      final accepted = homeCtrl!.acceptedBooking.value!;
-      return RiderBookingModel(
-        id: accepted.id,
-        pickupLatitude: accepted.pickupLatitude,
-        pickupLongitude: accepted.pickupLongitude,
-        pickupAddress: accepted.pickupAddress,
-        dropoffAddress: accepted.dropoffAddress,
-        price: accepted.price,
-        estimatedDistance: accepted.estimatedDistance,
-        estimatedTime: accepted.estimatedTime,
-        paymentMethod: accepted.paymentMethod,
-        user: accepted.user,
-      );
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final booking = _getBooking();
-
     return Scaffold(
       body: Stack(
         children: [
@@ -87,7 +58,7 @@ class NavigateDestinationScreen extends StatelessWidget {
                     child: CommonText(
                       textAlign: TextAlign.start,
                       fontWeight: FontWeight.w400,
-                      text: booking?.pickupAddress ?? '—', // ✅ real data
+                      text: booking.pickupAddress, // ✅ real data
                     ),
                   ),
                 ],
@@ -101,7 +72,7 @@ class NavigateDestinationScreen extends StatelessWidget {
             left: 20,
             right: 20,
             child: CommonButton(
-              onTap: () => Get.to(() => ArrivedScreen()),
+              onTap: () => Get.to(() => ArrivedScreen(bookingModel: booking)),
               titleText: 'Navigate to Destination',
               buttonRadius: 12,
             ),

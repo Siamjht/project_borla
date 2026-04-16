@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/rating_sheet_controller.dart';
@@ -69,71 +70,11 @@ class _RatingSheetState extends State<RatingSheet> {
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (rating) {
-                    print(rating);
+                    if (kDebugMode) {
+                      print(rating);
+                    }
                   },
                 ),
-
-                // child: Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     Obx(()=>InkWell(
-                //       onTap: () {
-                //         starController.isStarSelectedOne.toggle();
-                //         starController.ratingList['starOne'] = starController.isStarSelectedOne.value ;
-                //       },
-                //       child: Icon(
-                //         Icons.star,
-                //         color: starController.isStarSelectedOne.value? Colors.amber : Colors.grey.shade300 ,
-                //         size: 42,
-                //       ),
-                //     ),),
-                //     Obx(()=>InkWell(
-                //       onTap: () {
-                //         starController.isStarSelectedTwo.toggle();
-                //         starController.ratingList['starTwo'] = starController.isStarSelectedTwo.value ;
-                //       },
-                //       child: Icon(
-                //         Icons.star,
-                //         color: starController.isStarSelectedTwo.value? Colors.amber : Colors.grey.shade300 ,
-                //         size: 42,
-                //       ),
-                //     ),),
-                //     Obx(()=>InkWell(
-                //       onTap: () {
-                //         starController.isStarSelectedThree.toggle();
-                //         starController.ratingList['starThree'] = starController.isStarSelectedThree.value ;
-                //       },
-                //       child: Icon(
-                //         Icons.star,
-                //         color: starController.isStarSelectedThree.value? Colors.amber : Colors.grey.shade300 ,
-                //         size: 42,
-                //       ),
-                //     ),),
-                //     Obx(()=>InkWell(
-                //       onTap: () {
-                //         starController.isStarSelectedFour.toggle() ;
-                //         starController.ratingList['starFour'] = starController.isStarSelectedFour.value ;
-                //       },
-                //       child: Icon(
-                //         Icons.star,
-                //         color: starController.isStarSelectedFour.value? Colors.amber : Colors.grey.shade300 ,
-                //         size: 42,
-                //       ),
-                //     ),),
-                //     Obx(()=>InkWell(
-                //       onTap: () {
-                //         starController.isStarSelectedFive.toggle() ;
-                //         starController.ratingList['starFive'] = starController.isStarSelectedFive.value ;
-                //       },
-                //       child: Icon(
-                //         Icons.star,
-                //         color: starController.isStarSelectedFive.value? Colors.amber : Colors.grey.shade300 ,
-                //         size: 42,
-                //       ),
-                //     ),),
-                //   ],
-                // ),
-
               ),
             ),
             Padding(

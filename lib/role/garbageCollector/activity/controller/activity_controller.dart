@@ -3,14 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../models/riderModels/bookingModels/accept_booking_model.dart';
 import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../../../services/api_service.dart';
 import '../../../../utils/app_urls.dart';
 import '../../../components/customSnackbar/custom_snackbar.dart';
 import '../../home/controller/driver_home_controller.dart';
-import '../../home/innerWidget/arrive_at_pickup_dialog.dart';
+
 
 class ActivityController extends GetxController {
   static ActivityController get instance => Get.find<ActivityController>();
@@ -30,13 +28,15 @@ class ActivityController extends GetxController {
   // ── Selected booking for detail screen ─────────────────
   final Rx<RiderBookingModel?> selectedBooking = Rx<RiderBookingModel?>(null);
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchOngoing();
-    fetchScheduled();
-    fetchHistory();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   if(PrefsHelper.myRole == "rider"){
+  //     fetchOngoing();
+  //     fetchScheduled();
+  //     fetchHistory();
+  //   }
+  // }
 
   void changeTab(int index) {
     selectedIndex.value = index;
@@ -126,11 +126,11 @@ class ActivityController extends GetxController {
 
         if (updated.status == 'arrived_pickup') {
           if (context.mounted) {
-            showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (_) => const ArriveAtPickupDialog(),
-            );
+            // showDialog(
+            //   context: context,
+            //   barrierDismissible: true,
+            //   builder: (_) => const ArriveAtPickupDialog(),
+            // );
           }
         }
       } else {
@@ -152,7 +152,7 @@ class ActivityController extends GetxController {
 
     // ✅ fallback to DriverHomeController
     if (Get.isRegistered<DriverHomeController>()) {
-      return Get.find<DriverHomeController>().acceptedBooking.value?.id ?? '';
+      return Get.find<DriverHomeController>().acceptedBooking.value.id ?? '';
     }
 
     return '';
@@ -176,8 +176,8 @@ class ActivityController extends GetxController {
     // ✅ update DriverHomeController acceptedBooking
     if (Get.isRegistered<DriverHomeController>()) {
       final homeCtrl = Get.find<DriverHomeController>();
-      if (homeCtrl.acceptedBooking.value?.id == updated.id) {
-        homeCtrl.acceptedBooking.value = AcceptedBookingModel.fromJson(
+      if (homeCtrl.acceptedBooking.value.id == updated.id) {
+        homeCtrl.acceptedBooking.value = RiderBookingModel.fromJson(
           _riderBookingToJson(updated),
         );
       }

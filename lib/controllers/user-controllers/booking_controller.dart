@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
+import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
+import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/utils/app_urls.dart';
 import '../../helpers/other_helper.dart';
 import '../../models/api_response_model.dart';
-import '../../models/userModels/bookingModels/create_booking_model.dart';
+import '../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../models/userModels/saved_place_model.dart';
 import '../../services/api_service.dart';
 
@@ -15,7 +17,7 @@ class BookingController extends GetxController {
 
   static BookingController get instance => Get.find<BookingController>();
   final RxBool isCreateBookingLoading = false.obs;
-  final Rx<CreateBookingModel?> createdBooking = Rx<CreateBookingModel?>(null);
+  final Rx<UserBookingModel?> createdBooking = Rx<UserBookingModel?>(null);
 
   final RxBool showSearchSheet = true.obs;
   TextEditingController bookingLocationTextCtrl = TextEditingController();
@@ -254,7 +256,7 @@ class BookingController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        createdBooking.value = CreateBookingModel.fromJson(response.body['data']);
+        createdBooking.value = UserBookingModel.fromJson(response.body['data']);
         resetSchedule();
         CustomSnackbar.success(response.message);
         return true;
@@ -267,10 +269,59 @@ class BookingController extends GetxController {
     }
   }
 
+
   void resetSchedule() {
     isScheduled.value = false;
     scheduledFor = null;
     scheduledDate = null;
+  }
+
+  /// Get single booking by ID and route based on status
+  Future<void> getSingleBooking({required String bookingId}) async {
+    try {
+      final response = await ApiService.get(AppUrls.getSingleBooking(id: bookingId));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final booking = UserBookingModel.fromJson(response.body['data']);
+        
+        // Route based on booking status
+        _routeBasedOnBookingStatus(booking);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } catch (e) {
+      debugPrint('Error fetching single booking: $e');
+      CustomSnackbar.error('Failed to fetch booking details');
+    }
+  }
+
+  /// Navigate to appropriate screen based on booking status
+  void _routeBasedOnBookingStatus(UserBookingModel booking) {
+    switch (booking.status) {
+      case BookingStatus.pending:
+        // Navigate to booking requested screen
+        Get.toNamed('/booking-requested');
+        break;
+      case BookingStatus.accepted:
+        Get.to(()=> BookingAcceptedScreen(booking: booking,));
+        break;
+      case BookingStatus.arrivedPickup:
+        Get.to(()=> RiderArrivedScreen(booking: booking,));
+        break;
+      case BookingStatus.paymentCollected:
+      case BookingStatus.headingToStation:
+      case BookingStatus.inProgress:
+      case BookingStatus.arrivedDropOff:
+      case BookingStatus.awaitingPayment:
+        // Navigate to booking accepted/active screen
+        Get.toNamed('/booking-accepted', arguments: {'booking': booking});
+        break;
+      case BookingStatus.completed:
+      case BookingStatus.cancelled:
+        // Navigate to booking history/detail screen
+        Get.toNamed('/booking-history');
+        break;
+    }
   }
 
 }

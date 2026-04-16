@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:project_borla/screens/choose-ride-screens/choose_ride_screen.dart';
-import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
-import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
+import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 import 'package:project_borla/theme/app_color.dart';
-
-import '../../widgets/gradient_button.dart';
 import '../../widgets/reject-rider-sheet-widget/reject_rider_sheet_buttons.dart';
 
 class RejectRiderSheet extends StatefulWidget {
-  const RejectRiderSheet({super.key});
+  UserBookingModel booking;
+  RejectRiderSheet({super.key, required this.booking});
 
   @override
   State<RejectRiderSheet> createState() => _RejectRiderSheetState();
@@ -86,7 +81,7 @@ class _RejectRiderSheetState extends State<RejectRiderSheet> {
 
                 Padding(
                   padding: const EdgeInsets.all(18.0),
-                  child: RejectRiderSheetButtons(),
+                  child: RejectRiderSheetButtons(booking: widget.booking,),
                 ),
 
               ],

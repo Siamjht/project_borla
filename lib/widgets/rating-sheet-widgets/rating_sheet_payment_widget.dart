@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-
-import '../../controllers/user-controllers/bottom-sheet-controllers/choose_payment_sheet_controllers.dart';
+import 'package:project_borla/controllers/user-controllers/payment_controller.dart';
 import '../../theme/app_color.dart';
 
 class RatingSheetPaymentSection extends StatelessWidget {
@@ -12,7 +11,7 @@ class RatingSheetPaymentSection extends StatelessWidget {
     super.key,
   });
 
-  final ChoosePaymentSheetControllers ratingPaymentController = Get.put(ChoosePaymentSheetControllers());
+  final PaymentController ratingPaymentController = Get.find<PaymentController>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +49,6 @@ class RatingSheetPaymentSection extends StatelessWidget {
                        fontWeight: FontWeight.w500
                          ),),
                 ),
-
-                // child: Text('MTN MoMo Pay', style: TextStyle(
-                //     color: AppColors.gray400,
-                //     fontWeight: FontWeight.w500
-                // ),),
 
               ),
             ],

@@ -17,8 +17,8 @@ import '../navigate_destination_screen.dart';
 import 'common_widgets.dart';
 
 class CustomerInfoBottomSheet extends StatelessWidget {
-  RiderBookingModel? booking;
-  CustomerInfoBottomSheet({super.key, this.booking});
+  RiderBookingModel booking;
+  CustomerInfoBottomSheet({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class CustomerInfoBottomSheet extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                bottomSheetActionButtons(context),
+                bottomSheetActionButtons(context, booking),
               ],
             ),
           ),
@@ -251,7 +251,7 @@ Widget summarySection(RiderBookingModel? booking) {
 }
 
 // ── Action Buttons — unchanged ─────────────────────────────────
-Widget bottomSheetActionButtons(BuildContext context) {
+Widget bottomSheetActionButtons(BuildContext context, RiderBookingModel booking) {
   return Row(
     children: [
       // Expanded(
@@ -267,7 +267,7 @@ Widget bottomSheetActionButtons(BuildContext context) {
       // const SizedBox(width: 20),
       Expanded(
         child: CommonButton(
-          onTap: () => Get.to(() => NavigateDestinationScreen()),
+          onTap: () => Get.to(() => NavigateDestinationScreen(booking: booking)),
           buttonRadius: 12,
           titleText: 'Next',
         ),

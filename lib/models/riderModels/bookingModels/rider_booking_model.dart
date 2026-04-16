@@ -1,6 +1,4 @@
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'available_bookings_model.dart';
 
 class RiderBookingModel {
@@ -10,33 +8,53 @@ class RiderBookingModel {
   final String status;
   final String wasteCategory;
   final List<String> wasteImages;
+
   final String binSize;
   final int binQuantity;
   final int wasteSize;
+
   final double pickupLatitude;
   final double pickupLongitude;
+
   final String pickupAddress;
   final String? dropoffAddress;
+
   final String vehicleType;
+
   final double? estimatedDistance;
   final String? estimatedTime;
+
   final String paymentMethod;
   final double? price;
+
   final bool isPaid;
+  final String? paidAt;
+
+  final bool isPaidByCustomer;
+  final String? isPaidByCustomerAt;
+
+  final bool isRefunded;
+  final String? refundedAt;
+
   final bool isScheduled;
   final String? scheduledFor;
   final String? scheduledDate;
+
   final String requestedAt;
   final String? acceptedAt;
   final String? completedAt;
   final String? cancelledAt;
+
   final String? arrivedAtPickup;
   final String? arrivedAtDropoff;
   final String? paymentCollectedAt;
   final String? headingToStationAt;
+
   final String? stationId;
+
   final String createdAt;
   final String updatedAt;
+
   final BookingUserModel user;
   final RiderDetailModel rider;
 
@@ -60,6 +78,11 @@ class RiderBookingModel {
     this.paymentMethod = '',
     this.price,
     this.isPaid = false,
+    this.paidAt,
+    this.isPaidByCustomer = false,
+    this.isPaidByCustomerAt,
+    this.isRefunded = false,
+    this.refundedAt,
     this.isScheduled = false,
     this.scheduledFor,
     this.scheduledDate,
@@ -80,7 +103,9 @@ class RiderBookingModel {
         rider = rider ?? RiderDetailModel();
 
   factory RiderBookingModel.fromJson(Map<String, dynamic> json) {
-    final coordinates = json['pickupLocation']?['coordinates'] ?? [0.0, 0.0];
+    final coordinates =
+        json['pickupLocation']?['coordinates'] ?? [0.0, 0.0];
+
     return RiderBookingModel(
       id: json['id'] ?? '',
       userId: json['userId'] ?? '',
@@ -96,13 +121,20 @@ class RiderBookingModel {
       pickupAddress: json['pickupAddress'] ?? '',
       dropoffAddress: json['dropoffAddress'],
       vehicleType: json['vehicleType'] ?? '',
-      estimatedDistance: json['estimatedDistance'] != null
+      estimatedDistance:
+      json['estimatedDistance'] != null
           ? (json['estimatedDistance'] as num).toDouble()
           : null,
       estimatedTime: json['estimatedTime'],
       paymentMethod: json['paymentMethod'] ?? '',
-      price: json['price'] != null ? (json['price'] as num).toDouble() : null,
+      price:
+      json['price'] != null ? (json['price'] as num).toDouble() : null,
       isPaid: json['isPaid'] ?? false,
+      paidAt: json['paidAt'],
+      isPaidByCustomer: json['isPaidByCustomer'] ?? false,
+      isPaidByCustomerAt: json['isPaidByCustomerAt'],
+      isRefunded: json['isRefunded'] ?? false,
+      refundedAt: json['refundedAt'],
       isScheduled: json['isScheduled'] ?? false,
       scheduledFor: json['scheduledFor'],
       scheduledDate: json['scheduledDate'],
@@ -125,8 +157,6 @@ class RiderBookingModel {
           : null,
     );
   }
-
-  LatLng get pickupLatLng => LatLng(pickupLatitude, pickupLongitude);
 }
 
 // ── Rider Detail Model ─────────────────────────────────────────
@@ -136,9 +166,12 @@ class RiderDetailModel {
   final String email;
   final String phoneNumber;
   final String profilePicture;
+
   final double riderLatitude;
   final double riderLongitude;
+
   final String locationName;
+
   final double averageRating;
   final int totalRatings;
   final int completedBookings;
@@ -158,7 +191,9 @@ class RiderDetailModel {
   });
 
   factory RiderDetailModel.fromJson(Map<String, dynamic> json) {
-    final coordinates = json['location']?['coordinates'] ?? [0.0, 0.0];
+    final coordinates =
+        json['location']?['coordinates'] ?? [0.0, 0.0];
+
     return RiderDetailModel(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -168,13 +203,9 @@ class RiderDetailModel {
       riderLatitude: (coordinates[1] as num).toDouble(),
       riderLongitude: (coordinates[0] as num).toDouble(),
       locationName: json['locationName'] ?? '',
-      averageRating: json['averageRating'] != null
-          ? (json['averageRating'] as num).toDouble()
-          : 0.0,
+      averageRating: (json['averageRating'] ?? 0).toDouble(),
       totalRatings: json['totalRatings'] ?? 0,
       completedBookings: json['completedBookings'] ?? 0,
     );
   }
-
-  LatLng get latLng => LatLng(riderLatitude, riderLongitude);
 }

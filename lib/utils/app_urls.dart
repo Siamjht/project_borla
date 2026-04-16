@@ -36,7 +36,14 @@ class AppUrls {
   static const readNotifications = "$baseUrl/notifications/read-all";
   static const getSupportChatID = "$baseUrl/messages/support/my-chats";
   static const sendSupportChat = "$baseUrl/messages/support";
+  static const postTopUp = "$baseUrl/wallets/top-up";
+  static const getWalletBalance = "$baseUrl/wallets/self";
+  static const postWithdraw = "$baseUrl/wallets/withdraw";
+  static const cashPaymentInitiate = "$baseUrl/payments/initiate/cash";
+  static const cardPaymentInitiate = "$baseUrl/payments/initiate";
+  static const postRatings = "$baseUrl/ratings";
 
+  static String getMyEarnings({filter}) => "$baseUrl/earnings/rider/my-earnings?limit=100&page=1&filter=$filter";
   static String markNotificationByID({id}) => "$baseUrl/notifications/$id/read";
   static String getSupportMessages({String chatId = ''}) => "$baseUrl/messages/support/my-chats/$chatId/messages";
 

@@ -12,11 +12,22 @@ import 'innerWidget/job_activity_card.dart';
 import 'innerWidget/job_tabbar.dart';
 import 'schedule_screen.dart';
 
-class ActivityScreen extends StatelessWidget {
+class ActivityScreen extends StatefulWidget {
   ActivityScreen({super.key});
 
+  @override
+  State<ActivityScreen> createState() => _ActivityScreenState();
+}
+
+class _ActivityScreenState extends State<ActivityScreen> {
   final ActivityController activityController =
   Get.find<ActivityController>();
+
+  @override
+  void initState() {
+    super.initState();
+    activityController.fetchOngoing();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +74,13 @@ class ActivityScreen extends StatelessWidget {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
+        activityController.fetchOngoing();
         return OngoingScreen(key: ValueKey(0),);
       case 1:
+        activityController.fetchScheduled();
         return const ScheduleScreen(key: ValueKey(1));
       case 2:
+        activityController.fetchHistory();
         return const HistoryScreen(key: ValueKey(2));
       default:
         return const SizedBox();

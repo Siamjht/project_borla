@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 
 import '../../screens/choose-ride-screens/choose_ride_screen.dart';
 import '../../screens/rider-arrived-screens/rider_arrived_screen.dart';
 
 class RejectRiderSheetButtons extends StatelessWidget {
-  const RejectRiderSheetButtons({
+  UserBookingModel booking;
+  RejectRiderSheetButtons({
     super.key,
+    required this.booking,
   });
 
   @override
@@ -40,7 +43,7 @@ class RejectRiderSheetButtons extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Get.to(()=> RiderArrivedScreen());
+              Get.to(()=> RiderArrivedScreen(booking: booking,));
             },
             child: Padding(
               padding: EdgeInsets.fromLTRB(40, 14,40, 14),

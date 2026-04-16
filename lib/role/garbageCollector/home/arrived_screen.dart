@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../components/commonBackButton/common_back_button.dart';
 import '../map/driver_common_map.dart';
 import 'innerWidget/arrived_bottom_sheet.dart';
 
 class ArrivedScreen extends StatelessWidget {
-  const ArrivedScreen({super.key});
+  RiderBookingModel bookingModel;
+  ArrivedScreen({super.key, required this.bookingModel});
 
 
   @override
@@ -23,9 +25,9 @@ class ArrivedScreen extends StatelessWidget {
           ),
 
           /// BottomSheet
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
-            child: ArrivedBottomSheet(),
+            child: ArrivedBottomSheet(booking: bookingModel,),
           ),
 
         ],

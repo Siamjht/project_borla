@@ -8,10 +8,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/driver_map_controller.dart';
 import 'package:project_borla/helpers/prefs_helper.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import 'package:project_borla/theme/app_color.dart';
-
 import '../../../../helpers/other_helper.dart';
-import '../../../../models/riderModels/bookingModels/accept_booking_model.dart';
 import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
 import '../../../../models/riderModels/wasteStationModel/waste_station_model.dart';
 import '../../../../services/api_service.dart';
@@ -128,7 +127,7 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
 
   final RxBool isAcceptLoading = false.obs;
   final RxBool isDeclineLoading = false.obs;
-  final Rx<AcceptedBookingModel?> acceptedBooking = Rx<AcceptedBookingModel?>(null);
+  final Rx<RiderBookingModel> acceptedBooking = Rx<RiderBookingModel>(RiderBookingModel());
 
   final RxBool showJobCards = true.obs;
 // ── Accept Booking ─────────────────────────────────────
@@ -141,18 +140,18 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
 
       if (response.statusCode == 200) {
         acceptedBooking.value =
-            AcceptedBookingModel.fromJson(response.body['data']);
+            RiderBookingModel.fromJson(response.body['data']);
 
-        // remove from list
         showJobCards.value = false;
-        jobRequests.clear();
-        // jobRequests.remove(job);
+        jobRequests.remove(job);
         currentJobIndex.value = 0;
-
+        if (jobRequests.isNotEmpty) {
+          showJobCards.value = true;
+        }
 
         isBottomSheet.value = true;
         CustomSnackbar.success(response.message);
-        Get.to(() => CustomerInfoScreen());
+        Get.to(() => CustomerInfoScreen(booking: acceptedBooking.value,));
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -170,7 +169,7 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
       );
 
       if (response.statusCode == 200) {
-        // ✅ hide cards BEFORE modifying the list
+
         showJobCards.value = false;
         currentJobIndex.value = 0;
         jobRequests.remove(job);

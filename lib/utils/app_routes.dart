@@ -56,7 +56,6 @@ class AppRoute {
 
   static const String today = "/today";
   static const String payment = "/payment";
-  static const String cancelRide  = "/cancelRide";
   static const String thanks = "/thanks";
   static const String searchTwo = "/searchTwo";
   static const String homeTwo = "/homeTwo";
@@ -74,7 +73,6 @@ class AppRoute {
   static const String confirmLocation = "/confirmLocation";
   static const String riderSearch = "/riderSearch";
   static const String bookRequest = "/bookRequest";
-  static const String bookAccepted = "/bookAccepted";
   static const String paymentSuccess = "/paymentSuccess";
   static const String chooseRide = "/chooseRide";
   static const String userTrack = "/userTrack";
@@ -142,10 +140,6 @@ class AppRoute {
     GetPage(
         name: today,
         page: () => ScheduleRideTwo(),
-        transition: Transition.rightToLeftWithFade),
-    GetPage(
-        name: cancelRide,
-        page: () => CancelRideScreen(),
         transition: Transition.rightToLeftWithFade),
     GetPage(
         name: thanks,
@@ -221,12 +215,6 @@ class AppRoute {
         name: bookRequest,
         page: () => BookingRequestedScreen(),
         transition: Transition.rightToLeftWithFade),
-
-    GetPage(
-        name: bookAccepted,
-        page: () => BookingAcceptedScreen(),
-        transition: Transition.rightToLeftWithFade),
-
     GetPage(
         name: paymentSuccess,
         page: () => PaymentSuccessScreeen(),

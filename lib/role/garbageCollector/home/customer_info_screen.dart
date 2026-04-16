@@ -12,24 +12,20 @@ import '../activity/controller/activity_controller.dart';
 import 'controller/driver_home_controller.dart';
 
 class CustomerInfoScreen extends StatelessWidget {
-  const CustomerInfoScreen({super.key});
+  RiderBookingModel booking;
+  CustomerInfoScreen({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
     final DriverMapController mapCtrl = Get.find<DriverMapController>();
     final DriverHomeController homeCtrl = Get.find<DriverHomeController>();
 
-    // ✅ get booking from either source
-    final booking = _getBooking();
-
-    // ✅ start route to pickup when screen opens
-    if (booking != null) {
+    // start route to pickup when screen opens
       WidgetsBinding.instance.addPostFrameCallback((_) {
         mapCtrl.startToPickupPhase(
           LatLng(booking.pickupLatitude, booking.pickupLongitude),
         );
       });
-    }
 
     return Scaffold(
       body: Stack(
@@ -49,40 +45,10 @@ class CustomerInfoScreen extends StatelessWidget {
           /// BottomSheet
           Align(
             alignment: Alignment.bottomCenter,
-            child: CustomerInfoBottomSheet(booking: booking,),
+            child: CustomerInfoBottomSheet(booking: booking),
           ),
         ],
       ),
     );
-  }
-
-  RiderBookingModel? _getBooking() {
-    final activityCtrl = Get.isRegistered<ActivityController>()
-        ? Get.find<ActivityController>()
-        : null;
-    if (activityCtrl?.selectedBooking.value != null) {
-      return activityCtrl!.selectedBooking.value;
-    }
-
-    final homeCtrl = Get.isRegistered<DriverHomeController>()
-        ? Get.find<DriverHomeController>()
-        : null;
-    if (homeCtrl?.acceptedBooking.value != null) {
-      final accepted = homeCtrl!.acceptedBooking.value!;
-      return RiderBookingModel(
-        id: accepted.id,
-        pickupLatitude: accepted.pickupLatitude,
-        pickupLongitude: accepted.pickupLongitude,
-        pickupAddress: accepted.pickupAddress,
-        dropoffAddress: accepted.dropoffAddress,
-        price: accepted.price,
-        estimatedDistance: accepted.estimatedDistance,
-        estimatedTime: accepted.estimatedTime,
-        paymentMethod: accepted.paymentMethod,
-        user: accepted.user,
-      );
-    }
-
-    return null;
   }
 }

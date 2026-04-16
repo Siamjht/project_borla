@@ -7,7 +7,6 @@ import 'package:project_borla/role/components/navBar/nav_bar.dart';
 import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/utils/app_routes.dart';
 
-import '../controllers/profileController/profile_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

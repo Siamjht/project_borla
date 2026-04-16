@@ -2,11 +2,13 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
 import '../helpers/prefs_helper.dart';
 import '../models/commonModels/chatMessageModels/chat_message_model.dart';
 import '../role/commonScreens/chat/innerController/chat_controller.dart';
+import '../role/garbageCollector/home/controller/driver_home_controller.dart';
 import '../utils/app_urls.dart';
 import 'sound_service.dart';
 
@@ -237,8 +239,9 @@ class SocketServices {
     socket.on(SocketEvents.bookingNewOn, (data) {
       log('booking:new received: $data');
       
-      // ✅ Play dispatch tone for new booking (only when user is in app)
+      //Play dispatch tone for new booking (only when user is in app)
       SoundService.instance.playDispatch();
+      DriverHomeController.instance.getAvailableBookings();
       
       try {
         // TODO: Parse with BookingModel when response structure is known
@@ -258,9 +261,7 @@ class SocketServices {
     socket.on(SocketEvents.bookingAcceptedOn, (data) {
       log('booking:accepted received: $data');
       try {
-        // TODO: Parse with BookingModel when response structure is known
-        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
-        // TODO: Update booking status UI to show accepted state
+        BookingController.instance.getSingleBooking(bookingId: data['bookingId']);
       } catch (e) {
         log('Error parsing booking:accepted: $e');
       }
@@ -275,9 +276,7 @@ class SocketServices {
     socket.on(SocketEvents.bookingArrivedPickupOn, (data) {
       log('booking:arrived_pickup received: $data');
       try {
-        // TODO: Parse with BookingModel when response structure is known
-        // final model = BookingModel.fromJson(Map<String, dynamic>.from(data));
-        // TODO: Update UI to show driver has arrived
+        BookingController.instance.getSingleBooking(bookingId: data['bookingId']);
       } catch (e) {
         log('Error parsing booking:arrived_pickup: $e');
       }

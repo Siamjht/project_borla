@@ -1,19 +1,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:project_borla/role/components/custom_container.dart';
+import '../../../../../models/riderModels/earnings_model.dart';
 
 import '../../../../theme/app_color.dart';
 import '../../../components/text/common_text.dart';
 
 class RecentTransactionsWidget extends StatelessWidget {
-  const RecentTransactionsWidget({Key? key}) : super(key: key);
+  final List<EarningTransaction> transactions;
+  const RecentTransactionsWidget({Key? key, required this.transactions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 12,),
+        const SizedBox(height: 12,),
         const CommonText(
           text: 'Recent Transaction',
           fontSize: 18,
@@ -27,19 +29,19 @@ class RecentTransactionsWidget extends StatelessWidget {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: 4, // make dynamic later
+          itemCount: transactions.length,
           separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
-            return _buildTransactionCard();
+            return _buildTransactionCard(transactions[index]);
           },
         ),
       ],
     );
   }
 
-  Widget _buildTransactionCard() {
+  Widget _buildTransactionCard(EarningTransaction transaction) {
     return CustomContainer(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       borderRadius: 4,
       borderColor: AppColors.green300,
       borderWidth: 0.5,
@@ -49,15 +51,15 @@ class RecentTransactionsWidget extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 CommonText(
-                  text: 'Ride with Jane D.',
+                  text: transaction.title,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 CommonText(
-                  text: 'Dec 25, 10:45 AM',
+                  text: transaction.createdAt,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: AppColors.gray400,
@@ -70,23 +72,23 @@ class RecentTransactionsWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const CommonText(
-                text: '+₵22.50',
+              CommonText(
+                text: '${transaction.type == 'debit' ? '-' : '+'}₵${transaction.amount}',
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.green500,
+                color: transaction.type == 'debit' ? AppColors.red500 : AppColors.green500,
               ),
               const SizedBox(height: 6),
               Row(
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.credit_card,
                     size: 16,
                     color: AppColors.gray500,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   CommonText(
-                    text: 'Card',
+                    text: transaction.paymentMethod,
                     fontSize: 14,
                     color: AppColors.gray500,
                   ),

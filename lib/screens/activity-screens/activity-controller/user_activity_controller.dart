@@ -1,8 +1,8 @@
 
 import 'package:get/get.dart';
-import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import 'package:project_borla/services/api_service.dart';
 import 'package:project_borla/utils/app_urls.dart';
+import '../../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../../role/components/customSnackbar/custom_snackbar.dart';
 
 class UserActivityController extends GetxController {
@@ -16,12 +16,12 @@ class UserActivityController extends GetxController {
   final RxBool isHistoryLoading = false.obs;
 
   // ── Data ───────────────────────────────────────────────
-  final RxList<RiderBookingModel> ongoingBookings = <RiderBookingModel>[].obs;
-  final RxList<RiderBookingModel> scheduledBookings = <RiderBookingModel>[].obs;
-  final RxList<RiderBookingModel> historyBookings = <RiderBookingModel>[].obs;
+  final RxList<UserBookingModel> ongoingBookings = <UserBookingModel>[].obs;
+  final RxList<UserBookingModel> scheduledBookings = <UserBookingModel>[].obs;
+  final RxList<UserBookingModel> historyBookings = <UserBookingModel>[].obs;
 
   // ── Selected booking for detail screen ─────────────────
-  final Rx<RiderBookingModel?> selectedBooking = Rx<RiderBookingModel?>(null);
+  final Rx<UserBookingModel?> selectedBooking = Rx<UserBookingModel?>(null);
 
 
   void changeTab(int index) {
@@ -38,7 +38,7 @@ class UserActivityController extends GetxController {
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
         ongoingBookings.value =
-            data.map((e) => RiderBookingModel.fromJson(e)).toList();
+            data.map((e) => UserBookingModel.fromJson(e)).toList();
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -57,7 +57,7 @@ class UserActivityController extends GetxController {
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
         scheduledBookings.value =
-            data.map((e) => RiderBookingModel.fromJson(e)).toList();
+            data.map((e) => UserBookingModel.fromJson(e)).toList();
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -76,7 +76,7 @@ class UserActivityController extends GetxController {
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
         historyBookings.value =
-            data.map((e) => RiderBookingModel.fromJson(e)).toList();
+            data.map((e) => UserBookingModel.fromJson(e)).toList();
       } else {
         CustomSnackbar.error(response.message);
       }

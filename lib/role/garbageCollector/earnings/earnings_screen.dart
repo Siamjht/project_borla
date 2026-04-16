@@ -17,7 +17,7 @@ import 'innerWidget/withdraw_dialog.dart';
 class EarningsScreen extends StatelessWidget {
   EarningsScreen({super.key});
 
-  final EarningsController controller = Get.put(EarningsController());
+  final EarningsController _earningCtrl = Get.find<EarningsController>();
 
   void showWithdrawDialog(BuildContext context, child) {
     showDialog(
@@ -48,52 +48,59 @@ class EarningsScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               /// Tabs
-              buildAnimatedTabBar(controller),
+              buildAnimatedTabBar(_earningCtrl),
 
               const SizedBox(height: 24),
 
               /// Balance Card
-              _buildBalanceCard(context),
+              Obx(() => _buildBalanceCard(context, _earningCtrl.earningsData.value.balance)),
 
               const SizedBox(height: 30),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _StatCard(
-                    title: 'Total Earnings',
-                    value: 'GH₵ 500',
-                    bgColor: AppColors.green50,
-                    textColor: AppColors.green500,
-                  ),
-                  _StatCard(
-                    title: 'Ride Completed',
-                    value: '25',
-                    bgColor: AppColors.blue50,
-                    textColor: AppColors.deepBlue,
-                  ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _StatCard(
-                    title: 'Commission',
-                    value: '-GH₵ 67',
-                    bgColor: AppColors.red50,
-                    textColor: AppColors.red500,
-                  ),
-                  _StatCard(
-                    title: 'Cash Received',
-                    value: 'GH₵ 400',
-                    bgColor: AppColors.yellow50,
-                    textColor: AppColors.deepOlive,
-                  ),
-                ],
-              ),
+              Obx(() {
+                final data = _earningCtrl.earningsData.value;
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _StatCard(
+                          title: 'Total Earnings',
+                          value: 'GH₵ ${data.totalEarnings}',
+                          bgColor: AppColors.green50,
+                          textColor: AppColors.green500,
+                        ),
+                        _StatCard(
+                          title: 'Ride Completed',
+                          value: '${data.rideCompleted}',
+                          bgColor: AppColors.blue50,
+                          textColor: AppColors.deepBlue,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _StatCard(
+                          title: 'Commission',
+                          value: '-GH₵ ${data.commission}',
+                          bgColor: AppColors.red50,
+                          textColor: AppColors.red500,
+                        ),
+                        _StatCard(
+                          title: 'Cash Received',
+                          value: 'GH₵ ${data.cashReceived}',
+                          bgColor: AppColors.yellow50,
+                          textColor: AppColors.deepOlive,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }),
 
-              RecentTransactionsWidget()
+              Obx(() => RecentTransactionsWidget(transactions: _earningCtrl.earningsData.value.transactions))
 
             ],
           ),
@@ -105,7 +112,7 @@ class EarningsScreen extends StatelessWidget {
   /// ---------------- TAB BAR ----------------
   Widget buildAnimatedTabBar(EarningsController controller) {
     return CustomContainer(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       borderRadius: 12,
       color: AppColors.transparent,
       borderColor: AppColors.green100,
@@ -188,7 +195,7 @@ class EarningsScreen extends StatelessWidget {
   }
 
   /// ---------------- BALANCE CARD ----------------
-  Widget _buildBalanceCard(BuildContext context) {
+  Widget _buildBalanceCard(BuildContext context, double balance) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -215,8 +222,8 @@ class EarningsScreen extends StatelessWidget {
                   fontSize: 16,
                 ),
                 const SizedBox(height: 8),
-                const CommonText(
-                  text: '\$567.00',
+                CommonText(
+                  text: '\$$balance',
                   color: Colors.white,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -322,7 +329,7 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 79.h,
+      // height: 79.h,
       width: 171.w,
       decoration: BoxDecoration(
         color: bgColor,
@@ -351,8 +358,8 @@ class _StatCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 CommonText(
                   text: value,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                   color: textColor,
                 ),
               ],

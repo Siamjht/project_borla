@@ -2,10 +2,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:project_borla/map_key.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
@@ -89,6 +89,10 @@ class UserMapController extends BaseMapController {
     required LatLng driverPosition,
     required LatLng userPosition,
   }) async {
+    debugPrint('[UserMapController] Starting driver coming phase');
+    debugPrint('[UserMapController] Driver: ${driverPosition.latitude}, ${driverPosition.longitude}');
+    debugPrint('[UserMapController] User: ${userPosition.latitude}, ${userPosition.longitude}');
+    
     tripPhase.value = UserTripPhase.driverComing;
 
     // Clear nearby driver pins
@@ -98,7 +102,14 @@ class UserMapController extends BaseMapController {
     nearbyDrivers.clear();
 
     destinationPosition.value = userPosition;
+    
+    // Place driver marker with smaller size
+    placeDriverMarker(driverPosition);
+    debugPrint('[UserMapController] Driver marker placed');
+    
+    // Fetch and draw route
     await _fetchAndDrawRoute(origin: driverPosition);
+    debugPrint('[UserMapController] Route drawing completed');
   }
 
   /// Phase 3 — driver arrived, trip started, route to destination
@@ -153,6 +164,8 @@ class UserMapController extends BaseMapController {
   Future<void> _fetchAndDrawRoute({required LatLng origin}) async {
     final destination = destinationPosition.value;
 
+    debugPrint('[UserMapController] Fetching route from ${origin.latitude},${origin.longitude} to ${destination.latitude},${destination.longitude}');
+
     final uri = Uri.parse(
       'https://maps.googleapis.com/maps/api/directions/json'
           '?origin=${origin.latitude},${origin.longitude}'
@@ -161,34 +174,45 @@ class UserMapController extends BaseMapController {
     );
 
     final response = await http.get(uri);
+    debugPrint('[UserMapController] Directions API status: ${response.statusCode}');
+    
     if (response.statusCode != 200) {
-      log('[UserMapController] Directions API error: ${response.body}');
+      debugPrint('[UserMapController] Directions API error: ${response.body}');
       return;
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
     final routes = data['routes'] as List?;
     if (routes == null || routes.isEmpty) {
-      log('[UserMapController] No routes found.');
+      debugPrint('[UserMapController] No routes found.');
       return;
     }
 
-    final overviewPolyline =
-    routes[0]['overview_polyline']['points'] as String;
-    final fullRoutePoints = decodePolyline(overviewPolyline);
+    // Decode the full polyline from all steps for accurate road-following
+    final legs = routes[0]['legs'] as List;
+    final steps = legs[0]['steps'] as List;
+    
+    List<LatLng> fullRoutePoints = [];
+    for (var step in steps) {
+      final stepPolyline = step['polyline']['points'] as String;
+      fullRoutePoints.addAll(decodePolyline(stepPolyline));
+    }
 
-    final firstStepEnd =
-    routes[0]['legs'][0]['steps'][0]['end_location'] as Map;
+    debugPrint('[UserMapController] Decoded ${fullRoutePoints.length} route points');
+
+    // Get first step end location for driver rotation
+    final firstStepEnd = steps[0]['end_location'] as Map;
     _firstStepEnd = LatLng(
       (firstStepEnd['lat'] as num).toDouble(),
       (firstStepEnd['lng'] as num).toDouble(),
     );
 
-    if (_remainingRoutePoints.isEmpty) {
-      _remainingRoutePoints = List.from(fullRoutePoints);
-    }
+    _remainingRoutePoints = fullRoutePoints;
 
     _redrawPolyline();
+    debugPrint('[UserMapController] Polyline redrawn with ${_remainingRoutePoints.length} points');
+    
+    // Update driver marker with correct rotation
     placeDriverMarker(origin);
   }
 
@@ -210,6 +234,7 @@ class UserMapController extends BaseMapController {
       id: 'driver',
       position: position,
       iconPath: Assets.icons.vanIcon.path,
+      iconWidthPx: 50, // Smaller driver marker (was 80)
       rotation: calculateBearing(position, _firstStepEnd),
       color: AppColors.orange300,
     );
@@ -257,7 +282,9 @@ class UserMapController extends BaseMapController {
         polylineId: const PolylineId('route'),
         points: List.from(_remainingRoutePoints),
         color: Colors.blue,
-        width: 5,
+        width: 6, // Thicker polyline for better visibility (was 5)
+        patterns: [], // Solid line, no patterns
+        jointType: JointType.round, // Smooth turns
       ));
   }
 }

@@ -5,7 +5,8 @@ import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
-import 'package:project_borla/role/garbageCollector/home/customer_info_screen.dart';
+import 'package:project_borla/role/garbageCollector/home/navigate_destination_screen.dart';
+import 'package:project_borla/role/garbageCollector/home/navigate_station_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
@@ -16,6 +17,7 @@ import '../../../components/dotted_line.dart';
 import '../../../components/image/shimmer_image_loader.dart';
 import '../../../components/text/common_text.dart';
 import '../../call/ongoing_call_screen.dart';
+import '../../home/arrived_screen.dart';
 import 'common_widgets.dart';
 
 class ActivityCard extends StatelessWidget {
@@ -232,11 +234,12 @@ class ActivityCard extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          //store selected booking before navigating
+          // Store selected booking before navigating
           activityController.selectedBooking.value = booking;
 
+          // Route based on booking status for active tab (index == 0)
           if (activityController.selectedIndex.value == 0) {
-            Get.to(() => CustomerInfoScreen());
+            _routeBasedOnBookingStatus();
           } else if (activityController.selectedIndex.value == 1) {
             Get.to(() => ScheduleDetailScreen());
           }
@@ -257,6 +260,39 @@ class ActivityCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Route to appropriate screen based on booking status
+  void _routeBasedOnBookingStatus() {
+    switch (booking.status) {
+      case 'pending':
+        // Show pending booking details
+        Get.to(() => ScheduleDetailScreen());
+        break;
+      case 'accepted':
+        Get.to(() => NavigateDestinationScreen(booking: booking,));
+        break;
+      case 'arrived_pickup':
+        Get.to(() => ArrivedScreen(bookingModel: booking));
+        break;
+      case 'payment_collected':
+        Get.to(() => ArrivedScreen(bookingModel: booking));
+        break;
+      case 'heading_to_station':
+        Get.to(() => NavigateStationScreen());
+        break;
+      case 'in_progress':
+      case 'arrived_dropoff':
+      case 'awaiting_payment':
+        // Active bookings - show active booking screen
+        break;
+      case 'completed':
+      case 'cancelled':
+        // Show history/detail screen for completed or cancelled bookings
+        break;
+      default:
+        // Fallback to schedule detail screen
+    }
   }
 }
 

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/controllers/date_time_picker_controller.dart';
-import 'package:project_borla/controllers/user-controllers/bottom-sheet-controllers/choose_payment_sheet_controllers.dart';
-import 'package:project_borla/screens/ride-schedule-screens/ride_schedule_screen.dart';
-import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/screens/rider-searching-screen/rider_searching_screen.dart';
 
 import '../controllers/user-controllers/booking_controller.dart';
 import '../role/components/customSnackbar/custom_snackbar.dart';
-import '../screens/waste-screens/waste_category_screen.dart';
 import '../widgets/gradient_button.dart';
 
 class PaymentSheet extends StatefulWidget {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-
-import '../../screens/booking-accepted-screen/booking_accepted_screen.dart';
 import '../../screens/home-screens/user_nav_bar.dart';
 
 class BackHomeButton extends StatelessWidget {
@@ -38,7 +36,7 @@ class BackHomeButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            Get.to(()=>BookingAcceptedScreen());
+            // Get.to(()=> BookingAcceptedScreen());
             //Get.to(()=>HomeScreenOne());
           },
           child: Padding(

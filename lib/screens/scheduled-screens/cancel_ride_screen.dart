@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:project_borla/controllers/user-controllers/cancel_ride_controller.dart';
+import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 import 'package:project_borla/theme/gradient_scaffold_copy.dart';
 
 import 'package:get/get.dart';
 import '../../models/radio_enums.dart';
 import '../../widgets/gradient_button.dart';
-import '../reject-rider-screens/reject_rider_screen.dart';
 
 
 
 class CancelRideScreen extends StatelessWidget {
-  CancelRideScreen({super.key});
+  final UserBookingModel booking;
+  CancelRideScreen({super.key, required this.booking});
 
 
-  CancelRideController cancelController = Get.put(CancelRideController());
-
-  // Rx enum (replaces setState)
-  //final Rx<Frequency> selectedValue = Frequency.opn1.obs;
+  final CancelRideController cancelController = Get.find<CancelRideController>();
 
   final Map<Frequency, String> reasons = {
     Frequency.opn1: 'Change in plans',
@@ -94,41 +88,47 @@ class CancelRideScreen extends StatelessWidget {
           const SizedBox(height: 28),
 
           // ─── Radio List ─────────────────────────────────────────
-          Column(
-            children: reasons.entries.map((entry) {
-              return Obx(() => RadioListTile<Frequency>(
-                visualDensity:
-                const VisualDensity(horizontal: -4, vertical: -3),
-                value: entry.key,
-                groupValue: cancelController.selectedValue.value,
-                onChanged: (val) => cancelController.selectedValue.value = val!,
-                fillColor: WidgetStateProperty.resolveWith(
-                      (states) => Colors.amber,
-                ),
-                title: Text(
-                  entry.value,
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ));
-            }).toList(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: reasons.entries.map((entry) {
+                  return Obx(() => RadioListTile<Frequency>(
+                    visualDensity:
+                    const VisualDensity(horizontal: -4, vertical: -3),
+                    value: entry.key,
+                    groupValue: cancelController.selectedValue.value,
+                    onChanged: (val) => cancelController.selectedValue.value = val!,
+                    fillColor: WidgetStateProperty.resolveWith(
+                          (states) => Colors.amber,
+                    ),
+                    title: Text(
+                      entry.value,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ));
+                }).toList(),
+              ),
+            ),
           ),
 
-          const SizedBox(height: 48),
+          const SizedBox(height: 20),
 
           // ─── Confirm Button ─────────────────────────────────────
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: GradientButton(
+              isLoading: cancelController.isCancelLoading,
               text: 'Confirm',
               onPressed: () {
-                // Selected enum available here
-                print(cancelController.selectedValue.value);
-
-                Get.to(() => RejectRiderScreen());
+                final reason = reasons[cancelController.selectedValue.value] ?? "i dont like it";
+                cancelController.cancelRide(
+                  bookingId: booking.id,
+                  reason: reason,
+                );
               },
             ),
           ),
@@ -137,4 +137,3 @@ class CancelRideScreen extends StatelessWidget {
     );
   }
 }
-

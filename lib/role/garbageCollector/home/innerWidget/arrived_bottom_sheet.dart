@@ -9,46 +9,33 @@ import '../../../components/button/common_button.dart';
 import '../../../components/text/common_text.dart';
 import '../../activity/controller/activity_controller.dart';
 import '../../activity/innerWidget/common_widgets.dart';
-import '../controller/driver_home_controller.dart';
 import 'arrive_at_pickup_dialog.dart';
 
 
-class ArrivedBottomSheet extends StatelessWidget {
-  const ArrivedBottomSheet({super.key});
+class ArrivedBottomSheet extends StatefulWidget {
+  RiderBookingModel booking;
+  ArrivedBottomSheet({super.key, required this.booking});
 
-  RiderBookingModel? _getBooking() {
-    final activityCtrl = Get.isRegistered<ActivityController>()
-        ? Get.find<ActivityController>()
-        : null;
-    if (activityCtrl?.selectedBooking.value != null) {
-      return activityCtrl!.selectedBooking.value;
-    }
+  @override
+  State<ArrivedBottomSheet> createState() => _ArrivedBottomSheetState();
+}
 
-    final homeCtrl = Get.isRegistered<DriverHomeController>()
-        ? Get.find<DriverHomeController>()
-        : null;
-    if (homeCtrl?.acceptedBooking.value != null) {
-      final accepted = homeCtrl!.acceptedBooking.value!;
-      return RiderBookingModel(
-        id: accepted.id,
-        pickupLatitude: accepted.pickupLatitude,
-        pickupLongitude: accepted.pickupLongitude,
-        pickupAddress: accepted.pickupAddress,
-        dropoffAddress: accepted.dropoffAddress,
-        price: accepted.price,
-        estimatedDistance: accepted.estimatedDistance,
-        estimatedTime: accepted.estimatedTime,
-        paymentMethod: accepted.paymentMethod,
-        user: accepted.user,
-      );
-    }
-    return null;
+class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
+
+  @override
+  void initState() {
+    super.initState();
+      if(widget.booking.isPaidByCustomer){
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (_) => const ArriveAtPickupDialog(),
+        );
+      }
   }
 
   @override
   Widget build(BuildContext context) {
-    final booking = _getBooking();
-
     return DraggableScrollableSheet(
       initialChildSize: 0.40,
       minChildSize: 0.35,
@@ -83,17 +70,17 @@ class ArrivedBottomSheet extends StatelessWidget {
                       const SizedBox(height: 12),
                       const Divider(color: AppColors.black50, thickness: 1),
 
-                      userRow( booking!),
+                      userRow( widget.booking),
 
                       const Divider(color: AppColors.black50, thickness: 1),
                       const SizedBox(height: 6),
 
-                      _locationSection(booking),
+                      _locationSection(widget.booking),
 
                       const Divider(color: AppColors.black50, thickness: 1),
                       const SizedBox(height: 10),
 
-                      _paymentRow(booking),
+                      _paymentRow(widget.booking),
 
                       const SizedBox(height: 20),
 

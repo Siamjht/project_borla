@@ -17,40 +17,40 @@ class RiderBookingModel {
   final double pickupLongitude;
 
   final String pickupAddress;
-  final String? dropoffAddress;
+  final String dropoffAddress;
 
   final String vehicleType;
 
-  final double? estimatedDistance;
-  final String? estimatedTime;
+  final double estimatedDistance;
+  final String estimatedTime;
 
   final String paymentMethod;
-  final double? price;
+  final double price;
 
   final bool isPaid;
-  final String? paidAt;
+  final String paidAt;
 
   final bool isPaidByCustomer;
-  final String? isPaidByCustomerAt;
+  final String isPaidByCustomerAt;
 
   final bool isRefunded;
-  final String? refundedAt;
+  final String refundedAt;
 
   final bool isScheduled;
-  final String? scheduledFor;
-  final String? scheduledDate;
+  final String scheduledFor;
+  final String scheduledDate;
 
   final String requestedAt;
-  final String? acceptedAt;
-  final String? completedAt;
-  final String? cancelledAt;
+  final String acceptedAt;
+  final String completedAt;
+  final String cancelledAt;
 
-  final String? arrivedAtPickup;
-  final String? arrivedAtDropoff;
-  final String? paymentCollectedAt;
-  final String? headingToStationAt;
+  final String arrivedAtPickup;
+  final String arrivedAtDropoff;
+  final String paymentCollectedAt;
+  final String headingToStationAt;
 
-  final String? stationId;
+  final String stationId;
 
   final String createdAt;
   final String updatedAt;
@@ -71,30 +71,30 @@ class RiderBookingModel {
     this.pickupLatitude = 0.0,
     this.pickupLongitude = 0.0,
     this.pickupAddress = '',
-    this.dropoffAddress,
+    this.dropoffAddress = '',
     this.vehicleType = '',
-    this.estimatedDistance,
-    this.estimatedTime,
+    this.estimatedDistance = 0.0,
+    this.estimatedTime = '',
     this.paymentMethod = '',
-    this.price,
+    this.price = 0.0,
     this.isPaid = false,
-    this.paidAt,
+    this.paidAt = '',
     this.isPaidByCustomer = false,
-    this.isPaidByCustomerAt,
+    this.isPaidByCustomerAt = '',
     this.isRefunded = false,
-    this.refundedAt,
+    this.refundedAt = '',
     this.isScheduled = false,
-    this.scheduledFor,
-    this.scheduledDate,
+    this.scheduledFor = '',
+    this.scheduledDate = '',
     this.requestedAt = '',
-    this.acceptedAt,
-    this.completedAt,
-    this.cancelledAt,
-    this.arrivedAtPickup,
-    this.arrivedAtDropoff,
-    this.paymentCollectedAt,
-    this.headingToStationAt,
-    this.stationId,
+    this.acceptedAt = '',
+    this.completedAt = '',
+    this.cancelledAt = '',
+    this.arrivedAtPickup = '',
+    this.arrivedAtDropoff = '',
+    this.paymentCollectedAt = '',
+    this.headingToStationAt = '',
+    this.stationId = '',
     this.createdAt = '',
     this.updatedAt = '',
     BookingUserModel? user,
@@ -103,8 +103,7 @@ class RiderBookingModel {
         rider = rider ?? RiderDetailModel();
 
   factory RiderBookingModel.fromJson(Map<String, dynamic> json) {
-    final coordinates =
-        json['pickupLocation']?['coordinates'] ?? [0.0, 0.0];
+    final coordinates = json['pickupLocation']?['coordinates'] ?? [0.0, 0.0];
 
     return RiderBookingModel(
       id: json['id'] ?? '',
@@ -119,34 +118,30 @@ class RiderBookingModel {
       pickupLatitude: (coordinates[1] as num).toDouble(),
       pickupLongitude: (coordinates[0] as num).toDouble(),
       pickupAddress: json['pickupAddress'] ?? '',
-      dropoffAddress: json['dropoffAddress'],
+      dropoffAddress: json['dropoffAddress'] ?? '',
       vehicleType: json['vehicleType'] ?? '',
-      estimatedDistance:
-      json['estimatedDistance'] != null
-          ? (json['estimatedDistance'] as num).toDouble()
-          : null,
-      estimatedTime: json['estimatedTime'],
+      estimatedDistance: (json['estimatedDistance'] as num? ?? 0).toDouble(),
+      estimatedTime: json['estimatedTime'] ?? '',
       paymentMethod: json['paymentMethod'] ?? '',
-      price:
-      json['price'] != null ? (json['price'] as num).toDouble() : null,
+      price: (json['price'] as num? ?? 0).toDouble(),
       isPaid: json['isPaid'] ?? false,
-      paidAt: json['paidAt'],
+      paidAt: json['paidAt'] ?? '',
       isPaidByCustomer: json['isPaidByCustomer'] ?? false,
-      isPaidByCustomerAt: json['isPaidByCustomerAt'],
+      isPaidByCustomerAt: json['isPaidByCustomerAt'] ?? '',
       isRefunded: json['isRefunded'] ?? false,
-      refundedAt: json['refundedAt'],
+      refundedAt: json['refundedAt'] ?? '',
       isScheduled: json['isScheduled'] ?? false,
-      scheduledFor: json['scheduledFor'],
-      scheduledDate: json['scheduledDate'],
+      scheduledFor: json['scheduledFor'] ?? '',
+      scheduledDate: json['scheduledDate'] ?? '',
       requestedAt: json['requestedAt'] ?? '',
-      acceptedAt: json['acceptedAt'],
-      completedAt: json['completedAt'],
-      cancelledAt: json['cancelledAt'],
-      arrivedAtPickup: json['arrivedAtPickup'],
-      arrivedAtDropoff: json['arrivedAtDropoff'],
-      paymentCollectedAt: json['paymentCollectedAt'],
-      headingToStationAt: json['headingToStationAt'],
-      stationId: json['stationId'],
+      acceptedAt: json['acceptedAt'] ?? '',
+      completedAt: json['completedAt'] ?? '',
+      cancelledAt: json['cancelledAt'] ?? '',
+      arrivedAtPickup: json['arrivedAtPickup'] ?? '',
+      arrivedAtDropoff: json['arrivedAtDropoff'] ?? '',
+      paymentCollectedAt: json['paymentCollectedAt'] ?? '',
+      headingToStationAt: json['headingToStationAt'] ?? '',
+      stationId: json['stationId'] ?? '',
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
       user: json['user'] != null

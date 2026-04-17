@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:project_borla/screens/map-screens/user_common_map.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../role/garbageCollector/map/driver_common_map.dart';
@@ -30,7 +31,7 @@ class _PaymentSuccessScreeenState extends State<PaymentSuccessScreeen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: DriverCommonMap()),
+            Positioned.fill(child: UserCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

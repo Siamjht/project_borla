@@ -8,6 +8,8 @@ import '../../../../services/api_service.dart';
 import '../../../../utils/app_urls.dart';
 import '../../../components/customSnackbar/custom_snackbar.dart';
 import '../../home/controller/driver_home_controller.dart';
+import '../../home/navigate_station_screen.dart';
+import '../../home/payment_receive_screen.dart';
 
 
 class ActivityController extends GetxController {
@@ -102,9 +104,8 @@ class ActivityController extends GetxController {
   // ── Arrive at Pickup ───────────────────────────────────
   final RxBool isArriveLoading = false.obs;
 
-  Future<void> arriveAtPickup(BuildContext context) async {
-    // ✅ get id from either source
-    final bookingId = _getActiveBookingId();
+  Future<void> arriveAtPickup(BuildContext context, {bookingId}) async {
+    // final bookingId = _getActiveBookingId();
     if (bookingId.isEmpty) {
       CustomSnackbar.error('No active booking found');
       return;
@@ -143,19 +144,72 @@ class ActivityController extends GetxController {
     }
   }
 
-  String _getActiveBookingId() {
-    // ✅ check ActivityController first
-    if (Get.isRegistered<ActivityController>()) {
-      final id = Get.find<ActivityController>().selectedBooking.value?.id ?? '';
-      if (id.isNotEmpty) return id;
+  // ── Heading to Station ──────────────────────────────────
+  final RxBool isHeadingToStationLoading = false.obs;
+
+  Future<void> headingToStation({required String bookingId, required String stationId}) async {
+    if (bookingId.isEmpty) {
+      CustomSnackbar.error('No booking ID provided');
+      return;
     }
 
-    // ✅ fallback to DriverHomeController
-    if (Get.isRegistered<DriverHomeController>()) {
-      return Get.find<DriverHomeController>().acceptedBooking.value.id ?? '';
+    isHeadingToStationLoading.value = true;
+    try {
+      final response = await ApiService.patch(
+        AppUrls.headingStation(id: bookingId),
+        body: {"stationId" : stationId}
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final updated = RiderBookingModel.fromJson(response.body['data']);
+
+        // ✅ update in both controllers
+        _updateBookingInBothControllers(updated);
+
+        CustomSnackbar.success(response.message);
+        // Navigate or handle next state if needed
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } catch (e) {
+      log("Error in headingToStation: $e");
+      CustomSnackbar.error('Something went wrong');
+    } finally {
+      isHeadingToStationLoading.value = false;
+    }
+  }
+
+  // ── Booking Completed ──────────────────────────────────
+  final RxBool isBookingCompletedLoading = false.obs;
+
+  Future<void> bookingCompleted({required String bookingId}) async {
+    if (bookingId.isEmpty) {
+      CustomSnackbar.error('No booking ID provided');
+      return;
     }
 
-    return '';
+    isBookingCompletedLoading.value = true;
+    try {
+      final response = await ApiService.patch(
+        AppUrls.bookingCompleted(id: bookingId),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final updated = RiderBookingModel.fromJson(response.body['data']);
+
+        // ✅ update in both controllers
+        _updateBookingInBothControllers(updated);
+
+        CustomSnackbar.success(response.message);
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } catch (e) {
+      log("Error in bookingCompleted: $e");
+      CustomSnackbar.error('Something went wrong');
+    } finally {
+      isBookingCompletedLoading.value = false;
+    }
   }
 
   void _updateBookingInBothControllers(RiderBookingModel updated) {
@@ -184,7 +238,7 @@ class ActivityController extends GetxController {
     }
   }
 
-// ✅ convert RiderBookingModel back to json for AcceptedBookingModel
+ // convert RiderBookingModel back to json for AcceptedBookingModel
   Map<String, dynamic> _riderBookingToJson(RiderBookingModel booking) {
     return {
       'id': booking.id,
@@ -226,6 +280,68 @@ class ActivityController extends GetxController {
         'profilePicture': booking.user.profilePicture,
       },
     };
+  }
+
+  /// Get single booking by ID and route based on status
+  Future<void> getSingleBooking({required String bookingId}) async {
+    try {
+      final response = await ApiService.get(AppUrls.getSingleBooking(id: bookingId));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final booking = RiderBookingModel.fromJson(response.body['data']);
+
+        // ✅ update in both controllers
+        _updateBookingInBothControllers(booking);
+
+        if(booking.isPaidByCustomer){
+          // Only navigate if we are NOT already on ArrivedScreen or PaymentReceiveScreen
+          // because ArrivedBottomSheet now listens for isPaidByCustomer changes.
+          if (Get.currentRoute != '/ArrivedScreen' && Get.currentRoute != '/PaymentReceiveScreen') {
+             Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
+          }
+        }
+      } else {
+        CustomSnackbar.error(response.message ?? 'Failed to fetch booking');
+      }
+    } catch (e) {
+      debugPrint('Error fetching single booking: $e');
+      CustomSnackbar.error('Failed to fetch booking details');
+    }
+  }
+
+  // ── Payment Collection ──────────────────────────────────
+  final RxBool isPaymentCollectionLoading = false.obs;
+
+  Future<void> paymentCollection({required String bookingId}) async {
+    if (bookingId.isEmpty) {
+      CustomSnackbar.error('No booking ID provided');
+      return;
+    }
+
+    isPaymentCollectionLoading.value = true;
+    try {
+      final response = await ApiService.patch(
+        AppUrls.paymentCollection(id: bookingId),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final updated = RiderBookingModel.fromJson(response.body['data']);
+
+        // ✅ update in both controllers
+        _updateBookingInBothControllers(updated);
+
+        CustomSnackbar.success(response.message);
+        Get.back(); // Close the dialog
+        Get.to(() => NavigateStationScreen(booking: updated,)); // Navigate to station screen
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } catch (e) {
+      log("Error in paymentCollection: $e");
+      CustomSnackbar.error('Something went wrong');
+    } finally {
+      isPaymentCollectionLoading.value = false;
+    }
   }
 
 }

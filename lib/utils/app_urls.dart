@@ -5,7 +5,6 @@ class AppUrls {
   static String imageUrl({required String imagePath}) => "http://10.10.10.70:5000/$imagePath";
   static const socketUrl = "http://10.10.10.70:5000/";
 
-
   static const signUp = "$baseUrl/auth/signup";
   static const signIn = "$baseUrl/auth/login";
   static const verifyOtp = "$baseUrl/otp/verify-otp";
@@ -15,7 +14,6 @@ class AppUrls {
   static const resetPassword = "$baseUrl/auth/reset-password";
   static const getMyProfile = "$baseUrl/users/my-profile";
   static const updateProfile = "$baseUrl/users/update-my-profile";
-
   static const verifyEmail = "$baseUrl/auth/verify_email";
   static const createUser = "$baseUrl/auth/signup";
   static const deleteMyAccount = "$baseUrl/users/delete-my-account";
@@ -24,10 +22,8 @@ class AppUrls {
   static const aboutUs = "$baseUrl/content-pages/about-us";
   static const termsCondition = "$baseUrl/content-pages/terms-and-conditions";
   static const privacyPolicy = "$baseUrl/content-pages/privacy-policy";
-
   static const createBookings = "$baseUrl/bookings";
   static const newPlaces = "$baseUrl/saved-places";
-
   static const toggleMyStatus = "$baseUrl/users/toggle-my-status";
   static const updateMyLocation = "$baseUrl/users/update-my-location";
   static const stations = "$baseUrl/stations";
@@ -87,4 +83,7 @@ class SocketEvents {
 
   // Notification Events
   static String notificationNewOn = "notification:new";
+
+  // Location Update
+  static String bookingLocationUpdate = "booking:location:update";
 }

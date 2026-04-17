@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-
-import '../../role/garbageCollector/call/outgoing_call_screen.dart';
-import '../../screens/chat-screen/chat_screen_copy.dart';
+import '../../screens/chat-screen/user_chat_screen.dart';
 import '../../theme/user_outgoing_call_screen.dart';
 
 class DriverInfoSheetButtons extends StatelessWidget {
@@ -82,7 +80,7 @@ class DriverInfoSheetButtons extends StatelessWidget {
             height: 48,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => UserChattingScreen());
+                // Get.to(() => UserChattingScreen());
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.zero,

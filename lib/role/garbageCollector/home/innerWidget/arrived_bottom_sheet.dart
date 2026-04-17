@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/custom_container.dart';
+import 'package:project_borla/role/garbageCollector/home/innerWidget/payment_receive_dialog.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
@@ -14,24 +15,49 @@ import 'arrive_at_pickup_dialog.dart';
 
 class ArrivedBottomSheet extends StatefulWidget {
   RiderBookingModel booking;
-  ArrivedBottomSheet({super.key, required this.booking});
+  bool isPaymentReceive;
+  ArrivedBottomSheet({super.key, required this.booking, this.isPaymentReceive = false});
 
   @override
   State<ArrivedBottomSheet> createState() => _ArrivedBottomSheetState();
 }
 
 class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
+  final ActivityController activityCtrl = ActivityController.instance;
+  late Worker _bookingWorker;
 
   @override
   void initState() {
     super.initState();
-      if(widget.booking.isPaidByCustomer){
-        showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (_) => const ArriveAtPickupDialog(),
-        );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final booking = activityCtrl.selectedBooking.value;
+      if (booking != null && booking.isPaidByCustomer) {
+        _showPaymentReceiveDialog(booking);
       }
+    });
+
+    // ✅ Listen for socket-driven updates (e.g., getSingleBooking)
+    _bookingWorker = ever(activityCtrl.selectedBooking, (booking) {
+      if (booking != null && booking.isPaidByCustomer) {
+        _showPaymentReceiveDialog(booking);
+      }
+    });
+  }
+
+  void _showPaymentReceiveDialog(RiderBookingModel booking) {
+    if (booking.isPaid) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (_) => PaymentReceiveDialog(booking: booking),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _bookingWorker.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,68 +75,61 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-
-                      const Center(
-                        child: CommonText(
-                          text: 'Arrived At Customer Location',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+            child: Obx(() {
+              final booking = activityCtrl.selectedBooking.value ?? widget.booking;
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        const Center(
+                          child: CommonText(
+                            text: 'Arrived At Customer Location',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-
-                      const SizedBox(height: 12),
-                      const Divider(color: AppColors.black50, thickness: 1),
-
-                      userRow( widget.booking),
-
-                      const Divider(color: AppColors.black50, thickness: 1),
-                      const SizedBox(height: 6),
-
-                      _locationSection(widget.booking),
-
-                      const Divider(color: AppColors.black50, thickness: 1),
-                      const SizedBox(height: 10),
-
-                      _paymentRow(widget.booking),
-
-                      const SizedBox(height: 20),
-
-                      _actionButtons(context),
-                    ],
+                        const SizedBox(height: 12),
+                        const Divider(color: AppColors.black50, thickness: 1),
+                        userRow(booking),
+                        const Divider(color: AppColors.black50, thickness: 1),
+                        const SizedBox(height: 6),
+                        _locationSection(booking),
+                        const Divider(color: AppColors.black50, thickness: 1),
+                        const SizedBox(height: 10),
+                        _paymentRow(booking),
+                        const SizedBox(height: 20),
+                        _actionButtons(context, booking),
+                      ],
+                    ),
                   ),
-                ),
-
-                // ── Floating location pin ─────────────────
-                Positioned(
-                  top: -40,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: CustomContainer(
-                      height: 60,
-                      width: 60,
-                      borderRadius: 100,
-                      color: AppColors.green500,
-                      child: const Icon(
-                        Icons.location_pin,
-                        color: AppColors.white,
-                        size: 35,
+                  // ── Floating location pin ─────────────────
+                  Positioned(
+                    top: -40,
+                    left: 0,
+                    right: 0,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomContainer(
+                        height: 60,
+                        width: 60,
+                        borderRadius: 100,
+                        color: AppColors.green500,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: AppColors.white,
+                          size: 35,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
         );
       },
@@ -166,7 +185,7 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
         const Spacer(),
         CommonText(
           text: booking?.price != null
-              ? 'GH₵ ${booking!.price!.toStringAsFixed(0)}'
+              ? 'GH₵ ${booking!.price.toStringAsFixed(0)}'
               : 'TBD', // ✅ real data
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -176,15 +195,22 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
     );
   }
 
-  Widget _actionButtons(BuildContext context) {
-    final ActivityController activityCtrl = Get.find();
+  Widget _actionButtons(BuildContext context, RiderBookingModel booking) {
     return Obx(() => CommonButton(
       isLoading: activityCtrl.isArriveLoading.value,
       onTap: activityCtrl.isArriveLoading.value
           ? () {}
-          : () => activityCtrl.arriveAtPickup(context),
+          : () {
+        if (!widget.isPaymentReceive) {
+          showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => ArriveAtPickupDialog(booking: booking)
+          );
+        }
+      },
       buttonRadius: 12,
       titleText: 'Arrived',
-    ),);
+    ));
   }
 }

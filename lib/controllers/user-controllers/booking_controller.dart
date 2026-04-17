@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
+import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/utils/app_urls.dart';
 import '../../helpers/other_helper.dart';
@@ -309,6 +310,8 @@ class BookingController extends GetxController {
         Get.to(()=> RiderArrivedScreen(booking: booking,));
         break;
       case BookingStatus.paymentCollected:
+        Get.to(()=> RiderArrivedScreen(booking: booking,));
+        break;
       case BookingStatus.headingToStation:
       case BookingStatus.inProgress:
       case BookingStatus.arrivedDropOff:

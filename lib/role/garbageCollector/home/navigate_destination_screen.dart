@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
@@ -72,7 +74,10 @@ class NavigateDestinationScreen extends StatelessWidget {
             left: 20,
             right: 20,
             child: CommonButton(
-              onTap: () => Get.to(() => ArrivedScreen(bookingModel: booking)),
+              onTap: (){
+                Get.to(() => ArrivedScreen(bookingModel: booking));
+                log("BookingId: ${booking.id}");
+              },
               titleText: 'Navigate to Destination',
               buttonRadius: 12,
             ),

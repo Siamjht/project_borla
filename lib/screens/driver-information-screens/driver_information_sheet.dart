@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/role/garbageCollector/call/outgoing_call_screen.dart';
-import 'package:project_borla/screens/chat-screen/chat_screen_copy.dart';
+import 'package:project_borla/screens/chat-screen/user_chat_screen.dart';
 import 'package:project_borla/screens/ride-schedule-screens/ride_schedule_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 

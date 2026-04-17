@@ -175,13 +175,22 @@ abstract class BaseMapController extends GetxController {
   }
 
   double calculateBearing(LatLng start, LatLng end) {
-    final dLng = end.longitude - start.longitude;
-    final y = math.sin(dLng) * math.cos(end.latitude);
-    final x = math.cos(start.latitude) * math.sin(end.latitude) -
-        math.sin(start.latitude) *
-            math.cos(end.latitude) *
+    final startLat = _degreesToRadians(start.latitude);
+    final startLng = _degreesToRadians(start.longitude);
+    final endLat = _degreesToRadians(end.latitude);
+    final endLng = _degreesToRadians(end.longitude);
+
+    final dLng = endLng - startLng;
+    final y = math.sin(dLng) * math.cos(endLat);
+    final x = math.cos(startLat) * math.sin(endLat) -
+        math.sin(startLat) *
+            math.cos(endLat) *
             math.cos(dLng);
     return (math.atan2(y, x) * 180 / math.pi) % 360;
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * math.pi / 180;
   }
 
   double distanceBetween(LatLng a, LatLng b) {

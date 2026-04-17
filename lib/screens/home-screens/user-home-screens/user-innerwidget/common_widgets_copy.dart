@@ -10,7 +10,7 @@ import '../../../../theme/common_button_copy.dart';
 import '../../../../theme/custom_container_copy.dart';
 import '../../../../theme/user_outgoing_call_screen.dart';
 import '../../../activity-screens/activity-controller/user_activity_controller.dart';
-import '../../../chat-screen/chat_screen_copy.dart';
+import '../../../chat-screen/user_chat_screen.dart';
 
 import '../user-controller/user_home_controller.dart';
 import 'driver_info_screen_copy.dart';
@@ -93,7 +93,7 @@ Widget userRow(controller, {role}) {
         children: [
           InkWell(
               onTap: () {
-                Get.to(()=> UserChattingScreen());
+                // Get.to(()=> UserChattingScreen());
               },
               child: circleAction(Assets.icons.messageIcon.image(height: 20, width: 20, color: AppColors.orange300))),
           const SizedBox(width: 12),

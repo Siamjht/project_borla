@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/controllers/user-controllers/payment_controller.dart';
 import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
+import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import '../../role/components/text/common_text.dart';
 import '../../theme/app_color.dart';
 import '../../widgets/booking-accepted-sheet-widgets/user_section_widget.dart';
@@ -20,6 +23,20 @@ class RiderArrivedSheet extends StatefulWidget {
 
 class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
   final PaymentController paymentController = Get.find<PaymentController>();
+
+  @override
+  void initState() {
+    super.initState();
+    log("widget.booking.isPaid: ${widget.booking.isPaid}");
+    if(widget.booking.isPaid){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.dialog(
+          barrierDismissible: false,
+          buildPaymentReceivedDialog(),
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +77,7 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: userSectionWidget(rider: widget.booking.rider),
+                child: userSectionWidget(rider: widget.booking.rider, bookingId: widget.booking.id),
               ),
 
               Padding(
@@ -89,16 +106,22 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
                   isLoading: paymentController.isLoading,
                   text: 'Pay Now',
                   onPressed: () async {
-                    final isSuccess = await paymentController.initiatePayment(
-                      bookingId: widget.booking.id,
-                      isCash: widget.booking.paymentMethod == 'cash',
-                    );
-
-                    if (isSuccess) {
-                      Get.dialog(
-                        barrierDismissible: false,
-                        buildPaymentSuccessDialog(),
+                    if(widget.booking.isPaid){
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        buildPaymentReceivedDialog();
+                      });
+                    }else{
+                      final isSuccess = await paymentController.initiatePayment(
+                        bookingId: widget.booking.id,
+                        isCash: widget.booking.paymentMethod == 'cash',
                       );
+
+                      if (isSuccess) {
+                        Get.dialog(
+                          barrierDismissible: false,
+                          buildPaymentSuccessDialog(),
+                        );
+                      }
                     }
                   },
                 ),
@@ -178,9 +201,97 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                     child: GradientButton(
+                      text: 'Back to Home',
+                      onPressed: () {
+                        Get.offAll(() => UserNavBar());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
+              top: 2,
+              left: 4,
+              child: Image.asset('assets/images/amber_left_2.png', scale: 4),
+            ),
+
+            Positioned(
+              top: 1,
+              right: 4,
+              child: Image.asset('assets/images/amber_right_2.png', scale: 4),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  AlertDialog buildPaymentReceivedDialog() {
+    return AlertDialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      backgroundColor: AppColors.white,
+      contentPadding: EdgeInsets.zero,
+      content: SizedBox(
+        width: Get.width,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 24,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 24),
+
+                  Image.asset(
+                    'assets/images/wave_tick_amber.png',
+                    scale: 0.2,
+                    height: 85,
+                    width: 85,
+                  ),
+
+                  SizedBox(height: 24),
+
+                  Text(
+                    'Payment Received',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Text(
+                    "Your money has been received by",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+
+                  //SizedBox(height: 30,),
+                  Text(
+                    "garbage collector:${widget.booking.rider.name}",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+
+                  SizedBox(height: 24),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                    child: GradientButton(
                       text: 'Please Feedback',
                       onPressed: () {
-                        Get.to(() => RiderReviewScreen());
+                        Get.to(() => RiderReviewScreen(booking: widget.booking));
                       },
                     ),
                   ),

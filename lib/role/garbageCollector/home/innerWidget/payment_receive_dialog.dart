@@ -10,39 +10,15 @@ import '../../../components/button/common_button.dart';
 import '../../../components/text/common_text.dart';
 import '../../activity/controller/activity_controller.dart';
 import '../../activity/innerWidget/common_widgets.dart';
-import '../controller/driver_home_controller.dart';
-import '../navigate_station_screen.dart';
 
 
 class PaymentReceiveDialog extends StatelessWidget {
-  const PaymentReceiveDialog({super.key});
+  RiderBookingModel booking;
+  PaymentReceiveDialog({super.key, required this.booking});
 
-  RiderBookingModel? _getBooking() {
-    if (Get.isRegistered<ActivityController>()) {
-      final booking = Get.find<ActivityController>().selectedBooking.value;
-      if (booking != null) return booking;
-    }
-    if (Get.isRegistered<DriverHomeController>()) {
-      final accepted = Get.find<DriverHomeController>().acceptedBooking.value;
-      if (accepted != null) {
-        return RiderBookingModel(
-          id: accepted.id,
-          pickupAddress: accepted.pickupAddress,
-          dropoffAddress: accepted.dropoffAddress,
-          price: accepted.price,
-          estimatedDistance: accepted.estimatedDistance,
-          estimatedTime: accepted.estimatedTime,
-          paymentMethod: accepted.paymentMethod,
-          user: accepted.user,
-        );
-      }
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final booking = _getBooking();
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -80,8 +56,8 @@ class PaymentReceiveDialog extends StatelessWidget {
                       // ✅ real user name
                       CommonText(
                         text:
-                        'You successfully receive payment \nfrom ${booking?.user.name ?? 'Customer'}',
-                        fontSize: 12,
+                        'You successfully receive payment \nfrom ${booking.user.name}',
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                         lineHeight: 1.5,
@@ -92,7 +68,7 @@ class PaymentReceiveDialog extends StatelessWidget {
                       const Divider(color: AppColors.black50, thickness: 1),
                       const SizedBox(height: 8),
 
-                      locationSection(booking!),
+                      locationSection(booking),
 
                       const SizedBox(height: 8),
                       const Divider(color: AppColors.black50, thickness: 1),
@@ -102,11 +78,14 @@ class PaymentReceiveDialog extends StatelessWidget {
 
                       const SizedBox(height: 16),
 
-                      CommonButton(
-                        onTap: () => Get.to(() => NavigateStationScreen()),
+                      Obx(() => CommonButton(
+                        isLoading: ActivityController.instance.isPaymentCollectionLoading.value,
+                        onTap: () {
+                          ActivityController.instance.paymentCollection(bookingId: booking.id);
+                        },
                         buttonRadius: 12,
                         titleText: 'Heading to Station',
-                      ),
+                      )),
                     ],
                   ),
                 ),

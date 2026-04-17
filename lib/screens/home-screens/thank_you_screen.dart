@@ -48,20 +48,20 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
   }
 
-  void ShowRatingSheet (BuildContext context) {
-
-    showModalBottomSheet(
-
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      //showDragHandle: true,
-      useSafeArea: true,
-      builder: (context) => RatingSheet(),
-
-    );
-
-  }
+  // void ShowRatingSheet (BuildContext context) {
+  //
+  //   showModalBottomSheet(
+  //
+  //     context: context,
+  //     backgroundColor: Colors.transparent,
+  //     isScrollControlled: true,
+  //     //showDragHandle: true,
+  //     useSafeArea: true,
+  //     builder: (context) => RatingSheet(),
+  //
+  //   );
+  //
+  // }
 
   void ShowChooseRideSheet (BuildContext context) {
 

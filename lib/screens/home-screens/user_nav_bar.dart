@@ -8,6 +8,7 @@ import 'package:project_borla/screens/profile-screens/profile_screen_user.dart';
 import '../../features/fragments/bottom_nav_bar.dart';
 
 class UserNavBarController extends GetxController {
+  static UserNavBarController get instance => Get.find<UserNavBarController>();
   var tabIndex = 0.obs;
 
   void changeTab(int index) {

@@ -7,12 +7,14 @@ import 'package:project_borla/role/components/custom_container.dart';
 import '../../../../theme/app_color.dart';
 import '../../../components/commonTextField/common_text_field.dart';
 import '../../../components/text/common_text.dart';
+import '../controller/earnings_controller.dart';
 
 
 class TopUpDialog extends StatelessWidget {
   TopUpDialog({super.key});
 
-  TextEditingController topUpController = TextEditingController();
+  final TextEditingController topUpController = TextEditingController();
+  final EarningsController controller = Get.find<EarningsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class TopUpDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 12,),
+            const SizedBox(height: 12,),
             /// Title
             const Center(
               child: CommonText(
@@ -72,26 +74,43 @@ class TopUpDialog extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            CommonText(text: "Minimum top up: GH₵ 50"),
+            const CommonText(text: "Minimum top up: GH₵ 50"),
             const SizedBox(height: 12),
             /// Warning
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(4, (index) {
-                return topUpAmountContainer(amount: 50 * (index+1));
-              },),
+                final amount = 50 * (index + 1);
+                return GestureDetector(
+                  onTap: () {
+                    topUpController.text = amount.toString();
+                  },
+                  child: topUpAmountContainer(amount: amount),
+                );
+              }),
             ),
 
             const SizedBox(height: 28),
 
             /// Action
-            CommonButton(
+            Obx(() => CommonButton(
+              isLoading: controller.isTopUpLoading.value,
               onTap: () {
-                Get.back();
+                final amountStr = topUpController.text.trim();
+                if (amountStr.isEmpty) {
+                  Get.snackbar('Error', 'Please enter amount');
+                  return;
+                }
+                final amount = double.tryParse(amountStr);
+                if (amount == null || amount < 50) {
+                  Get.snackbar('Error', 'Minimum top up is GH₵ 50');
+                  return;
+                }
+                controller.topUp(amount: amount);
               },
               titleText: "Continue",
               buttonRadius: 4,
-            )
+            ))
           ],
         ),
       ),
@@ -102,7 +121,7 @@ class TopUpDialog extends StatelessWidget {
     return CustomContainer(
                 borderRadius: 27,
                 borderColor: AppColors.black300,
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 child: CommonText(text: "GH₵ $amount", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textDark,),
               );
   }

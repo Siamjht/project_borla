@@ -1,13 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
+import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import 'package:project_borla/role/garbageCollector/home/innerWidget/payment_receive_dialog.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../components/text/common_text.dart';
 
 class ArriveAtPickupDialog extends StatelessWidget {
-  const ArriveAtPickupDialog({super.key});
+  RiderBookingModel booking;
+  ArriveAtPickupDialog({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +58,7 @@ class ArriveAtPickupDialog extends StatelessWidget {
                       CommonButton(
                         onTap: () {
                           Navigator.pop(context);
-                          showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (_) => const PaymentReceiveDialog(),
-                          );
+                          ActivityController.instance.arriveAtPickup(context, bookingId: booking.id);
                         },
                         buttonRadius: 12,
                         titleText: "Collect Payment",

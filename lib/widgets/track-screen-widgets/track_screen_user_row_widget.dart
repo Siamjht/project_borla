@@ -6,7 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import '../../role/components/text/common_text.dart';
 import '../../role/garbageCollector/call/outgoing_call_screen.dart';
 import '../../screens/activity-screens/activity-controller/user_activity_controller.dart';
-import '../../screens/chat-screen/chat_screen_copy.dart';
+import '../../screens/chat-screen/user_chat_screen.dart';
 import '../../theme/app_color.dart';
 import '../../theme/user_outgoing_call_screen.dart';
 
@@ -56,7 +56,7 @@ Widget userRowMod() {
         children: [
           InkWell(
               onTap: () {
-                Get.to(()=> UserChattingScreen());
+                // Get.to(()=> UserChattingScreen());
               },
               child: circleActionMod(
                   Image.asset('assets/images/user_msg.png',height: 20, width: 20,)

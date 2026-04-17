@@ -1,13 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
+import 'package:project_borla/models/riderModels/wasteStationModel/waste_station_model.dart';
 import 'package:project_borla/role/garbageCollector/home/innerWidget/waste_drop_completed_dialog.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../components/button/common_button.dart';
 import '../../../components/text/common_text.dart';
+import '../../activity/controller/activity_controller.dart';
 
 class ArriveAtStationDialog extends StatelessWidget {
-  const ArriveAtStationDialog({super.key});
+  final StationModel station;
+  final RiderBookingModel booking;
+  const ArriveAtStationDialog({super.key, required this.station, required this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,7 @@ class ArriveAtStationDialog extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       // Description
-                      CommonText(
+                      const CommonText(
                         text: "You've arrived!, The station is ready to receive your waste",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -52,18 +58,22 @@ class ArriveAtStationDialog extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
-                      CommonButton(
-                        onTap: () {
-                          Navigator.pop(context);
-                          showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (_) => const WasteDropCompletedDialog(),
-                          );
+                      Obx(() => CommonButton(
+                        isLoading: ActivityController.instance.isBookingCompletedLoading.value,
+                        onTap: () async {
+                          await ActivityController.instance.bookingCompleted(bookingId: booking.id);
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (_) => WasteDropCompletedDialog(booking: booking, station: station),
+                            );
+                          }
                         },
                         buttonRadius: 12,
-                        titleText: "Collect Payment",
-                      )
+                        titleText: "Drop Off Waste",
+                      )),
                     ],
                   ),
                 ),

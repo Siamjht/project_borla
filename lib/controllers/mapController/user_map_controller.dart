@@ -147,6 +147,13 @@ class UserMapController extends BaseMapController {
     await animateCameraTo(newPosition);
   }
 
+  /// Call this when returning to home screen to ensure user marker is visible
+  Future<void> refreshUserMarker() async {
+    if (currentLocation.value.latitude != 0 || currentLocation.value.longitude != 0) {
+      await placeUserMarker(currentLocation.value);
+    }
+  }
+
   /// Call when trip ends
   void endTrip() {
     tripPhase.value = UserTripPhase.idle;
@@ -155,6 +162,7 @@ class UserMapController extends BaseMapController {
     removeMarker('driver');
     removeMarker('destination');
     clearRoute();
+    refreshUserMarker(); // Re-ensure user marker is there
   }
 
   // =============================================================

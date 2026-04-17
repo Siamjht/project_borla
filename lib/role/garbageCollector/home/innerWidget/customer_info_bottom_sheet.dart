@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -267,7 +269,10 @@ Widget bottomSheetActionButtons(BuildContext context, RiderBookingModel booking)
       // const SizedBox(width: 20),
       Expanded(
         child: CommonButton(
-          onTap: () => Get.to(() => NavigateDestinationScreen(booking: booking)),
+          onTap: () {
+            Get.to(() => NavigateDestinationScreen(booking: booking));
+            log("BookingId: ${booking.id}");
+          },
           buttonRadius: 12,
           titleText: 'Next',
         ),

@@ -1,47 +1,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/models/riderModels/wasteStationModel/waste_station_model.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
-import '../../../components/button/common_button.dart';
 import '../../../components/navBar/nav_bar.dart';
 import '../../../components/text/common_text.dart';
-import '../../activity/controller/activity_controller.dart';
-import '../controller/driver_home_controller.dart';
+
 
 class WasteDropCompletedDialog extends StatelessWidget {
-  const WasteDropCompletedDialog({super.key});
+  RiderBookingModel booking;
+  StationModel station;
+  WasteDropCompletedDialog({super.key, required this.booking, required this.station});
 
-  RiderBookingModel? _getBooking() {
-    if (Get.isRegistered<ActivityController>()) {
-      final booking = Get.find<ActivityController>().selectedBooking.value;
-      if (booking != null) return booking;
-    }
-
-    if (Get.isRegistered<DriverHomeController>()) {
-      final accepted = Get.find<DriverHomeController>().acceptedBooking.value;
-      if (accepted != null) {
-        return RiderBookingModel(
-          id: accepted.id,
-          pickupAddress: accepted.pickupAddress,
-          dropoffAddress: accepted.dropoffAddress,
-          price: accepted.price,
-          estimatedDistance: accepted.estimatedDistance,
-          estimatedTime: accepted.estimatedTime,
-          paymentMethod: accepted.paymentMethod,
-          user: accepted.user,
-        );
-      }
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final booking = _getBooking();
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -77,7 +54,7 @@ class WasteDropCompletedDialog extends StatelessWidget {
                   /// SUBTITLE
                   CommonText(
                     text:
-                    "Waste successfully disposed at\n${booking?.dropoffAddress ?? ""}",
+                    "Waste successfully disposed at\n${station.name}",
                     fontSize: 12,
                     color: Colors.grey,
                     textAlign: TextAlign.center,
@@ -104,7 +81,7 @@ class WasteDropCompletedDialog extends StatelessWidget {
                   summaryRow(
                     Icons.location_on_outlined,
                     "Total Distance",
-                    "${booking?.estimatedDistance ?? "0"} km",
+                    "${booking.estimatedDistance ?? "0"} km",
                   ),
 
                   const SizedBox(height: 10),
@@ -112,7 +89,7 @@ class WasteDropCompletedDialog extends StatelessWidget {
                   summaryRow(
                     Icons.access_time,
                     "Total Duration",
-                    "${booking?.estimatedTime ?? "0"} min",
+                    "${booking.estimatedTime ?? "0"} min",
                   ),
 
                   const SizedBox(height: 10),
@@ -120,7 +97,7 @@ class WasteDropCompletedDialog extends StatelessWidget {
                   summaryRow(
                     Icons.delete_outline,
                     "Waste Collected",
-                    "15 kg",
+                    "${booking.wasteSize} kg",
                   ),
 
                   const SizedBox(height: 12),
@@ -129,7 +106,7 @@ class WasteDropCompletedDialog extends StatelessWidget {
                   summaryRow(
                     Icons.monetization_on_outlined,
                     "Total Earnings",
-                    "GH₵ ${booking?.price ?? 0}",
+                    "GH₵ ${booking.price ?? 0}",
                     isGreen: true,
                   ),
 
@@ -164,11 +141,17 @@ class WasteDropCompletedDialog extends StatelessWidget {
                               const CommonText(
                                 text: "Disposed At",
                                 fontSize: 11,
-                                color: Colors.grey,
+                                color: AppColors.green500,
                               ),
                               CommonText(
-                                text: booking?.dropoffAddress ?? "",
-                                fontSize: 13,
+                                text: station.name ?? "",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              CommonText(
+                                text: station.address ,
+                                fontSize: 12,
+                                color: AppColors.gray500,
                                 fontWeight: FontWeight.w600,
                               ),
                             ],

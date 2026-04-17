@@ -7,7 +7,9 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
 import '../helpers/prefs_helper.dart';
 import '../models/commonModels/chatMessageModels/chat_message_model.dart';
+import '../models/commonModels/notificationModel/notification_model.dart';
 import '../role/commonScreens/chat/innerController/chat_controller.dart';
+import '../role/garbageCollector/activity/controller/activity_controller.dart';
 import '../role/garbageCollector/home/controller/driver_home_controller.dart';
 import '../utils/app_urls.dart';
 import 'sound_service.dart';
@@ -33,12 +35,14 @@ class SocketServices {
       listenForNotificationEvents();
       if(PrefsHelper.myRole == 'rider'){
         listenForNewBooking();
+        listenForPaymentEvents();
+        listenForCashPaymentCompleted();
       }else if(PrefsHelper.myRole == 'user'){
         listenForBookingAccepted();
         listenForDriverArrivedAtPickup();
-        listenForCashPaymentCompleted();
         listenForPaymentCollected();
         listenForDriverHeadingToStation();
+        listenForNewLocation();
       }
       debugPrint("Socket connected: $data");
     });
@@ -113,6 +117,7 @@ class SocketServices {
       try {
         // TODO: Parse with model when response structure is known
         // final model = PaymentModel.fromJson(Map<String, dynamic>.from(data));
+        ActivityController.instance.getSingleBooking(bookingId: data['bookingId']);
       } catch (e) {
         log('Error parsing payment:initiated: $e');
       }
@@ -158,8 +163,10 @@ class SocketServices {
       SoundService.instance.playMessageReceive();
       
       try {
-        // TODO: Parse with model when response structure is known
-        // final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
+        final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
+        // if(model.userId != PrefsHelper.userId){
+        //
+        // }
       } catch (e) {
         log('Error parsing notification:new: $e');
       }
@@ -308,9 +315,9 @@ class SocketServices {
     socket.on(SocketEvents.bookingPaymentCollectedOn, (data) {
       log('booking:payment_collected received: $data');
       try {
-        // TODO: Parse with BookingPaymentModel when response structure is known
-        // final model = BookingPaymentModel.fromJson(Map<String, dynamic>.from(data));
-        // TODO: Update UI to show payment collected status
+        // final model = UserBookingModel.fromJson(Map<String, dynamic>.from(data));
+        BookingController.instance.getSingleBooking(bookingId: data['bookingId']);
+
       } catch (e) {
         log('Error parsing booking:payment_collected: $e');
       }
@@ -376,9 +383,8 @@ class SocketServices {
     socket.on(SocketEvents.paymentCashCompletedOn, (data) {
       log('payment:cash_completed received: $data');
       try {
-        // TODO: Parse with PaymentModel when response structure is known
         // final model = PaymentModel.fromJson(Map<String, dynamic>.from(data));
-        // TODO: Update UI to confirm cash payment received
+        ActivityController.instance.getSingleBooking(bookingId: data['bookingId']);
       } catch (e) {
         log('Error parsing payment:cash_completed: $e');
       }
@@ -401,6 +407,38 @@ class SocketServices {
       }
     });
   }
+
+
+  /// Listening for new location update
+  /// Event
+  static void listenForNewLocation() {
+    socket.off(SocketEvents.bookingLocationUpdate);
+    socket.on(SocketEvents.bookingLocationUpdate, (data) {
+      log('booking:location:update: $data');
+      try {
+        // final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
+      } catch (e) {
+        log('Error parsing notification:new: $e');
+      }
+    });
+  }
+
+  /// Emit update location from Rider
+  static void emitUpdateLocation({required String bookingId, lat, lng}) {
+    if (!socket.connected) return;
+    socket.emitWithAck(SocketEvents.bookingLocationUpdate, {
+      "bookingId": bookingId,
+      "latitude": lat,
+      "longitude": lng,},
+        ack: (data) {
+      debugPrint("updated location: $data");
+    },
+    );
+  }
+
+
+
+
 
   /// Disconnects the socket connection
   /// Should be called when logging out or closing the app

@@ -24,6 +24,7 @@ class CustomerInfoScreen extends StatelessWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         mapCtrl.startToPickupPhase(
           LatLng(booking.pickupLatitude, booking.pickupLongitude),
+          id: booking.id,
         );
       });
 

@@ -7,12 +7,14 @@ import 'package:project_borla/role/components/custom_container.dart';
 import '../../../../theme/app_color.dart';
 import '../../../components/commonTextField/common_text_field.dart';
 import '../../../components/text/common_text.dart';
+import '../controller/earnings_controller.dart';
 
 
 class WithdrawDialog extends StatelessWidget {
   WithdrawDialog({super.key});
 
-  TextEditingController withdrawController = TextEditingController();
+  final TextEditingController withdrawController = TextEditingController();
+  final EarningsController controller = Get.find<EarningsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class WithdrawDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 12,),
+            const SizedBox(height: 12,),
             /// Title
             const Center(
               child: CommonText(
@@ -77,17 +79,17 @@ class WithdrawDialog extends StatelessWidget {
               borderRadius: 6,
               borderColor: AppColors.yellow500,
               color: AppColors.yellow50,
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 12,
                 children: [
                   const Icon(Icons.info_outline, color: AppColors.olive500),
-                  Expanded(
+                  const Expanded(
                     child: CommonText(
                       textAlign: TextAlign.start,
                       text:
-                      'Keep \$20 minimum for cash ride commissions',
+                      'Keep GH₵ 20 minimum for cash ride commissions',
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: AppColors.olive500,
@@ -100,17 +102,29 @@ class WithdrawDialog extends StatelessWidget {
             const SizedBox(height: 28),
 
             /// Action
-            CommonButton(
+            Obx(() => CommonButton(
+              isLoading: controller.isWithdrawLoading.value,
               onTap: () {
-                Get.back();
+                final amountStr = withdrawController.text.trim();
+                if (amountStr.isEmpty) {
+                  Get.snackbar('Error', 'Please enter amount');
+                  return;
+                }
+                final amount = double.tryParse(amountStr);
+                if (amount == null || amount <= 0) {
+                  Get.snackbar('Error', 'Please enter a valid amount');
+                  return;
+                }
+                
+                // Using 'momo' as default channel as requested by common practice in this app's context
+                controller.withdraw(channel: 'momo', amount: amount);
               },
               titleText: "Continue",
               buttonRadius: 4,
-            )
+            ))
           ],
         ),
       ),
     );
   }
 }
-

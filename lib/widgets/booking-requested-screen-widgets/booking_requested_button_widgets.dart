@@ -107,7 +107,7 @@ class ViewRidesButton extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.fromLTRB(40, 16, 40, 16),
             child: const Text(
-              'View My Rides',
+              'View My Bookings',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 16

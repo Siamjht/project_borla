@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 import 'package:project_borla/theme/common_button_copy.dart';
 import '../../gen/custom_assets/assets.gen.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
 import '../../role/garbageCollector/map/driver_common_map.dart';
 import '../../widgets/booking-requested-screen-widgets/booking_requested_button_widgets.dart';
-import '../home-screens/user_nav_bar.dart';
+import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 
 class BookingRequestedScreen extends StatefulWidget {
   const BookingRequestedScreen({super.key});

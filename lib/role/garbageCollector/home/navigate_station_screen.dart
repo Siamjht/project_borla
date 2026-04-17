@@ -2,20 +2,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../../controllers/mapController/driver_map_controller.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../models/riderModels/wasteStationModel/waste_station_model.dart';
 import '../../../theme/app_color.dart';
 import '../../components/button/common_button.dart';
 import '../../components/commonBackButton/common_back_button.dart';
+import '../../components/customSnackbar/custom_snackbar.dart';
 import '../../components/custom_container.dart';
 import '../../components/text/common_text.dart';
+import '../activity/controller/activity_controller.dart';
 import '../map/driver_common_map.dart';
 import 'controller/driver_home_controller.dart';
 import 'innerWidget/arrive_at_station_dialog.dart';
 
 class NavigateStationScreen extends StatefulWidget {
-  const NavigateStationScreen({super.key});
+  RiderBookingModel booking;
+  NavigateStationScreen({super.key, required this.booking});
 
   @override
   State<NavigateStationScreen> createState() => _NavigateStationScreenState();
@@ -24,6 +28,7 @@ class NavigateStationScreen extends StatefulWidget {
 class _NavigateStationScreenState extends State<NavigateStationScreen> {
   final DriverHomeController _homeCtrl = Get.find<DriverHomeController>();
   final DriverMapController _mapCtrl = Get.find<DriverMapController>();
+  StationModel? station;
 
   @override
   void initState() {
@@ -101,7 +106,7 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
                 );
               }
 
-              final station = _nearestStation;
+              station = _nearestStation;
 
               return CustomContainer(
                 padding: const EdgeInsets.symmetric(
@@ -135,7 +140,7 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
                             fontSize: 16,
                             // ✅ real station name and distance
                             text: station != null
-                                ? '${station.name} • ${_homeCtrl.calculateDistanceToStation(station).toStringAsFixed(1)} km'
+                                ? '${station?.name} • ${_homeCtrl.calculateDistanceToStation(station!).toStringAsFixed(1)} km'
                                 : '—',
                           ),
                         ],
@@ -152,17 +157,26 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
             bottom: 40,
             left: 20,
             right: 20,
-            child: CommonButton(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (_) => const ArriveAtStationDialog(),
-                );
+            child: Obx(() => CommonButton(
+              isLoading: ActivityController.instance.isHeadingToStationLoading.value,
+              onTap: () async {
+                final station = _nearestStation;
+                if(station != null){
+                  await ActivityController.instance.headingToStation(bookingId: widget.booking.id, stationId: station.id);
+                  if (mounted) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
+                    );
+                  }
+                } else {
+                  CustomSnackbar.error("No station selected");
+                }
               },
               titleText: 'Navigate to Station',
               buttonRadius: 12,
-            ),
+            )),
           ),
         ],
       ),

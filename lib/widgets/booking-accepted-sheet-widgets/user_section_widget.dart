@@ -3,18 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
-import 'package:project_borla/utils/app_urls.dart';
 import '../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../role/components/text/common_text.dart';
-import '../../role/garbageCollector/activity/controller/activity_controller.dart';
-import '../../screens/chat-screen/chat_screen_copy.dart';
+import '../../screens/activity-screens/activity-controller/user_activity_controller.dart';
+import '../../screens/chat-screen/user_chat_screen.dart';
 import '../../theme/app_color.dart';
 import '../../theme/user_outgoing_call_screen.dart';
 
-Widget userSectionWidget({RiderModel? rider}) {
+Widget userSectionWidget({RiderModel? rider, String? bookingId}) {
   log("Rider Ratings");
   log("${rider?.averageRating}");
   log("${rider?.totalRatings}");
+
+  // Use UserActivityController instead of ActivityController
+  final UserActivityController activityCtrl = Get.find<UserActivityController>();
+
   return Row(
     children: [
       InkWell(
@@ -24,8 +27,21 @@ Widget userSectionWidget({RiderModel? rider}) {
           }
         },
         child: rider?.profilePicture.isNotEmpty == true
-            ? ShimmerImageLoader(url: rider!.profilePicture, width: 60, height: 60, borderRadius: 50,)
-            : const Icon(Icons.person, size: 30, color: Colors.grey),
+            ? ShimmerImageLoader(
+                url: rider!.profilePicture,
+                width: 60,
+                height: 60,
+                borderRadius: 50,
+              )
+            : Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.person, size: 30, color: Colors.grey),
+              ),
       ),
       const SizedBox(width: 16),
       Expanded(
@@ -40,7 +56,7 @@ Widget userSectionWidget({RiderModel? rider}) {
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(Icons.star, color: Colors.amber),
+                const Icon(Icons.star, color: Colors.amber, size: 20),
                 const SizedBox(width: 2),
                 Text(
                   rider != null && rider.averageRating > 0
@@ -68,12 +84,16 @@ Widget userSectionWidget({RiderModel? rider}) {
           ],
         ),
       ),
-      ActivityController.instance.selectedIndex.value == 0
+      Obx(() => activityCtrl.selectedIndex.value == 0
           ? Row(
               children: [
                 InkWell(
                   onTap: () {
-                    Get.to(() => UserChattingScreen());
+                    Get.to(() => UserChattingScreen(
+                          bookingId: bookingId ?? '',
+                          participantName: rider?.name ?? 'Driver',
+                          participantPhone: rider?.phoneNumber,
+                        ));
                   },
                   child: circleActionMod(
                     Image.asset(
@@ -86,7 +106,7 @@ Widget userSectionWidget({RiderModel? rider}) {
                 const SizedBox(width: 12),
                 InkWell(
                   onTap: () {
-                    Get.to(() => UserOutgoingCallScreen());
+                    Get.to(() => const UserOutgoingCallScreen());
                   },
                   child: circleActionMod(
                     Image.asset(
@@ -98,7 +118,7 @@ Widget userSectionWidget({RiderModel? rider}) {
                 ),
               ],
             )
-          : ActivityController.instance.selectedIndex.value == 1
+          : activityCtrl.selectedIndex.value == 1
               ? Column(
                   children: [
                     CommonText(
@@ -120,7 +140,7 @@ Widget userSectionWidget({RiderModel? rider}) {
                     border: Border.all(color: AppColors.green100),
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.black54,
+                        color: Colors.black26,
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -132,7 +152,7 @@ Widget userSectionWidget({RiderModel? rider}) {
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
-                ),
+                )),
     ],
   );
 }

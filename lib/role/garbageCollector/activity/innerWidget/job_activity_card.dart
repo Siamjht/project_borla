@@ -279,7 +279,7 @@ class ActivityCard extends StatelessWidget {
         Get.to(() => ArrivedScreen(bookingModel: booking));
         break;
       case 'heading_to_station':
-        Get.to(() => NavigateStationScreen());
+        Get.to(() => NavigateStationScreen(booking: booking,));
         break;
       case 'in_progress':
       case 'arrived_dropoff':

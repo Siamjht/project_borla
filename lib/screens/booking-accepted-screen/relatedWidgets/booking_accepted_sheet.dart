@@ -27,7 +27,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
   Widget build(BuildContext context) {
     final booking = widget.booking;
 
-    log("Booking Rider: ${booking?.rider}");
+    log("Booking Rider: ${booking.rider}");
 
     return Stack(
       clipBehavior: Clip.none,
@@ -75,7 +75,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            booking?.status.name.toUpperCase() ?? 'ACCEPTED',
+                            booking.status.name.toUpperCase() ?? 'ACCEPTED',
                             style: const TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 10),
                     child: booking != null && booking.rider != null
-                        ? userSectionWidget(rider: booking.rider)
+                        ? userSectionWidget(rider: booking.rider, bookingId: booking.id)
                         :  userRowModClick(),
                   ),
 

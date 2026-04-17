@@ -4,11 +4,12 @@ import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 import 'package:project_borla/theme/app_color.dart';
+import '../../../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../../../role/components/image/shimmer_image_loader.dart';
 import '../../../role/components/text/common_text.dart';
 import '../../../theme/user_outgoing_call_screen.dart';
 import '../../booking-accepted-screen/booking_accepted_screen.dart';
-import '../../chat-screen/chat_screen_copy.dart';
+import '../../chat-screen/user_chat_screen.dart';
 import '../../rider-arrived-screens/rider_arrived_screen.dart';
 import '../activity-controller/user_activity_controller.dart';
 import '../user_schedule_detail_screen.dart';
@@ -109,14 +110,15 @@ class UserActivityCard extends StatelessWidget {
           children: [
             InkWell(
                 onTap: () {
-                  Get.to(() => UserChattingScreen());
+                  Get.to(() => UserChattingScreen(bookingId: booking.id,participantPhone: booking.rider.phoneNumber,participantName: booking.rider.name,));
                 },
                 child: circleAction(
                     Icons.chat_bubble_outline, AppColors.orange300)),
             const SizedBox(width: 12),
             InkWell(
                 onTap: () {
-                  Get.to(() => UserOutgoingCallScreen());
+                  ChatController.instance.makePhoneCall(booking.rider.phoneNumber);
+                  // Get.to(() => UserOutgoingCallScreen());
                 },
                 child: circleAction(
                     Icons.phone_outlined, AppColors.orange300)),
@@ -283,6 +285,8 @@ class UserActivityCard extends StatelessWidget {
         Get.to(()=> RiderArrivedScreen(booking: booking,));
         break;
       case BookingStatus.paymentCollected:
+        Get.to(()=> RiderArrivedScreen(booking: booking,));
+        break;
       case BookingStatus.headingToStation:
       case BookingStatus.inProgress:
       case BookingStatus.arrivedDropOff:

@@ -1,9 +1,11 @@
 
 // driver_map_controller.dart
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/rendering.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,10 @@ import 'package:http/http.dart' as http;
 import 'package:project_borla/map_key.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
+import '../../../../services/socket_service.dart';
 import '../../../../theme/app_color.dart';
 import '../../models/riderModels/wasteStationModel/waste_station_model.dart';
+import '../../role/garbageCollector/home/controller/driver_home_controller.dart';
 import 'base_map_controller.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -29,26 +33,56 @@ class DriverMapController extends BaseMapController {
 
   // ── State ─────────────────────────────────────────────────────
   final Rx<DriverTripPhase> tripPhase = DriverTripPhase.idle.obs;
+  String bookingId = '';
   final Rx<LatLng> targetPosition = const LatLng(0, 0).obs;
 
   // ── Route State ───────────────────────────────────────────────
   List<LatLng> _remainingRoutePoints = [];
   LatLng _firstStepEnd = const LatLng(0, 0);
 
+  // ── Location Stream ───────────────────────────────────────────
+  StreamSubscription<Position>? _positionStreamSubscription;
+
   // =============================================================
+
+  @override
+  void onMapCreated(GoogleMapController controller) {
+    super.onMapCreated(controller);
+    // ✅ Re-place driver marker when map is created (e.g. after tab switch)
+    if (currentLocation.value.latitude != 0 || currentLocation.value.longitude != 0) {
+      _placeDriverSelfMarker(currentLocation.value);
+    }
+  }
 
   @override
   void onInit() {
     super.onInit();
+
+    _startPositionTracking();
+
     ever(currentLocation, (LatLng loc) async {
       if (loc.latitude != 0 || loc.longitude != 0) {
-        await mapCompleter.future;
-        await animateCameraTo(loc);       // move camera first so marker is visible immediately
-        await _placeDriverSelfMarker(loc);
-
+        if (mapCompleter.isCompleted) {
+           await animateCameraTo(loc); 
+           await _placeDriverSelfMarker(loc);
+        } else {
+           await mapCompleter.future;
+           await animateCameraTo(loc);
+           await _placeDriverSelfMarker(loc);
+        }
+        
         // Keep route updated as driver moves
         if (tripPhase.value != DriverTripPhase.idle) {
           await _fetchAndDrawRoute(origin: loc);
+
+          // ✅ Emit location update every 5m (via distanceFilter in stream)
+          if (bookingId.isNotEmpty) {
+            SocketServices.emitUpdateLocation(
+              bookingId: bookingId,
+              lat: loc.latitude,
+              lng: loc.longitude,
+            );
+          }
         }
 
         // if (Get.isRegistered<DriverHomeController>()) {
@@ -58,12 +92,32 @@ class DriverMapController extends BaseMapController {
     });
   }
 
+  void _startPositionTracking() {
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 0,
+    );
+
+    _positionStreamSubscription =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position position) {
+      currentLocation.value = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  @override
+  void onClose() {
+    _positionStreamSubscription?.cancel();
+    super.onClose();
+  }
+
   // =============================================================
   // ── Public API
   // =============================================================
 
   /// Phase 2 — accepted request, go to pickup point
-  Future<void> startToPickupPhase(LatLng pickupPoint) async {
+  Future<void> startToPickupPhase(LatLng pickupPoint, {String? id}) async {
+    if (id != null) bookingId = id;
     tripPhase.value = DriverTripPhase.toPickup;
     _remainingRoutePoints = [];
     targetPosition.value = pickupPoint;
@@ -80,7 +134,8 @@ class DriverMapController extends BaseMapController {
   }
 
   /// Phase 3 — picked up user, go to destination
-  Future<void> startOnTripPhase(LatLng destination) async {
+  Future<void> startOnTripPhase(LatLng destination, {String? id}) async {
+    if (id != null) bookingId = id;
     tripPhase.value = DriverTripPhase.onTrip;
     _remainingRoutePoints = [];
     targetPosition.value = destination;
@@ -251,6 +306,8 @@ class DriverMapController extends BaseMapController {
 
 
   Future<void> startToStationPhase(LatLng stationPosition) async {
+    tripPhase.value = DriverTripPhase.onTrip;
+
     // ✅ clear previous markers except driver
     markers.removeWhere((m) => m.markerId.value != 'driver_self');
     polyLines.clear();

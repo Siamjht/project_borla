@@ -3,13 +3,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/role/garbageCollector/activity/history_screen.dart';
 import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../../../services/api_service.dart';
 import '../../../../utils/app_urls.dart';
 import '../../../components/customSnackbar/custom_snackbar.dart';
+import '../../home/arrived_screen.dart';
 import '../../home/controller/driver_home_controller.dart';
+import '../../home/customer_info_screen.dart';
+import '../../home/navigate_destination_screen.dart';
 import '../../home/navigate_station_screen.dart';
 import '../../home/payment_receive_screen.dart';
+import '../schedule_detail_screen.dart';
 
 
 class ActivityController extends GetxController {
@@ -283,7 +288,7 @@ class ActivityController extends GetxController {
   }
 
   /// Get single booking by ID and route based on status
-  Future<void> getSingleBooking({required String bookingId}) async {
+  Future<void> getSingleBooking({required String bookingId, ifFromNotification = false}) async {
     try {
       final response = await ApiService.get(AppUrls.getSingleBooking(id: bookingId));
 
@@ -293,11 +298,13 @@ class ActivityController extends GetxController {
         // ✅ update in both controllers
         _updateBookingInBothControllers(booking);
 
-        if(booking.isPaidByCustomer){
-          // Only navigate if we are NOT already on ArrivedScreen or PaymentReceiveScreen
-          // because ArrivedBottomSheet now listens for isPaidByCustomer changes.
-          if (Get.currentRoute != '/ArrivedScreen' && Get.currentRoute != '/PaymentReceiveScreen') {
-             Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
+        if(ifFromNotification){
+          _routeBasedOnBookingStatus(booking: booking);
+        }else{
+          if(booking.isPaidByCustomer && booking.status == "arrived_pickup"){
+            // Only navigate if we are NOT already on ArrivedScreen or PaymentReceiveScreen
+            // because ArrivedBottomSheet now listens for isPaidByCustomer changes.
+              Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
           }
         }
       } else {
@@ -327,7 +334,7 @@ class ActivityController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final updated = RiderBookingModel.fromJson(response.body['data']);
 
-        // ✅ update in both controllers
+        // update in both controllers
         _updateBookingInBothControllers(updated);
 
         CustomSnackbar.success(response.message);
@@ -341,6 +348,40 @@ class ActivityController extends GetxController {
       CustomSnackbar.error('Something went wrong');
     } finally {
       isPaymentCollectionLoading.value = false;
+    }
+  }
+
+  void _routeBasedOnBookingStatus({required RiderBookingModel booking}) {
+    switch (booking.status) {
+      case 'pending':
+      // Show pending booking details
+        Get.to(() => ScheduleDetailScreen());
+        break;
+      case 'accepted':
+        Get.to(() => NavigateDestinationScreen(booking: booking,));
+        break;
+      case 'arrived_pickup':
+        Get.to(() => ArrivedScreen(bookingModel: booking));
+        break;
+      case 'payment_collected':
+        Get.to(() => ArrivedScreen(bookingModel: booking));
+        break;
+      case 'heading_to_station':
+        Get.to(() => NavigateStationScreen(booking: booking,));
+        break;
+      case 'in_progress':
+      case 'awaiting_payment':
+        Get.to(()=> CustomerInfoScreen(booking: booking,));
+        break;
+      case 'arrived_dropoff':
+      case 'completed':
+        Get.to(() => NavigateStationScreen(booking: booking,));
+        break;
+      case 'cancelled':
+        Get.to(()=> HistoryScreen());
+        break;
+      default:
+      // Fallback to schedule detail screen
     }
   }
 

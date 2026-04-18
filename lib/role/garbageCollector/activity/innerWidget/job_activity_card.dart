@@ -124,12 +124,12 @@ class ActivityCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CommonText(
-              text: booking.scheduledDate ?? '',
+              text: booking.scheduledDate,
               color: AppColors.green500,
               fontSize: 12,
             ),
             CommonText(
-              text: OtherHelper.getTimeFromIso(booking.scheduledFor ?? ""),
+              text: OtherHelper.getTimeFromIso(booking.scheduledFor),
               color: AppColors.gray300,
               fontSize: 12,
             ),
@@ -211,16 +211,14 @@ class ActivityCard extends StatelessWidget {
             ),
 
             CommonText(
-              text: booking.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
+              text: booking.paymentMethod == 'cash' ? 'cash'.tr : 'hubtel_pay'.tr,
               fontSize: 16,
             ),
           ],
         ),
         const Spacer(),
         CommonText(
-          text: booking.price != null
-              ? 'GH₵ ${booking.price!.toStringAsFixed(0)}'
-              : 'TBD',
+          text: 'GH₵ ${booking.price.toStringAsFixed(0)}',
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: AppColors.primaryColor,

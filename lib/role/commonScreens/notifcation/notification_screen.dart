@@ -16,7 +16,7 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NotificationController());
+    final controller = Get.find<NotificationController>();
 
     return GradientScaffold(
       child: SafeArea(

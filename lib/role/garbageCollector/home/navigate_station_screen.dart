@@ -19,7 +19,7 @@ import 'innerWidget/arrive_at_station_dialog.dart';
 
 class NavigateStationScreen extends StatefulWidget {
   RiderBookingModel booking;
-  NavigateStationScreen({super.key, required this.booking});
+  NavigateStationScreen({super.key, required this.booking,});
 
   @override
   State<NavigateStationScreen> createState() => _NavigateStationScreenState();
@@ -37,6 +37,18 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
       // ✅ fetch stations then draw route to nearest one
       await _homeCtrl.getStations();
       _navigateToNearestStation();
+      final station = _nearestStation;
+      if(station != null){
+        if(widget.booking.status == "completed"){
+          if (mounted) {
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
+            );
+          }
+        }
+      }
     });
   }
 
@@ -162,13 +174,15 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
               onTap: () async {
                 final station = _nearestStation;
                 if(station != null){
-                  await ActivityController.instance.headingToStation(bookingId: widget.booking.id, stationId: station.id);
-                  if (mounted) {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
-                    );
+                  if(widget.booking.status != "completed"){
+                    await ActivityController.instance.headingToStation(bookingId: widget.booking.id, stationId: station.id);
+                    if (mounted) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
+                      );
+                    }
                   }
                 } else {
                   CustomSnackbar.error("No station selected");

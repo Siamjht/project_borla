@@ -131,6 +131,7 @@ class SocketServices {
       try {
         // TODO: Parse with model when response structure is known
         // final model = PaymentModel.fromJson(Map<String, dynamic>.from(data));
+        ActivityController.instance.getSingleBooking(bookingId: data['bookingId']);
       } catch (e) {
         log('Error parsing payment:cash_completed: $e');
       }

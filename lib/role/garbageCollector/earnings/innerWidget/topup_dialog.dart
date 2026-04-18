@@ -95,7 +95,7 @@ class TopUpDialog extends StatelessWidget {
             /// Action
             Obx(() => CommonButton(
               isLoading: controller.isTopUpLoading.value,
-              onTap: () {
+              onTap: (){
                 final amountStr = topUpController.text.trim();
                 if (amountStr.isEmpty) {
                   Get.snackbar('Error', 'Please enter amount');
@@ -106,7 +106,7 @@ class TopUpDialog extends StatelessWidget {
                   Get.snackbar('Error', 'Minimum top up is GH₵ 50');
                   return;
                 }
-                controller.topUp(amount: amount);
+               controller.topUp(amount: amount);
               },
               titleText: "Continue",
               buttonRadius: 4,

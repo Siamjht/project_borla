@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
+import 'package:project_borla/role/garbageCollector/home/controller/driver_home_controller.dart';
 import '../../../services/api_service.dart';
 import '../../models/commonModels/authModels/login_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
@@ -51,6 +53,7 @@ class ProfileController extends GetxController {
     if(user.ghanaCardId.isNotEmpty){
       ghanaICard.value = user.ghanaCardId.first;
     }
+    PrefsHelper.onlineStatus = user.onlineStatus == "online";
   }
 
   // ── Get Profile ──

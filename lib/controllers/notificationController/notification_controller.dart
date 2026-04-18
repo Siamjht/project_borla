@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
+import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import '../../../services/api_service.dart';
 import '../../models/commonModels/notificationModel/notification_model.dart';
 import '../../role/components/customSnackbar/custom_snackbar.dart';
@@ -140,7 +143,11 @@ class NotificationController extends GetxController {
             createdAt: notifications[index].createdAt,
             updatedAt: notifications[index].updatedAt,
           );
-          
+          if(PrefsHelper.myRole == "rider"){
+            ActivityController.instance.getSingleBooking(ifFromNotification: true,bookingId: notifications[index].data.bookingId);
+          }else{
+            BookingController.instance.getSingleBooking(bookingId: notifications[index].data.bookingId);
+          }
           // Decrement unread count
           if (unreadCount.value > 0) {
             unreadCount.value--;

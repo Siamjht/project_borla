@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
+import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/utils/app_urls.dart';
@@ -12,6 +13,8 @@ import '../../helpers/other_helper.dart';
 import '../../models/api_response_model.dart';
 import '../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../models/userModels/saved_place_model.dart';
+import '../../screens/activity-screens/user_history_screen.dart';
+import '../../screens/rider-arrived-screens/innerWidget/payment_dialogs.dart';
 import '../../services/api_service.dart';
 
 class BookingController extends GetxController {
@@ -301,7 +304,7 @@ class BookingController extends GetxController {
     switch (booking.status) {
       case BookingStatus.pending:
         // Navigate to booking requested screen
-        Get.toNamed('/booking-requested');
+        Get.to(()=> BookingRequestedScreen());
         break;
       case BookingStatus.accepted:
         Get.to(()=> BookingAcceptedScreen(booking: booking,));
@@ -311,18 +314,20 @@ class BookingController extends GetxController {
         break;
       case BookingStatus.paymentCollected:
         Get.to(()=> RiderArrivedScreen(booking: booking,));
+        Get.dialog(
+          barrierDismissible: false,
+          buildPaymentSuccessDialog(booking: booking),
+        );
+        break;
+      case BookingStatus.inProgress:
+      case BookingStatus.awaitingPayment:
+        Get.to(()=> BookingAcceptedScreen(booking: booking));
         break;
       case BookingStatus.headingToStation:
-      case BookingStatus.inProgress:
       case BookingStatus.arrivedDropOff:
-      case BookingStatus.awaitingPayment:
-        // Navigate to booking accepted/active screen
-        Get.toNamed('/booking-accepted', arguments: {'booking': booking});
-        break;
       case BookingStatus.completed:
       case BookingStatus.cancelled:
-        // Navigate to booking history/detail screen
-        Get.toNamed('/booking-history');
+        Get.to(()=> UserHistoryScreen());
         break;
     }
   }

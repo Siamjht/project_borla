@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/driver_map_controller.dart';
 import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
+import 'package:project_borla/services/socket_service.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../../../helpers/other_helper.dart';
 import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
@@ -111,8 +112,11 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
         isOnline.value = value;
         PrefsHelper.setBool('onlineStatus', value);
         if (value) {
+          SocketServices.listenForNewBooking();
           // _setupTimer();
           // getAvailableBookings();
+        }else{
+          SocketServices.socket.off(SocketEvents.bookingNewOn);
         }
         CustomSnackbar.success(response.message);
       } else {

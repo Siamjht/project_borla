@@ -61,7 +61,9 @@ class ArriveAtStationDialog extends StatelessWidget {
                       Obx(() => CommonButton(
                         isLoading: ActivityController.instance.isBookingCompletedLoading.value,
                         onTap: () async {
-                          await ActivityController.instance.bookingCompleted(bookingId: booking.id);
+                          if(booking.status != "completed"){
+                            await ActivityController.instance.bookingCompleted(bookingId: booking.id);
+                          }
                           if (context.mounted) {
                             Navigator.pop(context);
                             showDialog(

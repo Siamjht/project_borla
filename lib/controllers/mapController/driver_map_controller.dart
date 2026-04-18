@@ -263,7 +263,7 @@ class DriverMapController extends BaseMapController {
       position: position,
       iconPath: iconPath,
       rotation: calculateBearing(position, _firstStepEnd),
-      iconWidthPx: 60,
+      iconWidthPx: tripPhase.value == DriverTripPhase.idle? 620 : 60,
     );
   }
 

@@ -22,7 +22,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   void initState() {
     super.initState();
-    _bookingCtrl.clearPlaceForm();
+    Future.microtask(() {
+      _bookingCtrl.clearPlaceForm();
+    },);
   }
 
   @override

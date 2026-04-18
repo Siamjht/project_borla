@@ -75,7 +75,7 @@ class CustomerSupportScreen extends StatelessWidget {
                 buttonRadius: 12,
                 buttonHeight: 48,
                 onTap: () {
-                  Get.to(()=> SupportChatScreen());
+                  Get.to(()=> RiderSupportChatScreen());
                 },
               )
 

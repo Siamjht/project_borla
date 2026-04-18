@@ -277,7 +277,7 @@ Widget paymentRow() {
             color: AppColors.gray300,
           ),
           CommonText(
-            text: 'MTN MoMo Pay',
+            text: 'Hubtel Pay',
             fontSize: 16,
           ),
         ],

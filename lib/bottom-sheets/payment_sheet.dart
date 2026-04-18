@@ -65,7 +65,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                   child: InkWell(
                     onTap: () {
                       bookingCtrl.selectedIndex.value = 1;
-                      bookingCtrl.selectedPaymentMethod.value = 'momo';
+                      bookingCtrl.selectedPaymentMethod.value = 'hubtel';
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -77,9 +77,9 @@ class _PaymentSheetState extends State<PaymentSheet> {
                           width: 1.5,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Center(
-                        child: Image.asset('assets/images/momo_2.png', scale: 5),
+                        child: Image.asset('assets/icons/hubtelIcon.png', scale: 5),
                       ),
                     ),
                   ),
@@ -104,7 +104,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                           width: 1.5,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

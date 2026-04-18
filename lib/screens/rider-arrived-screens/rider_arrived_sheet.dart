@@ -36,10 +36,23 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
         );
       });
     }
+    ever(paymentController.isHubtelPaySuccess, (bool success) {
+      if (success) {
+        if (Get.context != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Get.dialog(
+              barrierDismissible: false,
+              buildPaymentSuccessDialog(),
+            );
+          });
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    paymentController.isHubtelPaySuccess.value = false;
     return Stack(
       clipBehavior: Clip.none,
 
@@ -116,11 +129,13 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
                         isCash: widget.booking.paymentMethod == 'cash',
                       );
 
-                      if (isSuccess) {
-                        Get.dialog(
-                          barrierDismissible: false,
-                          buildPaymentSuccessDialog(),
-                        );
+                      if(widget.booking.paymentMethod == 'cash'){
+                        if (isSuccess) {
+                          Get.dialog(
+                            barrierDismissible: false,
+                            buildPaymentSuccessDialog(),
+                          );
+                        }
                       }
                     }
                   },
@@ -315,6 +330,7 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
       ),
     );
   }
+
 
   // ── Summary Section ───────────────────────────────────────────
   Widget summarySection({required UserBookingModel booking}) {

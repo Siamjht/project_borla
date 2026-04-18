@@ -237,7 +237,7 @@ Widget paymentRow(AvailableBookingModel job) {
           ),
 
           CommonText(
-            text: job.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
+            text: job.paymentMethod == 'cash' ? 'cash'.tr : 'hubtel_pay'.tr,
             fontSize: 16,
           ),
         ],

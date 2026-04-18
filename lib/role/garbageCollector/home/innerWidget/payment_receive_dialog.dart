@@ -10,6 +10,7 @@ import '../../../components/button/common_button.dart';
 import '../../../components/text/common_text.dart';
 import '../../activity/controller/activity_controller.dart';
 import '../../activity/innerWidget/common_widgets.dart';
+import '../navigate_station_screen.dart';
 
 
 class PaymentReceiveDialog extends StatelessWidget {
@@ -81,7 +82,11 @@ class PaymentReceiveDialog extends StatelessWidget {
                       Obx(() => CommonButton(
                         isLoading: ActivityController.instance.isPaymentCollectionLoading.value,
                         onTap: () {
-                          ActivityController.instance.paymentCollection(bookingId: booking.id);
+                          if(booking.status == "payment_collected"){
+                            Get.to(() => NavigateStationScreen(booking: booking,));
+                          }else{
+                            ActivityController.instance.paymentCollection(bookingId: booking.id);
+                          }
                         },
                         buttonRadius: 12,
                         titleText: 'Heading to Station',

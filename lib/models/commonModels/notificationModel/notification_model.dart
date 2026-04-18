@@ -37,32 +37,32 @@ class NotificationModel {
 }
 
 class NotificationData {
-  final String? bookingId;
-  final String? riderId;
-  final String? userId;
-  final String? status;
-  final DateTime? completedAt;
-  final String? stationId;
+  final String bookingId;
+  final String riderId;
+  final String userId;
+  final String status;
+  final DateTime completedAt;
+  final String stationId;
 
   NotificationData({
-    this.bookingId,
-    this.riderId,
-    this.userId,
-    this.status,
-    this.completedAt,
-    this.stationId,
-  });
+    this.bookingId = '',
+    this.riderId = '',
+    this.userId = '',
+    this.status = '',
+    DateTime? completedAt,
+    this.stationId = '',
+  }) : completedAt = completedAt ?? DateTime(0);
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     return NotificationData(
-      bookingId: json['bookingId'],
-      riderId: json['riderId'],
-      userId: json['userId'],
-      status: json['status'],
+      bookingId: json['bookingId'] ?? '',
+      riderId: json['riderId'] ?? '',
+      userId: json['userId'] ?? '',
+      status: json['status'] ?? '',
       completedAt: json['completedAt'] != null
-          ? DateTime.tryParse(json['completedAt'])
+          ? DateTime.tryParse(json['completedAt']) ?? DateTime(0)
           : null,
-      stationId: json['stationId'],
+      stationId: json['stationId'] ?? '',
     );
   }
 }

@@ -104,7 +104,7 @@ class WithdrawDialog extends StatelessWidget {
             /// Action
             Obx(() => CommonButton(
               isLoading: controller.isWithdrawLoading.value,
-              onTap: () {
+              onTap: () async {
                 final amountStr = withdrawController.text.trim();
                 if (amountStr.isEmpty) {
                   Get.snackbar('Error', 'Please enter amount');
@@ -117,7 +117,12 @@ class WithdrawDialog extends StatelessWidget {
                 }
                 
                 // Using 'momo' as default channel as requested by common practice in this app's context
-                controller.withdraw(channel: 'momo', amount: amount);
+                final success = await controller.withdraw(channel: 'tigo-gh', amount: amount);
+                if(success){
+                  Future.delayed(Duration(milliseconds: 300), (){
+                    Navigator.pop(context);
+                  },);
+                }
               },
               titleText: "Continue",
               buttonRadius: 4,

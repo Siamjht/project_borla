@@ -30,7 +30,7 @@ class RatingSheetPaymentSection extends StatelessWidget {
               ),),
               const Spacer(),
               Text(
-                booking.paymentMethod == 'cash' ? 'Cash on Arrival' : 'MTN MoMo Pay',
+                booking.paymentMethod == 'cash' ? 'Cash on Arrival' : 'Hubtel Pay',
                 style: const TextStyle(
                     color: AppColors.gray400,
                     fontWeight: FontWeight.w500

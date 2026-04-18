@@ -4,9 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../helpers/prefs_helper.dart';
-import '../../../models/commonModels/chatMessageModels/chat_message_model.dart';
 import '../../../theme/app_color.dart';
 import '../../components/commonBackButton/common_back_button.dart';
 import '../../components/gradient_scafold.dart';
@@ -14,14 +11,14 @@ import '../../components/image/shimmer_image_loader.dart';
 import '../../components/text/common_text.dart';
 import 'innerController/chat_controller.dart';
 
-class SupportChatScreen extends StatefulWidget {
-  const SupportChatScreen({super.key});
+class RiderSupportChatScreen extends StatefulWidget {
+  const RiderSupportChatScreen({super.key});
 
   @override
-  State<SupportChatScreen> createState() => _StartChatScreenState();
+  State<RiderSupportChatScreen> createState() => _StartChatScreenState();
 }
 
-class _StartChatScreenState extends State<SupportChatScreen> {
+class _StartChatScreenState extends State<RiderSupportChatScreen> {
   final ChatController supportChatCtrl = Get.find<ChatController>();
 
   @override

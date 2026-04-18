@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/screens/map-screens/user_common_map.dart';
 import 'package:project_borla/theme/app_color.dart';
 import 'package:project_borla/theme/common_button_copy.dart';
 import '../../gen/custom_assets/assets.gen.dart';
@@ -17,7 +18,7 @@ class BookingRequestedScreen extends StatefulWidget {
 
 class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
 
-  final navbarController = Get.put(UserNavBarController());
+  final navbarController = Get.find<UserNavBarController>();
 
   @override
   void initState() {
@@ -109,7 +110,7 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: DriverCommonMap()),
+            Positioned.fill(child: UserCommonMap()),
             Positioned(
                 left: 20,
                 top: 60,

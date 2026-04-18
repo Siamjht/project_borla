@@ -1,6 +1,7 @@
 
 class AppUrls {
   static const baseUrl = "http://10.10.10.70:5000/api/v1";
+  static const deployedBaseUrl = "https://api.borlaborla.com/api/v1";
   static const imageBase = "http://10.10.10.70:5000/";
   static String imageUrl({required String imagePath}) => "http://10.10.10.70:5000/$imagePath";
   static const socketUrl = "http://10.10.10.70:5000/";
@@ -34,10 +35,11 @@ class AppUrls {
   static const sendSupportChat = "$baseUrl/messages/support";
   static const postTopUp = "$baseUrl/wallets/top-up";
   static const getWalletBalance = "$baseUrl/wallets/self";
-  static const postWithdraw = "$baseUrl/wallets/withdraw";
   static const cashPaymentInitiate = "$baseUrl/payments/initiate/cash";
   static const cardPaymentInitiate = "$baseUrl/payments/initiate";
   static const postRatings = "$baseUrl/ratings";
+
+  static const postWithdraw = "$deployedBaseUrl/wallets/withdraw";
 
   static String getMyEarnings({filter}) => "$baseUrl/earnings/rider/my-earnings?limit=100&page=1&filter=$filter";
   static String markNotificationByID({id}) => "$baseUrl/notifications/$id/read";

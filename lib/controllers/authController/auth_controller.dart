@@ -75,6 +75,8 @@ class AuthController extends GetxController {
 
         PrefsHelper.token = loginModel.data.accessToken;
         PrefsHelper.userId = loginModel.data.user.id;
+        PrefsHelper.myRole = loginModel.data.user.role;
+        PrefsHelper.onlineStatus = loginModel.data.user.onlineStatus == "online";
         log("Token: ===>>${PrefsHelper.token}");
         log("keepLoggedIn: ===>>${keepLoggedIn.value}");
 

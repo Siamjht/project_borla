@@ -37,26 +37,31 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
     });
 
     // ✅ Listen for socket-driven updates (e.g., getSingleBooking)
-    _bookingWorker = ever(activityCtrl.selectedBooking, (booking) {
-      if (booking != null && booking.isPaidByCustomer) {
-        _showPaymentReceiveDialog(booking);
-      }
-    });
+    // _bookingWorker = ever(activityCtrl.selectedBooking, (booking) {
+    //   if (booking != null && booking.isPaidByCustomer) {
+    //     _showPaymentReceiveDialog(booking);
+    //   }
+    // });
   }
 
   void _showPaymentReceiveDialog(RiderBookingModel booking) {
-    if (booking.isPaid) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (_) => PaymentReceiveDialog(booking: booking),
-      );
-    }
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => PaymentReceiveDialog(booking: booking),
+    );
+    // if (booking.isPaid) {
+    //   showDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     builder: (_) => PaymentReceiveDialog(booking: booking),
+    //   );
+    // }
   }
 
   @override
   void dispose() {
-    _bookingWorker.dispose();
+    // _bookingWorker.dispose();
     super.dispose();
   }
 
@@ -177,7 +182,7 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
             CommonText(
               text: booking?.paymentMethod == 'cash'
                   ? 'Cash'
-                  : 'MTN MoMo Pay', // ✅ real data
+                  : 'Hubtel Pay', // ✅ real data
               fontSize: 16,
             ),
           ],

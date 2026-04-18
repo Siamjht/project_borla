@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import '../../../role/components/customSnackbar/custom_snackbar.dart';
 import '../../../services/api_service.dart';
 import '../../../utils/app_urls.dart';
-import '../../screens/payment-success-screens/payment_success_screeen.dart';
+import '../../role/commonScreens/hubtelPayment/humbtel_webview_screen.dart';
+
 
 class PaymentController extends GetxController{
 
@@ -15,6 +16,7 @@ class PaymentController extends GetxController{
   final RxBool isPaymentPicked = false.obs ;
 
   final RxBool isLoading = false.obs;
+  RxBool isHubtelPaySuccess = false.obs;
 
   Future<bool> initiatePayment({required String bookingId, required bool isCash}) async {
     isLoading.value = true;
@@ -25,18 +27,10 @@ class PaymentController extends GetxController{
       final response = await ApiService.post(url, body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // If card payment, there might be a redirect URL in the body, 
-        // but user requested to just call the methods and navigate to success?
-        // Usually card payment redirect to a webview. 
-        // For now, following the flow: navigate to success or handle based on response.
-        
         if (!isCash) {
           // Card payment might need to handle the payment URL
-          String? paymentUrl = response.body['data']?['payment_url'];
-          if (paymentUrl != null && paymentUrl.isNotEmpty) {
-            // Handle redirect if needed. 
-            // For now, if the goal is just "call them", I'll assume success navigation for both if they return 200/201.
-          }
+          String paymentUrl = response.body['data'];
+          Get.to(()=> HumbtelWebViewScreen(url: paymentUrl,));
         }
 
         CustomSnackbar.success(response.message);

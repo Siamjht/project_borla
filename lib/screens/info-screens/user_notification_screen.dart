@@ -16,7 +16,7 @@ class UserNotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NotificationController());
+    final controller = Get.find<NotificationController>();
 
     return UserGradientScaffold(
       child: SafeArea(

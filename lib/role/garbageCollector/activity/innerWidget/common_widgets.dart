@@ -206,7 +206,7 @@ Widget paymentRow(RiderBookingModel booking) {
           CommonText(
             text: booking.paymentMethod == 'cash'
                 ? 'Cash'
-                : 'MTN MoMo Pay', // ✅ real data
+                : 'Hubtel Pay', // ✅ real data
             fontSize: 16,
           ),
         ],

@@ -226,7 +226,7 @@ class UserActivityCard extends StatelessWidget {
             ),
 
             CommonText(
-              text: booking.paymentMethod == 'cash' ? 'Cash' : 'MTN MoMo Pay',
+              text: booking.paymentMethod == 'cash' ? 'Cash' : 'Hubtel Pay',
               fontSize: 16,
             ),
           ],

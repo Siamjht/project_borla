@@ -37,7 +37,7 @@ Widget userPaymentRow({required UserBookingModel booking}) {
             color: AppColors.gray300,
           ),
           CommonText(
-            text: isMomo ? 'MTN MoMo Pay' : 'Cash on Arrival',
+            text: isMomo ? 'Hubtel Pay' : 'Cash on Arrival',
             fontSize: 16,
           ),
         ],

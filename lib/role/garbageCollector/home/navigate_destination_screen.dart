@@ -12,10 +12,8 @@ import 'package:project_borla/theme/app_color.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../components/commonBackButton/common_back_button.dart';
-import '../activity/controller/activity_controller.dart';
 import '../map/driver_common_map.dart';
-import 'controller/driver_home_controller.dart';
-import 'innerWidget/arrived_bottom_sheet.dart';
+
 
 class NavigateDestinationScreen extends StatelessWidget {
   RiderBookingModel booking;

@@ -35,7 +35,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         if(_profileCtl.profile.value.documents.first.status == 'pending'){
           showDialog(
             context: context,
-            barrierDismissible: true,
+            barrierDismissible: false,
             builder: (_) => const ApplicationReviewDialog(),
           );
         }

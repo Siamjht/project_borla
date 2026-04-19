@@ -19,16 +19,58 @@ import '../../../components/customSnackbar/custom_snackbar.dart';
 
 class ChatController extends GetxController {
 
-  static ChatController get instance => Get.put(ChatController());
+  static ChatController get instance => Get.find<ChatController>();
 
   final TextEditingController messageController = TextEditingController();
   final ImagePicker picker = ImagePicker();
+
+  // ── Observable States ──
+  final RxBool isChatListLoading = false.obs;
+  final RxBool isMessagesLoading = false.obs;
+  final RxBool isSendingMessage = false.obs;
+  final RxBool isSupportChatLoading = false.obs;
+  final RxBool isSendingSupportMessage = false.obs;
+  final RxList<String> selectedImagePaths = <String>[].obs;
+  final RxString errorMessage = ''.obs;
+
+  // ── Chat List Pagination ──
+  final ScrollController chatListScrollController = ScrollController();
+  final RxInt chatListPage = 1.obs;
+  final RxBool hasMoreChats = false.obs;
+  final RxBool isLoadingMoreChats = false.obs;
+  final int chatListLimit = 20;
+
+  // ── Normal Chat Pagination ──
+  final ScrollController messageScrollController = ScrollController();
+  final RxInt messagePage = 1.obs;
+  final RxBool hasMoreMessages = false.obs;
+  final RxBool isLoadingMoreMessages = false.obs;
+  final int messageLimit = 20;
+
+  // ── Support Chat Pagination ──
+  final ScrollController supportScrollController = ScrollController();
+  final RxInt supportPage = 1.obs;
+  final RxBool hasMoreSupportMessages = false.obs;
+  final RxBool isLoadingMoreSupportMessages = false.obs;
+  final int supportLimit = 20;
+
+  // ── Data ──
+  String _currentBookingId = '';
+  String _chatId = ''; // For normal chat if needed
+  String supportChatId = ''; // For support chat
+
+  String get currentBookingId => _currentBookingId;
+  String get currentChatId => _chatId;
+
+  final RxList<CustomChatListItem> chatList = <CustomChatListItem>[].obs;
+  final RxList<ChatMessageModel> messages = <ChatMessageModel>[].obs;
+  final RxList<Map<String, dynamic>> supportMessages = <Map<String, dynamic>>[].obs;
+  final Rx<SupportChatModel?> supportChat = Rx<SupportChatModel?>(null);
 
   @override
   void onInit() {
     super.onInit();
   }
-
 
   Future<void> makePhoneCall(String phoneNumber) async {
     final Uri uri = Uri.parse('tel:$phoneNumber');
@@ -43,22 +85,7 @@ class ChatController extends GetxController {
     }
   }
 
-  // ── Chat List Pagination ──
-  final ScrollController chatListScrollController = ScrollController();
-  final RxInt chatListPage = 1.obs;
-  final RxBool hasMoreChats = false.obs;
-  final RxBool isLoadingMoreChats = false.obs;
-  final int chatListLimit = 20;
-  String _bookingId = '';
-  String chatId = '';
-
-  String get currentBookingId => _bookingId;
-
   /// Fetch Chat List
-  final RxList<CustomChatListItem> chatList = <CustomChatListItem>[].obs;
-  final RxBool isChatListLoading = false.obs;
-  final RxString errorMessage = ''.obs;
-
   Future<void> fetchChatList() async {
     isChatListLoading.value = true;
     chatListPage.value = 1;
@@ -117,7 +144,6 @@ class ChatController extends GetxController {
     final participant = json['otherParticipant'] ?? {};
     final lastMsg = json['lastMessage'];
 
-    // ✅ extract last message text or image
     String lastMessageText = '';
     if (lastMsg != null) {
       final text = lastMsg['text'] ?? '';
@@ -129,13 +155,11 @@ class ChatController extends GetxController {
       }
     }
 
-    // ✅ format time from createdAt
     final timeStr = formatChatTime(lastMsg?['createdAt'] ?? json['updatedAt']);
 
-    // ✅ unread = last message not seen and not sent by current user
     final isSeen = lastMsg?['seen'] ?? true;
     final senderId = lastMsg?['senderId'] ?? '';
-    final myId = PrefsHelper.userId; // your local user id
+    final myId = PrefsHelper.userId;
     final unreadCount = (!isSeen && senderId != myId) ? 1 : 0;
 
     return CustomChatListItem(
@@ -144,6 +168,7 @@ class ChatController extends GetxController {
       participantId: participant['id'] ?? '',
       participantName: participant['name'] ?? '',
       participantProfile: participant['profilePicture'] ?? '',
+      participantRole: participant['role'] ?? '',
       lastMessage: lastMessageText,
       unreadCount: unreadCount,
       isSeen: isSeen,
@@ -159,7 +184,6 @@ class ChatController extends GetxController {
       final diff = now.difference(dt);
 
       if (diff.inDays == 0) {
-        // ✅ today → show time
         final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
         final minute = dt.minute.toString().padLeft(2, '0');
         final period = dt.hour >= 12 ? 'PM' : 'AM';
@@ -167,11 +191,9 @@ class ChatController extends GetxController {
       } else if (diff.inDays == 1) {
         return 'Yesterday';
       } else if (diff.inDays < 7) {
-        // ✅ this week → show day name
         const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         return days[dt.weekday - 1];
       } else {
-        // ✅ older → show date
         return '${dt.day}/${dt.month}/${dt.year}';
       }
     } catch (_) {
@@ -184,51 +206,70 @@ class ChatController extends GetxController {
     await fetchChatList();
   }
 
-  // ── State ──────────────────────────────────────────────
-  final RxBool isMessagesLoading = false.obs;
-  final RxBool isSendingMessage = false.obs;
-  final RxList<String> selectedImagePaths = <String>[].obs;
-  String _currentBookingId = '';
-  String _currentParticipantName = '';
-  // final messages = <Map<String, dynamic>>[].obs;
-  RxList<ChatMessageModel> messages = <ChatMessageModel>[].obs;
-
-// ── Fetch Messages ─────────────────────────────────────
+  // ── Normal Chat Methods ──
   Future<void> fetchMessages({
     required String bookingId,
     String participantName = '',
   }) async {
     _currentBookingId = bookingId;
-    _currentParticipantName = participantName;
     isMessagesLoading.value = true;
-    _bookingId = bookingId;
+    messagePage.value = 1;
     messages.clear();
 
     try {
       final response = await ApiService.get(
-        AppUrls.getMessages(bookingId: bookingId),
+        '${AppUrls.getMessages(bookingId: bookingId)}?page=1&limit=$messageLimit',
       );
 
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
-        final myId = PrefsHelper.userId;
         messages.value = data.map((e) => ChatMessageModel.fromJson(e)).toList();
 
+        final meta = response.body['meta'];
+        if (meta != null) {
+          hasMoreMessages.value = (meta['page'] ?? 1) < (meta['totalPage'] ?? 1);
+        }
+
         if (messages.isNotEmpty) {
-          SocketServices.joinChat(chatId: messages.first.chatId);
+          _chatId = messages.first.chatId;
+          SocketServices.joinChat(chatId: _chatId);
         }
       } else {
         CustomSnackbar.error(response.message);
       }
     } finally {
       isMessagesLoading.value = false;
-      if (messages.isNotEmpty) {
-        scrollToBottom();
-      }
     }
   }
 
-// ── Send Message ───────────────────────────────────────
+  Future<void> loadMoreMessages() async {
+    if (!hasMoreMessages.value || isLoadingMoreMessages.value || _currentBookingId.isEmpty) return;
+
+    isLoadingMoreMessages.value = true;
+    messagePage.value++;
+
+    try {
+      final response = await ApiService.get(
+        '${AppUrls.getMessages(bookingId: _currentBookingId)}?page=${messagePage.value}&limit=$messageLimit',
+      );
+
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        final List<ChatMessageModel> moreMessages =
+            data.map((e) => ChatMessageModel.fromJson(e)).toList();
+        
+        messages.addAll(moreMessages);
+
+        final meta = response.body['meta'];
+        if (meta != null) {
+          hasMoreMessages.value = (meta['page'] ?? 1) < (meta['totalPage'] ?? 1);
+        }
+      }
+    } finally {
+      isLoadingMoreMessages.value = false;
+    }
+  }
+
   Future<void> sendMessage() async {
     final text = messageController.text.trim();
     if (text.isEmpty && selectedImagePaths.isEmpty) return;
@@ -242,7 +283,6 @@ class ChatController extends GetxController {
       ApiResponseModel response;
 
       if (selectedImagePaths.isNotEmpty) {
-        // ✅ multipart with images
         final imageList = selectedImagePaths
             .map((path) => {
           'imagePath': path,
@@ -256,7 +296,6 @@ class ChatController extends GetxController {
           method: HttpMethod.post,
         );
       } else {
-        // ✅ text only
         response = await ApiService.post(
           AppUrls.sendMessages(bookingId: _currentBookingId),
           body: {'text': text},
@@ -264,17 +303,10 @@ class ChatController extends GetxController {
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-
         final newMsg = ChatMessageModel.fromJson(response.body['data']);
-        messages.add(newMsg);
-
+        messages.insert(0, newMsg);
         messageController.clear();
         selectedImagePaths.clear();
-
-        // ✅ scroll to bottom
-        scrollToBottom();
-        
-        // ✅ Play message send tone (only when user is in app)
         SoundService.instance.playMessageSend();
       } else {
         CustomSnackbar.error(response.message);
@@ -284,9 +316,8 @@ class ChatController extends GetxController {
     }
   }
 
-// ── Pick Image ─────────────────────────────────────────
+  // ── Image Picking ──
   Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: source);
     if (image != null) {
       selectedImagePaths.add(image.path);
@@ -297,43 +328,18 @@ class ChatController extends GetxController {
     selectedImagePaths.removeAt(index);
   }
 
-// ── Scroll to bottom ───────────────────────────────────
-  final ScrollController messageScrollController = ScrollController();
-
-  void scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (messageScrollController.hasClients) {
-        messageScrollController.animateTo(
-          messageScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-
-  // ── Support Chat State ─────────────────────────────────
-  final RxBool isSupportChatLoading = false.obs;
-  final RxBool isSendingSupportMessage = false.obs;
-  final Rx<SupportChatModel?> supportChat = Rx<SupportChatModel?>(null);
-  final RxList<Map<String, dynamic>> supportMessages =
-      <Map<String, dynamic>>[].obs;
-
-  // ── Get Support Chat ───────────────────────────────────
+  // ── Support Chat Methods ──
   Future<void> getSupportChatID() async {
     isSupportChatLoading.value = true;
     try {
-      final response = await ApiService.get(
-        AppUrls.getSupportChatID,
-      );
+      final response = await ApiService.get(AppUrls.getSupportChatID);
 
       if (response.statusCode == 200) {
         final List data = response.body['data'] ?? [];
         if (data.isNotEmpty) {
           supportChat.value = SupportChatModel.fromJson(data.first);
-          chatId = supportChat.value!.lastMessage!.chatId;
-          await getSupportMessages(chatId: chatId);
+          supportChatId = supportChat.value!.lastMessage!.chatId;
+          await getSupportMessages(chatId: supportChatId);
         }
       } else {
         CustomSnackbar.error(response.message);
@@ -342,12 +348,16 @@ class ChatController extends GetxController {
       isSupportChatLoading.value = false;
     }
   }
-  // ── Support Chat Messages ──────────────────────────────
+
   Future<void> getSupportMessages({required String chatId}) async {
     isSupportChatLoading.value = true;
+    supportPage.value = 1;
+    supportMessages.clear();
+    supportChatId = chatId;
+
     try {
       final response = await ApiService.get(
-        AppUrls.getSupportMessages(chatId: chatId),
+        '${AppUrls.getSupportMessages(chatId: chatId)}?page=1&limit=$supportLimit',
       );
 
       if (response.statusCode == 200) {
@@ -358,18 +368,48 @@ class ChatController extends GetxController {
             .map((e) => ChatMessageModel.fromJson(e).toMessageMap(myId))
             .toList();
 
+        final meta = response.body['meta'];
+        if (meta != null) {
+          hasMoreSupportMessages.value = (meta['page'] ?? 1) < (meta['totalPage'] ?? 1);
+        }
       } else {
         CustomSnackbar.error(response.message);
       }
     } finally {
       isSupportChatLoading.value = false;
-      if (supportMessages.isNotEmpty) {
-        scrollToBottomSupport();
-      }
     }
   }
 
-// ── Send Support Message ───────────────────────────────
+  Future<void> loadMoreSupportMessages() async {
+    if (!hasMoreSupportMessages.value || isLoadingMoreSupportMessages.value || supportChatId.isEmpty) return;
+
+    isLoadingMoreSupportMessages.value = true;
+    supportPage.value++;
+
+    try {
+      final response = await ApiService.get(
+        '${AppUrls.getSupportMessages(chatId: supportChatId)}?page=${supportPage.value}&limit=$supportLimit',
+      );
+
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        final myId = PrefsHelper.userId;
+        final List<Map<String, dynamic>> moreMessages = data
+            .map((e) => ChatMessageModel.fromJson(e).toMessageMap(myId))
+            .toList();
+
+        supportMessages.addAll(moreMessages);
+
+        final meta = response.body['meta'];
+        if (meta != null) {
+          hasMoreSupportMessages.value = (meta['page'] ?? 1) < (meta['totalPage'] ?? 1);
+        }
+      }
+    } finally {
+      isLoadingMoreSupportMessages.value = false;
+    }
+  }
+
   Future<void> sendSupportMessage() async {
     final text = messageController.text.trim();
     if (text.isEmpty && selectedImagePaths.isEmpty) return;
@@ -379,13 +419,11 @@ class ChatController extends GetxController {
       ApiResponseModel response;
 
       if (selectedImagePaths.isNotEmpty) {
-        // ✅ multipart with images
         final imageList = selectedImagePaths
             .map((path) => {
           'imagePath': path,
           'imageName': 'images',
-        })
-            .toList();
+        }).toList();
 
         response = await ApiService.multipartRequestWithMultipleImages(
           url: AppUrls.sendSupportChat,
@@ -394,7 +432,6 @@ class ChatController extends GetxController {
           method: HttpMethod.post,
         );
       } else {
-        // ✅ text only
         response = await ApiService.post(
           AppUrls.sendSupportChat,
           body: {'text': text},
@@ -403,35 +440,16 @@ class ChatController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final myId = PrefsHelper.userId;
-        final result =
-        SendSupportMessageModel.fromJson(response.body['data']);
-
-        // ✅ add to support messages list
-        supportMessages.add(result.message.toMessageMap(myId));
-
+        final result = SendSupportMessageModel.fromJson(response.body['data']);
+        supportMessages.insert(0, result.message.toMessageMap(myId));
         messageController.clear();
         selectedImagePaths.clear();
-        scrollToBottomSupport();
+        SoundService.instance.playMessageSend();
       } else {
         CustomSnackbar.error(response.message);
       }
     } finally {
       isSendingSupportMessage.value = false;
     }
-  }
-
-// ── Scroll support messages to bottom ─────────────────
-  final ScrollController supportScrollController = ScrollController();
-
-  void scrollToBottomSupport() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (supportScrollController.hasClients) {
-        supportScrollController.animateTo(
-          supportScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
   }
 }

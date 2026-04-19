@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../controllers/settingsController/settings_controller.dart';
@@ -7,16 +8,27 @@ import '../../role/components/text/common_text.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 
-class TermsOfConditions extends StatelessWidget {
+class TermsOfConditions extends StatefulWidget {
   const TermsOfConditions({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(SettingController());
+  State<TermsOfConditions> createState() => _TermsOfConditionsState();
+}
 
+class _TermsOfConditionsState extends State<TermsOfConditions> {
+
+  final controller = Get.find<SettingController>();
+  
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.getTermsCondition();
     });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
 
     return UserGradientScaffold(
       child: SafeArea(
@@ -51,16 +63,7 @@ class TermsOfConditions extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CommonText(
-                          text: 'terms_and_conditions'.tr,
-                          color: AppColors.textDark,
-                        ),
-                        SizedBox(height: 20),
-                        CommonText(
-                          textAlign: TextAlign.start,
-                          text: controller.termsCondition.value?.content ?? '',
-                          color: AppColors.gray400,
-                        ),
+                        Html(data: controller.termsCondition.value?.content ?? ''),
                         SizedBox(height: 20),
                       ],
                     ),

@@ -2,9 +2,11 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/user-controllers/booking_controller.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
+import '../controllers/mapController/user_map_controller.dart';
 import '../helpers/prefs_helper.dart';
 import '../models/commonModels/chatMessageModels/chat_message_model.dart';
 import '../models/commonModels/notificationModel/notification_model.dart';
@@ -92,8 +94,11 @@ class SocketServices {
           log("chatCtrl.currentBookingId; ${chatCtrl.currentBookingId}");
           
           if (isCurrentChat) {
-            chatCtrl.messages.add(newMessage);
-            chatCtrl.scrollToBottom();
+            // ✅ Prevent duplicate messages
+            bool alreadyExists = chatCtrl.messages.any((m) => m.id == newMessage.id);
+            if (!alreadyExists) {
+              chatCtrl.messages.insert(0, newMessage);
+            }
           }
         }
 
@@ -421,11 +426,25 @@ class SocketServices {
   static void listenForNewLocation() {
     socket.off(SocketEvents.bookingLocationUpdate);
     socket.on(SocketEvents.bookingLocationUpdate, (data) {
-      log('booking:location:update: $data');
+      log('booking:location:update RECEIVED: $data');
       try {
-        // final model = NotificationModel.fromJson(Map<String, dynamic>.from(data));
+        final Map<String, dynamic> locationData = Map<String, dynamic>.from(data);
+        
+        final double? lat = double.tryParse(locationData['latitude'].toString());
+        final double? lng = double.tryParse(locationData['longitude'].toString());
+
+        if (lat != null && lng != null) {
+          final newPos = LatLng(lat, lng);
+          log('Updating driver location on map: $newPos');
+          
+          if (Get.isRegistered<UserMapController>()) {
+            UserMapController.instance.onDriverLocationUpdated(newPos);
+          }
+        } else {
+          log('Invalid coordinates received: lat=$lat, lng=$lng');
+        }
       } catch (e) {
-        log('Error parsing notification:new: $e');
+        log('Error parsing booking:location:update: $e');
       }
     });
   }
@@ -433,6 +452,7 @@ class SocketServices {
   /// Emit update location from Rider
   static void emitUpdateLocation({required String bookingId, lat, lng}) {
     if (!socket.connected) return;
+    log('Emitting location update: bookingId=$bookingId, lat=$lat, lng=$lng');
     socket.emitWithAck(SocketEvents.bookingLocationUpdate, {
       "bookingId": bookingId,
       "latitude": lat,

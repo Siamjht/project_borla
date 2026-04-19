@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/theme/common_button_copy.dart';
 import '../../../../theme/app_color.dart';
+import '../../../helpers/prefs_helper.dart';
 import '../../../role/components/text/common_text.dart';
 
 
@@ -71,6 +72,7 @@ void showUserLogoutBottomSheet(BuildContext context) {
                     child: CommonButton(
                       onTap: () {
                         Get.snackbar('logout_success'.tr, '', snackPosition: SnackPosition.BOTTOM);
+                        PrefsHelper.removeAllPrefData();
                         Get.offAll(() => LoginScreen());
                       },
                       titleText: 'yes_logout'.tr,

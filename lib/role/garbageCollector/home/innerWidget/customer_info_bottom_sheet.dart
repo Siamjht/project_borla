@@ -84,6 +84,39 @@ class CustomerInfoBottomSheet extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
+                // Cancel Ride Button
+                // Container(
+                //   decoration: BoxDecoration(
+                //     color: Colors.deepOrange,
+                //     borderRadius: BorderRadius.circular(16),
+                //   ),
+                //   padding: const EdgeInsets.all(2),
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       minimumSize: const Size(100, 50),
+                //       backgroundColor: Colors.white,
+                //       shadowColor: Colors.transparent,
+                //       elevation: 0,
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(14),
+                //       ),
+                //     ),
+                //     onPressed: () {
+                //       Get.to(() => CancelRideScreen(booking: booking));
+                //     },
+                //     child: const Padding(
+                //       padding: EdgeInsets.fromLTRB(120, 14, 120, 14),
+                //       child: Text(
+                //         'Cancel Ride',
+                //         style: TextStyle(
+                //           color: Colors.deepOrange,
+                //           fontWeight: FontWeight.w600,
+                //           fontSize: 18,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 bottomSheetActionButtons(context, booking),
               ],
             ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/settingsController/settings_controller.dart';
@@ -10,16 +11,27 @@ import '../../theme/app_color.dart';
 import '../../theme/common_back_button_copy.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 
-class PolicyScreen extends StatelessWidget {
+class PolicyScreen extends StatefulWidget {
   const PolicyScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(SettingController());
+  State<PolicyScreen> createState() => _PolicyScreenState();
+}
 
+class _PolicyScreenState extends State<PolicyScreen> {
+
+  final controller = Get.find<SettingController>();
+
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.getPrivacyPolicy();
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return UserGradientScaffold(
       child: SafeArea(
@@ -54,16 +66,7 @@ class PolicyScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CommonText(
-                          text: 'privacy_policy'.tr,
-                          color: AppColors.textDark,
-                        ),
-                        SizedBox(height: 20),
-                        CommonText(
-                          textAlign: TextAlign.start,
-                          text: controller.privacyPolicy.value?.content ?? '',
-                          color: AppColors.gray400,
-                        ),
+                        Html(data: controller.privacyPolicy.value?.content ?? ''),
                         SizedBox(height: 20),
                       ],
                     ),

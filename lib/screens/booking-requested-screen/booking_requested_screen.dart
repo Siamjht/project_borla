@@ -26,6 +26,7 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.dialog(
+        barrierDismissible: false,
         AlertDialog(
 
           shape: RoundedRectangleBorder(

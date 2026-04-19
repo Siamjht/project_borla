@@ -144,7 +144,7 @@ class NotificationController extends GetxController {
             updatedAt: notifications[index].updatedAt,
           );
           if(PrefsHelper.myRole == "rider"){
-            ActivityController.instance.getSingleBooking(ifFromNotification: true,bookingId: notifications[index].data.bookingId);
+            ActivityController.instance.getSingleBooking(bookingId: notifications[index].data.bookingId);
           }else{
             BookingController.instance.getSingleBooking(bookingId: notifications[index].data.bookingId);
           }

@@ -197,6 +197,7 @@ class CustomChatListItem {
   final String participantId;
   final String participantName;
   final String participantProfile;
+  final String participantRole;
   final String lastMessage;
   final int unreadCount;
   final bool isSeen;
@@ -208,6 +209,7 @@ class CustomChatListItem {
     required this.participantId,
     required this.participantName,
     required this.participantProfile,
+    required this.participantRole,
     required this.lastMessage,
     required this.unreadCount,
     required this.isSeen,

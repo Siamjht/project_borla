@@ -61,7 +61,7 @@ class UserBookingModel {
   final String estimatedTime;
 
   // Added
-  final String paymentMethod;
+  String paymentMethod;
   final double price;
   final bool isPaid;
   final String paidAt;

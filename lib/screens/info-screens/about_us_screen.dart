@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../controllers/settingsController/settings_controller.dart';
 import '../../role/components/text/common_text.dart';
@@ -7,16 +8,27 @@ import '../../theme/common_back_button_copy.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import 'package:get/get.dart';
 
-class AboutUsScreen extends StatelessWidget {
+class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(SettingController());
+  State<AboutUsScreen> createState() => _AboutUsScreenState();
+}
+
+class _AboutUsScreenState extends State<AboutUsScreen> {
+  final controller = Get.find<SettingController>();
+
+  @override
+  void initState() {
+    super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.getAboutUs();
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return UserGradientScaffold(
       child: SafeArea(
@@ -51,15 +63,8 @@ class AboutUsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CommonText(
-                          text: 'about_us'.tr,
-                          color: AppColors.textDark,
-                        ),
-                        SizedBox(height: 20),
-                        CommonText(
-                          textAlign: TextAlign.start,
-                          text: controller.aboutUs.value?.content ?? '',
-                          color: AppColors.gray400,
+                        Html(
+                          data: controller.aboutUs.value?.content ?? '',
                         ),
                         SizedBox(height: 20),
                       ],

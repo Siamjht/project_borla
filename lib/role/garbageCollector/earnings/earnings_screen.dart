@@ -22,7 +22,7 @@ class EarningsScreen extends StatelessWidget {
   void showWithdrawDialog(BuildContext context, child) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (_) =>  child,
     );
   }

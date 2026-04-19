@@ -42,6 +42,20 @@ class _UserChattingScreenState extends State<UserChattingScreen> {
         participantName: widget.participantName,
       );
     });
+    userChatCtrl.messageScrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    userChatCtrl.messageScrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (userChatCtrl.messageScrollController.position.pixels >=
+        userChatCtrl.messageScrollController.position.maxScrollExtent - 200) {
+      userChatCtrl.loadMoreMessages();
+    }
   }
 
   @override
@@ -99,10 +113,19 @@ class _UserChattingScreenState extends State<UserChattingScreen> {
                 }
 
                 return ListView.builder(
+                  reverse: true,
                   controller: userChatCtrl.messageScrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: userChatCtrl.messages.length,
+                  itemCount: userChatCtrl.messages.length + (userChatCtrl.hasMoreMessages.value ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (index == userChatCtrl.messages.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                     final msg = userChatCtrl.messages[index];
                     return _MessageBubble(message: msg);
                   },

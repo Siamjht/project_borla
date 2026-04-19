@@ -355,6 +355,7 @@ class CustomDateTimePicker extends StatelessWidget {
     void showYearPicker() {
       showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) => AlertDialog(
           title: const CommonText(text: 'Select Year', fontSize: 18, fontWeight: FontWeight.w600),
           content: SizedBox(

@@ -16,6 +16,7 @@ import '../activity/controller/activity_controller.dart';
 import '../map/driver_common_map.dart';
 import 'controller/driver_home_controller.dart';
 import 'innerWidget/arrive_at_station_dialog.dart';
+import 'innerWidget/waste_drop_completed_dialog.dart';
 
 class NavigateStationScreen extends StatefulWidget {
   RiderBookingModel booking;
@@ -43,7 +44,17 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
           if (mounted) {
             showDialog(
               context: context,
-              barrierDismissible: true,
+              barrierDismissible: false,
+              builder: (_) => WasteDropCompletedDialog(station: station, booking: widget.booking,),
+            );
+          }
+        }
+
+        if(widget.booking.status == "heading_to_station"){
+          if (mounted) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
               builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
             );
           }
@@ -95,11 +106,11 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
           /// Google Map
           Positioned.fill(child: DriverCommonMap()),
 
-          Positioned(
-            top: 60,
-            left: 20,
-            child: CommonBackButton(),
-          ),
+          // Positioned(
+          //   top: 60,
+          //   left: 20,
+          //   child: CommonBackButton(),
+          // ),
 
           // ── Station Address Card ────────────────────────
           Positioned(
@@ -179,7 +190,7 @@ class _NavigateStationScreenState extends State<NavigateStationScreen> {
                     if (mounted) {
                       showDialog(
                         context: context,
-                        barrierDismissible: true,
+                        barrierDismissible: false,
                         builder: (_) => ArriveAtStationDialog(station: station, booking: widget.booking,),
                       );
                     }

@@ -22,7 +22,7 @@ class HomeMapScreen extends StatefulWidget {
 
 class _HomeMapScreenState extends State<HomeMapScreen> {
 
-  final UserNavBarController userNavBarController = Get.put(UserNavBarController());
+  final UserNavBarController userNavBarController = Get.find<UserNavBarController>();
   final ProfileController _profileCtl = Get.find<ProfileController>();
   final _bookingCtrl = Get.find<BookingController>();
 

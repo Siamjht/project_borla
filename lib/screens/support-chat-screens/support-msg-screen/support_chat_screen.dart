@@ -26,6 +26,20 @@ class _UserSupportChatScreenState extends State<UserSupportChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       supportChatCtrl.getSupportChatID();
     });
+    supportChatCtrl.supportScrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    supportChatCtrl.supportScrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (supportChatCtrl.supportScrollController.position.pixels >=
+        supportChatCtrl.supportScrollController.position.maxScrollExtent - 200) {
+      supportChatCtrl.loadMoreSupportMessages();
+    }
   }
 
   @override
@@ -70,10 +84,19 @@ class _UserSupportChatScreenState extends State<UserSupportChatScreen> {
                 }
 
                 return ListView.builder(
+                  reverse: true,
                   controller: supportChatCtrl.supportScrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: supportChatCtrl.supportMessages.length,
+                  itemCount: supportChatCtrl.supportMessages.length + (supportChatCtrl.hasMoreSupportMessages.value ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (index == supportChatCtrl.supportMessages.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                     final msg = supportChatCtrl.supportMessages[index];
                     return Align(
                       alignment: msg['isMe']

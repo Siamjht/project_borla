@@ -68,7 +68,7 @@ class ArriveAtStationDialog extends StatelessWidget {
                             Navigator.pop(context);
                             showDialog(
                               context: context,
-                              barrierDismissible: true,
+                              barrierDismissible: false,
                               builder: (_) => WasteDropCompletedDialog(booking: booking, station: station),
                             );
                           }

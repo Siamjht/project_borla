@@ -20,7 +20,7 @@ class PlacesService {
         },
           body: jsonEncode({
             "input": input,
-            "includedRegionCodes": ["US"],
+            "includedRegionCodes": ["GH"],
             "languageCode": "en",
           })
       );

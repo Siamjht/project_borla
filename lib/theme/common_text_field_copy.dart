@@ -7,8 +7,9 @@ import '../../../theme/app_color.dart';
 
 
 class CommonTextField extends StatefulWidget {
-  const CommonTextField({
+  CommonTextField({
     super.key,
+    this.focusNode,
     this.hintText,
     this.labelText,
     this.prefixIcon,
@@ -38,6 +39,7 @@ class CommonTextField extends StatefulWidget {
     this.borderWidth = 1
   });
 
+  FocusNode? focusNode;
   final String? hintText;
   final String? labelText;
   final String? prefixText;
@@ -106,6 +108,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
         ),
         // ✅ TextField on top — receives all touches normally
         TextFormField(
+          focusNode: widget.focusNode,
           controller: widget.controller,
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.onSubmitted,

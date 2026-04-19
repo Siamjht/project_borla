@@ -237,7 +237,7 @@ class ActivityCard extends StatelessWidget {
 
           // Route based on booking status for active tab (index == 0)
           if (activityController.selectedIndex.value == 0) {
-            _routeBasedOnBookingStatus();
+            activityController.routeBasedOnBookingStatus(booking: booking);
           } else if (activityController.selectedIndex.value == 1) {
             Get.to(() => ScheduleDetailScreen());
           }
@@ -258,39 +258,6 @@ class ActivityCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// Route to appropriate screen based on booking status
-  void _routeBasedOnBookingStatus() {
-    switch (booking.status) {
-      case 'pending':
-        // Show pending booking details
-        Get.to(() => ScheduleDetailScreen());
-        break;
-      case 'accepted':
-        Get.to(() => NavigateDestinationScreen(booking: booking,));
-        break;
-      case 'arrived_pickup':
-        Get.to(() => ArrivedScreen(bookingModel: booking));
-        break;
-      case 'payment_collected':
-        Get.to(() => ArrivedScreen(bookingModel: booking));
-        break;
-      case 'heading_to_station':
-        Get.to(() => NavigateStationScreen(booking: booking,));
-        break;
-      case 'in_progress':
-      case 'arrived_dropoff':
-      case 'awaiting_payment':
-        // Active bookings - show active booking screen
-        break;
-      case 'completed':
-      case 'cancelled':
-        // Show history/detail screen for completed or cancelled bookings
-        break;
-      default:
-        // Fallback to schedule detail screen
-    }
   }
 }
 

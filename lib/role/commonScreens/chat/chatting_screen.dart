@@ -40,11 +40,25 @@ class _ChattingScreenState extends State<ChattingScreen> {
         participantName: widget.participantName,
       );
     });
+
+    controller.messageScrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    controller.messageScrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (controller.messageScrollController.position.pixels >=
+        controller.messageScrollController.position.maxScrollExtent - 200) {
+      controller.loadMoreMessages();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    log("Chat screen bookingId: ${widget.bookingId}");
     return GradientScaffold(
       child: SafeArea(
         child: Column(
@@ -93,10 +107,19 @@ class _ChattingScreenState extends State<ChattingScreen> {
                 }
 
                 return ListView.builder(
+                  reverse: true,
                   controller: controller.messageScrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: controller.messages.length,
+                  itemCount: controller.messages.length + (controller.hasMoreMessages.value ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (index == controller.messages.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                     final msg = controller.messages[index];
                     return _MessageBubble(message: msg);
                   },
@@ -193,7 +216,6 @@ class _MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isMe = message.senderId == PrefsHelper.userId;
     final images = message.images;
-    log(" image path: ${images.toString()}");
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: Column(

@@ -47,7 +47,7 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
   void _showPaymentReceiveDialog(RiderBookingModel booking) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (_) => PaymentReceiveDialog(booking: booking),
     );
     // if (booking.isPaid) {
@@ -206,6 +206,7 @@ class _ArrivedBottomSheetState extends State<ArrivedBottomSheet> {
       onTap: activityCtrl.isArriveLoading.value
           ? () {}
           : () {
+        ActivityController.instance.arriveAtPickup(context, bookingId: booking.id);
         if (!widget.isPaymentReceive) {
           showDialog(
               context: context,

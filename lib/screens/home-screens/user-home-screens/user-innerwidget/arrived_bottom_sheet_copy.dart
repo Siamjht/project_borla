@@ -142,7 +142,7 @@ Widget bottomSheetActionButtons(BuildContext context) {
     onTap: (){
       showDialog(
         context: context,
-        barrierDismissible: true,
+        barrierDismissible: false,
         builder: (_) => const ArriveAtPickupDialog(),
       );
     },

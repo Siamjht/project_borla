@@ -44,6 +44,7 @@ class BookingController extends GetxController {
   final RxBool isAddLoading = false.obs;
   final RxBool isGetLoading = false.obs;
   final RxBool isUpdateLoading = false.obs;
+  final RxBool isPlaceSaving = false.obs;
 
   final RxList<SavedPlaceModel> savedPlaces = <SavedPlaceModel>[].obs;
   final Rx<SavedPlaceModel?> updatedPlace = Rx<SavedPlaceModel?>(null);
@@ -61,6 +62,9 @@ class BookingController extends GetxController {
   final TextEditingController placeTitleController = TextEditingController();
   final TextEditingController placeNameController = TextEditingController();
   final TextEditingController placeAddressController = TextEditingController();
+  double savedPlaceLat = 0.0;
+  double savedPlaceLang = 0.0;
+
   double selectedPlaceLat = 0.0;
   double selectedPlaceLang = 0.0;
 
@@ -78,6 +82,17 @@ class BookingController extends GetxController {
     wasteImagePaths.removeAt(index);
   }
 
+  /// Populates the form with a specific saved place's data.
+  void selectPlace(SavedPlaceModel place) {
+    selectedPlaceType.value = place.placeType;
+    selectedPlaceId.value = place.id;
+    placeTitleController.text = place.placeTitle;
+    placeNameController.text = place.placeName;
+    placeAddressController.text = place.address;
+    savedPlaceLat = place.latitude;
+    savedPlaceLang = place.longitude;
+  }
+
   /// Call when a place type icon is tapped in SavedPlacesScreen.
   /// Populates the form with existing data if a saved place of that type exists.
   void selectPlaceType(String type) {
@@ -90,10 +105,14 @@ class BookingController extends GetxController {
       selectedPlaceId.value = place.id;
       placeNameController.text = place.placeName;
       placeAddressController.text = place.address;
+      savedPlaceLat = place.latitude;
+      savedPlaceLang = place.longitude;
     } else {
       selectedPlaceId.value = '';
       placeNameController.clear();
       placeAddressController.clear();
+      savedPlaceLat = 0.0;
+      savedPlaceLang = 0.0;
     }
   }
 
@@ -104,6 +123,8 @@ class BookingController extends GetxController {
     placeTitleController.clear();
     placeNameController.clear();
     placeAddressController.clear();
+    savedPlaceLat = 0.0;
+    savedPlaceLang = 0.0;
   }
 
   /// Save or update based on whether a place ID is already selected.
@@ -125,8 +146,8 @@ class BookingController extends GetxController {
         placeTitle: title,
         placeName: name,
         address: address,
-        latitude: selectedPlaceLat,
-        longitude: selectedPlaceLang,
+        latitude: savedPlaceLat,
+        longitude: savedPlaceLang,
       );
     } else {
       await addPlace(
@@ -134,8 +155,8 @@ class BookingController extends GetxController {
         placeTitle: title,
         placeName: name,
         address: address,
-        latitude: selectedPlaceLat,
-        longitude: selectedPlaceLang,
+        latitude: savedPlaceLat,
+        longitude: savedPlaceLang,
       );
     }
   }
@@ -150,6 +171,7 @@ class BookingController extends GetxController {
     required double longitude,
   }) async {
     isAddLoading.value = true;
+    isPlaceSaving.value = true;
     try {
       final response = await ApiService.post(
         AppUrls.newPlaces,
@@ -172,6 +194,7 @@ class BookingController extends GetxController {
       }
     } finally {
       isAddLoading.value = false;
+      isPlaceSaving.value = false;
     }
   }
 
@@ -203,6 +226,7 @@ class BookingController extends GetxController {
     required double longitude,
   }) async {
     isUpdateLoading.value = true;
+    isPlaceSaving.value = true;
     try {
       final response = await ApiService.put(
         AppUrls.updatePlace(id: id),
@@ -226,12 +250,14 @@ class BookingController extends GetxController {
           savedPlaces.refresh();
         }
 
+        Get.back();
         CustomSnackbar.success(response.message);
       } else {
         CustomSnackbar.error(response.message);
       }
     } finally {
       isUpdateLoading.value = false;
+      isPlaceSaving.value = false;
     }
   }
 

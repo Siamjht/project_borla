@@ -4,6 +4,7 @@ import 'package:project_borla/role/components/commonBackButton/common_back_butto
 import 'package:project_borla/screens/map-screens/user_common_map.dart';
 
 class ChoosePaymentScreen extends StatefulWidget {
+
   const ChoosePaymentScreen({super.key});
 
   @override

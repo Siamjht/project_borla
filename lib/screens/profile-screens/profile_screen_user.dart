@@ -9,11 +9,14 @@ import 'package:project_borla/screens/profile-screens/ps-inner-widgets/logout_bo
 import 'package:project_borla/screens/profile-screens/ps-inner-widgets/settingsListItemsCopy.dart';
 import 'package:project_borla/screens/support-chat-screens/start-chat-screen/start_chat_screen.dart';
 import '../../controllers/profileController/profile_controller.dart';
+import '../../gen/custom_assets/assets.gen.dart';
+import '../../role/commonScreens/chat/chat_list_screen.dart';
 import '../../role/commonScreens/profile/change_password_screen.dart';
 import '../../role/commonScreens/profile/edit_profile_screen.dart';
 import '../../role/commonScreens/profile/innerWidget/language_bottom_sheet.dart';
 import '../../role/components/image/shimmer_image_loader.dart';
 import '../../role/components/text/common_text.dart';
+import '../../theme/app_color.dart';
 import '../../theme/gradient_scaffold_copy.dart';
 import '../info-screens/terms_and_conditions_screen.dart';
 
@@ -138,6 +141,12 @@ class _ProfileScreenUserState extends State<ProfileScreenUser> {
                 icon: Icons.language,
                 title: 'change_language'.tr,
                 onTap: () => showLanguageBottomSheet(context),
+              ),
+
+              SettingsListItemTwo(
+                img: "assets/icons/messageIcon.png",
+                title: 'chat_messages'.tr,
+                onTap: () => Get.to(() => ChatListScreen()),
               ),
 
               SettingsListItemTwo(

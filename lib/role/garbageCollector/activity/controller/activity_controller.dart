@@ -288,7 +288,7 @@ class ActivityController extends GetxController {
   }
 
   /// Get single booking by ID and route based on status
-  Future<void> getSingleBooking({required String bookingId, ifFromNotification = false}) async {
+  Future<void> getSingleBooking({required String bookingId,}) async {
     try {
       final response = await ApiService.get(AppUrls.getSingleBooking(id: bookingId));
 
@@ -298,15 +298,11 @@ class ActivityController extends GetxController {
         // ✅ update in both controllers
         _updateBookingInBothControllers(booking);
 
-        if(ifFromNotification){
-          _routeBasedOnBookingStatus(booking: booking);
-        }else{
           if(booking.isPaidByCustomer && booking.status == "arrived_pickup"){
-            // Only navigate if we are NOT already on ArrivedScreen or PaymentReceiveScreen
-            // because ArrivedBottomSheet now listens for isPaidByCustomer changes.
               Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
+          }else{
+            routeBasedOnBookingStatus(booking: booking);
           }
-        }
       } else {
         CustomSnackbar.error(response.message ?? 'Failed to fetch booking');
       }
@@ -339,7 +335,7 @@ class ActivityController extends GetxController {
 
         CustomSnackbar.success(response.message);
         Get.back(); // Close the dialog
-        Get.to(() => NavigateStationScreen(booking: updated,)); // Navigate to station screen
+        Get.offAll(() => NavigateStationScreen(booking: updated,)); // Navigate to station screen
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -351,20 +347,20 @@ class ActivityController extends GetxController {
     }
   }
 
-  void _routeBasedOnBookingStatus({required RiderBookingModel booking}) {
+  void routeBasedOnBookingStatus({required RiderBookingModel booking}) {
     switch (booking.status) {
       case 'pending':
       // Show pending booking details
         Get.to(() => ScheduleDetailScreen());
         break;
       case 'accepted':
-        Get.to(() => NavigateDestinationScreen(booking: booking,));
+        Get.to(() => CustomerInfoScreen(booking: booking,));
         break;
       case 'arrived_pickup':
         Get.to(() => ArrivedScreen(bookingModel: booking));
         break;
       case 'payment_collected':
-        Get.to(() => ArrivedScreen(bookingModel: booking));
+        Get.to(() => NavigateStationScreen(booking: booking));
         break;
       case 'heading_to_station':
         Get.to(() => NavigateStationScreen(booking: booking,));

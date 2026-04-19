@@ -21,8 +21,10 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
   @override
   void initState() {
     super.initState();
-    _bookingCtrl.selectedPlaceType.value == 'Home';
-    _bookingCtrl.selectPlaceType('home');
+    Future.microtask(() async {
+      await _bookingCtrl.getPlaces();
+      _bookingCtrl.selectPlaceType('home');
+    },);
   }
 
   @override
@@ -129,13 +131,93 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                     padding: const EdgeInsets.fromLTRB(22,20,22,20),
                     child: SavedPlaceTextFields(),
                   ),
-            
+
+                  // ── Already Added Section ──────────────────────────
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Already Added', style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black500
+                      ),),
+                    ),
+                  ),
+
+                  Obx(() {
+                    if (_bookingCtrl.isGetLoading.value) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (_bookingCtrl.savedPlaces.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Text('No saved places yet', style: TextStyle(color: AppColors.gray400),),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _bookingCtrl.savedPlaces.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+                      itemBuilder: (context, index) {
+                        final place = _bookingCtrl.savedPlaces[index];
+                        return Card(
+                          color: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(color: AppColors.gray100),
+                          ),
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: ListTile(
+                            leading: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.orange300.withAlpha(20),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(_getPlaceIcon(place.placeType), color: AppColors.orange300),
+                            ),
+                            title: Text(place.placeTitle, style: const TextStyle(fontWeight: FontWeight.w600),),
+                            subtitle: Text(place.address, maxLines: 1, overflow: TextOverflow.ellipsis,),
+                            onTap: () {
+                              _bookingCtrl.selectPlace(place);
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                  const SizedBox(height: 40),
+
                 ],
             ),
           ),
       ),
     );
 
+  }
+
+  // ── Icon helper ───────────────────────────────────────────
+  IconData _getPlaceIcon(String placeType) {
+    switch (placeType.toLowerCase()) {
+      case 'home':
+        return Icons.home_outlined;
+      case 'office':
+        return Icons.business_outlined;
+      case 'shop':
+        return Icons.shopping_bag_outlined;
+      case 'hotel':
+        return Icons.hotel_outlined;
+      default:
+        return Icons.location_on_outlined;
+    }
   }
 }
 

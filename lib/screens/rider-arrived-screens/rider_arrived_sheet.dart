@@ -110,7 +110,7 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                child: userPaymentRow(booking: widget.booking),
+                child: userPaymentRow(booking: widget.booking, context: context),
               ),
 
               Padding(
@@ -124,6 +124,8 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
                         buildPaymentReceivedDialog();
                       });
                     }else{
+
+                      log("widget.booking.paymentMethod : ${widget.booking.paymentMethod}");
                       final isSuccess = await paymentController.initiatePayment(
                         bookingId: widget.booking.id,
                         isCash: widget.booking.paymentMethod == 'cash',

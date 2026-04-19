@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/navBar/nav_bar.dart';
@@ -82,14 +84,15 @@ class PaymentReceiveDialog extends StatelessWidget {
                       Obx(() => CommonButton(
                         isLoading: ActivityController.instance.isPaymentCollectionLoading.value,
                         onTap: () {
+                          log("Booking status: ${booking.status}");
                           if(booking.status == "payment_collected"){
-                            Get.to(() => NavigateStationScreen(booking: booking,));
+                            Get.offAll(() => NavigateStationScreen(booking: booking,));
                           }else{
                             ActivityController.instance.paymentCollection(bookingId: booking.id);
                           }
                         },
                         buttonRadius: 12,
-                        titleText: 'Heading to Station',
+                        titleText: 'Confirm Payment',
                       )),
                     ],
                   ),

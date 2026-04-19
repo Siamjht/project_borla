@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
 import '../../../../features/auth/login_screen.dart';
 import '../../../../theme/app_color.dart';
 import '../../../components/button/common_button.dart';
@@ -78,6 +79,7 @@ void showLogoutBottomSheet(BuildContext context) {
                     child: CommonButton(
                       onTap: () {
                         Get.snackbar("Log out successfully", "", snackPosition: SnackPosition.BOTTOM);
+                        PrefsHelper.removeAllPrefData();
                         Get.offAll(()=> LoginScreen());
                       },
                       titleText:  'Yes, Logout',

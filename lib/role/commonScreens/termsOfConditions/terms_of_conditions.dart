@@ -1,14 +1,34 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../../controllers/settingsController/settings_controller.dart';
 import '../../components/gradient_scafold.dart';
 
-class TermsOfConditions extends StatelessWidget {
+class TermsOfConditions extends StatefulWidget {
   const TermsOfConditions({super.key});
+
+  @override
+  State<TermsOfConditions> createState() => _TermsOfConditionsState();
+}
+
+class _TermsOfConditionsState extends State<TermsOfConditions> {
+
+  final controller = Get.find<SettingController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getTermsCondition();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +49,25 @@ class TermsOfConditions extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            CommonText(text: "terms_and_conditions".tr, color: AppColors.textDark,),
-            SizedBox(height: 20,),
-            CommonText(
-              textAlign: TextAlign.start,
-              text: "Lorem ipsum dolor sit amet consectetur. Ultrices id feugiat venenatis habitant mattis viverra elementum purus volutpat. Lacus eu molestie pulvinar rhoncus integer proin elementum. Pretium sit fringilla massa tristique aenean commodo leo. Aliquet viverra amet sit porta elementum et pellentesque posuere. Ullamcorper viverra tortor lobortis viverra auctor egestas. Nulla condimentum ac metus quam turpis gravida ut velit. Porta justo lacus consequat sed platea. Ut dui massa quam elit faucibus consectetur sapien aenean auctor. Felis ipsum amet justo in. Netus amet in egestas sed auctor lorem. ",
-              color: AppColors.gray400,)
+            Obx(() {
+              if (controller.isTermsLoading.value) {
+                return Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              return Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Html(data: controller.termsCondition.value?.content ?? ''),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              );
+            }),
           ],
         ),
       )),

@@ -57,7 +57,7 @@ class ArriveAtPickupDialog extends StatelessWidget {
                           Navigator.pop(context);
                           showDialog(
                             context: context,
-                            barrierDismissible: true,
+                            barrierDismissible: false,
                             builder: (_) => const PaymentReceiveDialog(),
                           );
                         },

@@ -128,11 +128,11 @@ class _ProfileScreenUserState extends State<ProfileScreenUser> {
                 onTap: () => Get.to(() => ChangePasswordScreen(isUser: true)),
               ),
 
-              SettingsListItem(
-                icon: Icons.add_location_alt_rounded,
-                title: 'address'.tr,
-                onTap: () => Get.to(() => AddressScreen()),
-              ),
+              // SettingsListItem(
+              //   icon: Icons.add_location_alt_rounded,
+              //   title: 'address'.tr,
+              //   onTap: () => Get.to(() => AddressScreen()),
+              // ),
 
               SettingsListItem(
                 icon: Icons.language,

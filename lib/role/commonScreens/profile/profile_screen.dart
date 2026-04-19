@@ -31,7 +31,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  final _profileCtrl = Get.put(ProfileController());
+  final _profileCtrl = Get.find<ProfileController>();
 
   void showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(

@@ -69,7 +69,11 @@ class SocketServices {
       log('new_message received: $data');
 
       try {
-        final messageData = Map<String, dynamic>.from(data['message'] ?? {});
+        // Handle both nested and top-level message data
+        final Map<String, dynamic> messageData = data['message'] != null
+            ? Map<String, dynamic>.from(data['message'])
+            : Map<String, dynamic>.from(data);
+            
         final newMessage = ChatMessageModel.fromJson(messageData);
 
         // ✅ Only add if it's from the other person
@@ -77,11 +81,17 @@ class SocketServices {
 
         // ✅ Only add if message belongs to current open chat
         final isChatOpen = Get.isRegistered<ChatController>();
+        log("isChatOpen; $isChatOpen");
+        
         if (isChatOpen) {
           final chatCtrl = ChatController.instance;
           final isCurrentChat = newMessage.bookingId == chatCtrl.currentBookingId;
+          
+          log("isCurrentChat; $isCurrentChat");
+          log("newMessage.bookingId; ${newMessage.bookingId}");
+          log("chatCtrl.currentBookingId; ${chatCtrl.currentBookingId}");
+          
           if (isCurrentChat) {
-            final newMessage = ChatMessageModel.fromJson(messageData);
             chatCtrl.messages.add(newMessage);
             chatCtrl.scrollToBottom();
           }
@@ -89,10 +99,6 @@ class SocketServices {
 
         // ✅ Play message receive tone (only when user is in app)
         SoundService.instance.playMessageReceive();
-
-        // TODO: Show global snackbar notification if needed
-        // _showMessageSnackbar(sentMessage);
-
       } catch (e) {
         log('Error parsing new_message: $e');
       }

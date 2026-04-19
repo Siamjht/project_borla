@@ -53,7 +53,14 @@ class ProfileController extends GetxController {
     if(user.ghanaCardId.isNotEmpty){
       ghanaICard.value = user.ghanaCardId.first;
     }
-    PrefsHelper.onlineStatus = user.onlineStatus == "online";
+    bool isOnline = user.onlineStatus == "online";
+    PrefsHelper.onlineStatus = isOnline;
+    
+    if (Get.isRegistered<DriverHomeController>()) {
+      Get.find<DriverHomeController>().isOnline.value = isOnline;
+    }
+    
+    log("user.onlineStatus: ${user.onlineStatus}");
   }
 
   // ── Get Profile ──

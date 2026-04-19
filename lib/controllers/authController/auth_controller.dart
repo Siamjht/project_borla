@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:project_borla/role/garbageCollector/home/controller/driver_home_controller.dart';
 
 import '../../helpers/prefs_helper.dart';
 
@@ -77,6 +78,9 @@ class AuthController extends GetxController {
         PrefsHelper.userId = loginModel.data.user.id;
         PrefsHelper.myRole = loginModel.data.user.role;
         PrefsHelper.onlineStatus = loginModel.data.user.onlineStatus == "online";
+        if (Get.isRegistered<DriverHomeController>()) {
+          DriverHomeController.instance.isOnline.value = PrefsHelper.onlineStatus;
+        }
         log("Token: ===>>${PrefsHelper.token}");
         log("keepLoggedIn: ===>>${keepLoggedIn.value}");
 

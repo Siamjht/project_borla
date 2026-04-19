@@ -44,6 +44,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("Chat screen bookingId: ${widget.bookingId}");
     return GradientScaffold(
       child: SafeArea(
         child: Column(

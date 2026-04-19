@@ -1,4 +1,5 @@
 
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class UserChattingScreen extends StatefulWidget {
 }
 
 class _UserChattingScreenState extends State<UserChattingScreen> {
-  final ChatController userChatCtrl = Get.put(ChatController());
+  final ChatController userChatCtrl = Get.find<ChatController>();
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _UserChattingScreenState extends State<UserChattingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("Chat screen bookingId: ${widget.bookingId}");
     return UserGradientScaffold(
       gradientOne: AppColors.orange100,
       child: SafeArea(

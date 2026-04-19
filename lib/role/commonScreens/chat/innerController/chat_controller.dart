@@ -140,6 +140,7 @@ class ChatController extends GetxController {
 
     return CustomChatListItem(
       chatId: json['id'] ?? '',
+      bookingId: json['bookingId'] ?? '',
       participantId: participant['id'] ?? '',
       participantName: participant['name'] ?? '',
       participantProfile: participant['profilePicture'] ?? '',

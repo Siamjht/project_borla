@@ -51,6 +51,24 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     );
     animation = AlwaysStoppedAnimation(1.0);
     isOnline.value = PrefsHelper.onlineStatus;
+    log("PrefsHelper.onlineStatus:${PrefsHelper.onlineStatus}");
+
+    // Handle socket listeners when online status changes
+    ever(isOnline, (bool online) {
+      if (online) {
+        SocketServices.listenForNewBooking();
+        getAvailableBookings();
+      } else {
+        SocketServices.socket.off(SocketEvents.bookingNewOn);
+      }
+    });
+
+    // Ensure initial state is applied
+    if (isOnline.value) {
+      SocketServices.listenForNewBooking();
+    } else {
+      SocketServices.socket.off(SocketEvents.bookingNewOn);
+    }
   }
 
   @override
@@ -110,14 +128,8 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
 
       if (response.statusCode == 200) {
         isOnline.value = value;
+        PrefsHelper.onlineStatus = value;
         PrefsHelper.setBool('onlineStatus', value);
-        if (value) {
-          SocketServices.listenForNewBooking();
-          // _setupTimer();
-          // getAvailableBookings();
-        }else{
-          SocketServices.socket.off(SocketEvents.bookingNewOn);
-        }
         CustomSnackbar.success(response.message);
       } else {
         CustomSnackbar.error(response.message);

@@ -2,16 +2,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
+import 'package:project_borla/screens/chat-screen/user_chat_screen.dart';
 
 import '../../../models/commonModels/chatMessageModels/chat_list_model.dart';
 import '../../../theme/app_color.dart';
-import '../../../theme/common_text_field_copy.dart';
 import '../../components/customLoader/custom_loader.dart';
 import '../../components/empty_widget.dart';
 import '../../components/gradient_scafold.dart';
 import '../../components/text/common_text.dart';
+import 'chatting_screen.dart';
 import 'innerController/chat_controller.dart';
 
 
@@ -84,11 +86,18 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
                       return InkWell(
                         onTap: () {
-                          // _ctrl.fetchChatMessages(
-                          //   userId: _ctrl.filteredList[index].participantId,
-                          //   chatId: _ctrl.filteredList[index].chatId,
-                          // );
-                          // Get.to(()=> ChattingScreen(userId: _ctrl.filteredList[index].participantId,));
+                          final person = _ctrl.chatList[index];
+                          if(PrefsHelper.myRole == 'user'){
+                            Get.to(() => UserChattingScreen(
+                              bookingId: person.bookingId,
+                              participantName: person.participantName,
+                            ));
+                          }else{
+                            Get.to(() => ChattingScreen(
+                              bookingId: person.bookingId,
+                              participantName: person.participantName,
+                            ));
+                          }
                         },
                         child: ChatListItem(person: _ctrl.chatList[index]),
                       );
@@ -197,71 +206,4 @@ class ChatListItem extends StatelessWidget {
       ),
     );
   }
-}
-
-class GradientBorderAvatar extends StatelessWidget {
-  final String avatarUrl;
-  final double radius;
-  final List<Color> gradientColors;
-  final double borderWidth;
-
-  const GradientBorderAvatar({
-    super.key,
-    required this.avatarUrl,
-    this.radius = 26,
-    this.gradientColors = const [Color(0xFF00C6FF), Color(0xFF0072FF)],
-    this.borderWidth = 2.5,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _GradientBorderPainter(
-        gradientColors: gradientColors,
-        borderWidth: borderWidth,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(borderWidth + 2),
-        child: CircleAvatar(
-          radius: radius.r,
-          backgroundImage: NetworkImage(avatarUrl),
-          backgroundColor: Colors.grey.shade200,
-        ),
-      ),
-    );
-  }
-}
-
-class _GradientBorderPainter extends CustomPainter {
-  final List<Color> gradientColors;
-  final double borderWidth;
-
-  _GradientBorderPainter({
-    required this.gradientColors,
-    required this.borderWidth,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    final gradient = SweepGradient(
-      colors: gradientColors,
-      startAngle: 0,
-      endAngle: 3.14 * 2,
-    );
-
-    final paint = Paint()
-      ..shader = gradient.createShader(rect)
-      ..strokeWidth = borderWidth
-      ..style = PaintingStyle.stroke;
-
-    canvas.drawCircle(
-      size.center(Offset.zero),
-      (size.width / 2) - borderWidth / 2,
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

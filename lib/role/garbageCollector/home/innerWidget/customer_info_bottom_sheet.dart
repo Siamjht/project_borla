@@ -29,9 +29,9 @@ class CustomerInfoBottomSheet extends StatelessWidget {
     controller.isBottomSheet.value = true;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.55,
+      initialChildSize: 0.5,
       minChildSize: 0.45,
-      maxChildSize: 0.75,
+      maxChildSize: 0.65,
       builder: (_, scrollController) {
         return Container(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
@@ -209,7 +209,7 @@ Widget summarySection(RiderBookingModel? booking) {
             const SizedBox(height: 4),
             CommonText(
               text: booking?.price != null
-                  ? 'GH₵ ${booking!.price!.toStringAsFixed(0)}'
+                  ? 'GH₵ ${booking!.price.toStringAsFixed(0)}'
                   : 'TBD', // ✅ real data
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -225,7 +225,7 @@ Widget summarySection(RiderBookingModel? booking) {
             const SizedBox(height: 4),
             CommonText(
               text: booking?.estimatedDistance != null
-                  ? '${booking!.estimatedDistance!.toStringAsFixed(1)} KM'
+                  ? '${booking!.estimatedDistance.toStringAsFixed(1)} KM'
                   : '—', // ✅ real data
               fontSize: 18,
               fontWeight: FontWeight.w700,

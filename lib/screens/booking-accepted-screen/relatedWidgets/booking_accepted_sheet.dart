@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +74,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            booking.status.name.toUpperCase() ?? 'ACCEPTED',
+                            booking.status.name.toUpperCase(),
                             style: const TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.w600,
@@ -90,10 +89,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                   const SizedBox(height: 12),
 
                   // Title
-                  Text(
-                    booking != null
-                        ? 'Your Borla is on the way!'
-                        : 'Your Borla has been accepted',
+                  Text('Your Rider is on the way!',
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -111,9 +107,7 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                   // Driver Section
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 10),
-                    child: booking != null && booking.rider != null
-                        ? userSectionWidget(rider: booking.rider, bookingId: booking.id)
-                        :  userRowModClick(),
+                    child: userSectionWidget(rider: booking.rider, bookingId: booking.id)
                   ),
 
                   Padding(
@@ -127,12 +121,10 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                   // Pickup & Dropoff Locations
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 10),
-                    child: booking != null
-                        ? bottomSheetLocationSection(
+                    child: bottomSheetLocationSection(
                             pickupAddress: booking.pickupAddress,
                             requestedAt: booking.requestedAt,
                           )
-                        :  bottomSheetLocationSectionMod(),
                   ),
 
                   Padding(
@@ -146,13 +138,11 @@ class _BookingAcceptedSheetState extends State<BookingAcceptedSheet> {
                   // Summary Section
                   Padding(
                     padding: const EdgeInsets.fromLTRB(22, 8, 22, 10),
-                    child: booking != null
-                        ? summarySection(
+                    child: summarySection(
                             price: booking.price,
                             estimatedDistance: booking.estimatedDistance,
                             estimatedTime: booking.estimatedTime,
                           )
-                        :  summarySection(),
                   ),
 
                   const SizedBox(height: 10),

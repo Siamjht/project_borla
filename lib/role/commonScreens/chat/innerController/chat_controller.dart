@@ -222,6 +222,9 @@ class ChatController extends GetxController {
       }
     } finally {
       isMessagesLoading.value = false;
+      if (messages.isNotEmpty) {
+        scrollToBottom();
+      }
     }
   }
 
@@ -355,13 +358,14 @@ class ChatController extends GetxController {
             .map((e) => ChatMessageModel.fromJson(e).toMessageMap(myId))
             .toList();
 
-        //scroll to bottom after loading
-        scrollToBottomSupport();
       } else {
         CustomSnackbar.error(response.message);
       }
     } finally {
       isSupportChatLoading.value = false;
+      if (supportMessages.isNotEmpty) {
+        scrollToBottomSupport();
+      }
     }
   }
 

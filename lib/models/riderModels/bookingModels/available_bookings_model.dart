@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class AvailableBookingModel {
   final String id;
   final String userId;
-  final String? riderId;
+  final String riderId;
   final String wasteCategory;
   final List<String> wasteImages;
   final String binSize;
@@ -16,29 +16,35 @@ class AvailableBookingModel {
   final String vehicleType;
   final String paymentMethod;
   final String status;
-  final double? price;
+  final double price;
   final String createdAt;
   final String updatedAt;
+  final bool isScheduled;
+  final String scheduledFor;
+  final String scheduledDate;
   final BookingUserModel user;
 
   AvailableBookingModel({
-    required this.id,
-    required this.userId,
-    this.riderId,
-    required this.wasteCategory,
-    required this.wasteImages,
-    required this.binSize,
-    required this.binQuantity,
-    required this.wasteSize,
-    required this.pickupLatitude,
-    required this.pickupLongitude,
-    required this.pickupAddress,
-    required this.vehicleType,
-    required this.paymentMethod,
-    required this.status,
-    this.price,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id = '',
+    this.userId = '',
+    this.riderId = '',
+    this.wasteCategory = '',
+    this.wasteImages = const [],
+    this.binSize = '',
+    this.binQuantity = 0,
+    this.wasteSize = 0,
+    this.pickupLatitude = 0.0,
+    this.pickupLongitude = 0.0,
+    this.pickupAddress = '',
+    this.vehicleType = '',
+    this.paymentMethod = '',
+    this.status = '',
+    this.price = 0.0,
+    this.createdAt = '',
+    this.updatedAt = '',
+    this.isScheduled = false,
+    this.scheduledFor = '',
+    this.scheduledDate = '',
     BookingUserModel? user,
   }) : user = user ?? BookingUserModel();
 
@@ -46,11 +52,12 @@ class AvailableBookingModel {
     final coordinates = json['pickupLocation']?['coordinates'] ?? [0.0, 0.0];
     final createdAt = json['createdAt'];
     final updatedAt = json['updatedAt'];
+    final scheduledFor = json['scheduledFor'];
 
     return AvailableBookingModel(
       id: json['id'] ?? '',
       userId: json['userId'] ?? '',
-      riderId: json['riderId'],
+      riderId: json['riderId'] ?? '',
       wasteCategory: json['wasteCategory'] ?? '',
       wasteImages: List<String>.from(json['wasteImages'] ?? []),
       binSize: json['binSize'] ?? '',
@@ -62,12 +69,17 @@ class AvailableBookingModel {
       vehicleType: json['vehicleType'] ?? '',
       paymentMethod: json['paymentMethod'] ?? '',
       status: json['status'] ?? '',
-      price: json['price'] != null ? (json['price'] as num).toDouble() : null,
+      price: json['price'] != null ? (json['price'] as num).toDouble() : 0.0,
       createdAt: createdAt is Map ? createdAt['\$date'] ?? '' : createdAt ?? '',
       updatedAt: updatedAt is Map ? updatedAt['\$date'] ?? '' : updatedAt ?? '',
+      isScheduled: json['isScheduled'] ?? false,
+      scheduledFor: scheduledFor is Map
+          ? scheduledFor['\$date'] ?? ''
+          : scheduledFor ?? '',
+      scheduledDate: json['scheduledDate'] ?? '',
       user: json['user'] != null
           ? BookingUserModel.fromJson(json['user'])
-          : null, // ✅ null triggers default BookingUserModel()
+          : null,
     );
   }
 

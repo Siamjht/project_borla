@@ -9,6 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/driver_map_controller.dart';
 import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/models/riderModels/bookingModels/rider_booking_model.dart';
+import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
+import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
 import 'package:project_borla/services/socket_service.dart';
 import 'package:project_borla/theme/app_color.dart';
 import '../../../../helpers/other_helper.dart';
@@ -167,7 +169,12 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
 
         isBottomSheet.value = true;
         CustomSnackbar.success(response.message);
-        Get.to(() => CustomerInfoScreen(booking: acceptedBooking.value,));
+        if(job.isScheduled){
+          ActivityController.instance.selectedBooking.value = acceptedBooking.value;
+          Get.to(() => ScheduleDetailScreen());
+        }else{
+          Get.to(() => CustomerInfoScreen(booking: acceptedBooking.value,));
+        }
       } else {
         CustomSnackbar.error(response.message);
       }

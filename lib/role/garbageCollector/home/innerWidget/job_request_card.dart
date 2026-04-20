@@ -24,7 +24,7 @@ class JobRequestCard extends StatelessWidget {
 
       return Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 20, bottom: job.isScheduled? 8 : 20, left: 20, right: 20),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16),
@@ -51,7 +51,7 @@ class JobRequestCard extends StatelessWidget {
                 // ── Title ──────────────────────────────────
                 Center(
                   child: CommonText(
-                    text: "job.scheduledFor" == null
+                    text: job.isScheduled
                         ? 'scheduled_garbage_pickup'.tr
                         : 'garbage_pickup_request'.tr,
                     fontSize: 18,
@@ -65,9 +65,9 @@ class JobRequestCard extends StatelessWidget {
                 const SizedBox(height: 4),
 
                 // ── Scheduled Pickup ────────────────────────
-                if ("job.scheduledFor" == null) ...[
+                if (job.isScheduled) ...[
                   _scheduledPickup(job),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                 ],
 
                 WasteDetailsWidget(job: job),
@@ -78,11 +78,11 @@ class JobRequestCard extends StatelessWidget {
                 locationSection(job),
 
                 const Divider(color: AppColors.black50, thickness: 1),
-                const SizedBox(height: 10),
+                SizedBox(height: job.isScheduled? 6 : 10),
 
                 paymentRow(job),
 
-                const SizedBox(height: 20),
+                SizedBox(height: job.isScheduled? 8 : 20),
 
                 actionButtons(context, job),
               ],
@@ -101,7 +101,7 @@ class JobRequestCard extends StatelessWidget {
       borderWidth: 0.2,
       borderRadius: 8,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(
           children: [
             Container(
@@ -128,7 +128,7 @@ class JobRequestCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   CommonText(
-                    text: "job.scheduledDate" ?? '',
+                    text: job.scheduledDate,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Colors.grey,
@@ -147,7 +147,7 @@ class JobRequestCard extends StatelessWidget {
                   const Icon(Icons.access_time_rounded,
                       color: AppColors.green500, size: 18),
                   CommonText(
-                    text: _formatTime("job.scheduledFor" ?? ''),
+                    text: _formatTime(job.scheduledFor),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textDark,

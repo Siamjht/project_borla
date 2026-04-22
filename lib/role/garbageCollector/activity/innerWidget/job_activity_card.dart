@@ -22,11 +22,13 @@ import 'common_widgets.dart';
 
 class ActivityCard extends StatelessWidget {
   final bool isDetailScreen;
+  final bool isActivityScreen;
   final RiderBookingModel booking; // ✅ real data
 
   ActivityCard({
     super.key,
     this.isDetailScreen = false,
+    this.isActivityScreen = false,
     required this.booking,
   });
 
@@ -65,6 +67,10 @@ class ActivityCard extends StatelessWidget {
             const SizedBox(height: 20),
             _viewDetailsButton(),
           ],
+          if(booking.isScheduled && !isActivityScreen)...[
+            const SizedBox(height: 16),
+            _startScheduleButton()
+          ]
         ],
       ),
     );
@@ -211,7 +217,7 @@ class ActivityCard extends StatelessWidget {
             ),
 
             CommonText(
-              text: booking.paymentMethod == 'cash' ? 'cash'.tr : 'hubtel_pay'.tr,
+              text: booking.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
               fontSize: 16,
             ),
           ],
@@ -252,6 +258,31 @@ class ActivityCard extends StatelessWidget {
         ),
         child: CommonText(
           text: 'view_details'.tr,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _startScheduleButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Get.to(()=> ArrivedScreen(bookingModel: booking));
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: CommonText(
+          text: "Start Ride",
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Colors.white,

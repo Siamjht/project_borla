@@ -295,7 +295,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                         onTap: () async {
                          final success = await _authCtrl.createDriver();
                          if(success){
-                           Get.to(() => DriverOtpScreen());
+                           Get.offAll(() => DriverOtpScreen());
                          }
                         },
                       ),),
@@ -358,7 +358,7 @@ class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
                         ],
                       ),
 
-                      const SizedBox(height: 70),
+                      const SizedBox(height: 300),
                     ],
                   ),
                 ),

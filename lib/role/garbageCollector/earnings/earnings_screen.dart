@@ -52,15 +52,25 @@ class EarningsScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              /// Balance Card
-              Obx(() => _buildBalanceCard(context, _earningCtrl.earningsData.value.balance)),
-
-              const SizedBox(height: 30),
-
               Obx(() {
+                if (_earningCtrl.isLoading.value) {
+                  return Container(
+                    height: 400.h,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(
+                      color: AppColors.green500,
+                    ),
+                  );
+                }
+
                 final data = _earningCtrl.earningsData.value;
                 return Column(
                   children: [
+                    /// Balance Card
+                    _buildBalanceCard(context, data.balance),
+
+                    const SizedBox(height: 30),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -78,7 +88,7 @@ class EarningsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -96,12 +106,13 @@ class EarningsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                    const SizedBox(height: 20),
+
+                    RecentTransactionsWidget(transactions: data.transactions),
                   ],
                 );
               }),
-
-              Obx(() => RecentTransactionsWidget(transactions: _earningCtrl.earningsData.value.transactions))
-
             ],
           ),
         ),

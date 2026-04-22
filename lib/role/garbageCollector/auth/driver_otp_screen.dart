@@ -5,7 +5,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:project_borla/controllers/authController/auth_controller.dart';
 import 'package:project_borla/features/auth/login_screen.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
-import 'package:project_borla/role/components/navBar/nav_bar.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../gen/custom_assets/assets.gen.dart';
@@ -73,6 +72,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                         cursorColor: AppColors.black100,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         appContext: context,
+                        keyboardType: TextInputType.number,
                         length: 4,
                         pinTheme: appOTPStyle(),
                         animationType: AnimationType.fade,
@@ -138,7 +138,8 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                          ),
                        ),),
                         const SizedBox(height: 40),
-                        CommonButton(
+                        Obx(() => CommonButton(
+                          isLoading: _authCtrl.isLoading.value,
                           titleText: "verify".tr,
                           firstGradient: AppColors.green500,
                           secondGradient: AppColors.green500,
@@ -150,7 +151,7 @@ class _DriverOtpScreenState extends State<DriverOtpScreen> {
                               // Get.to(() => DriverNavbar());
                             }
                           },
-                        ),
+                        ),),
                       ],
                     ),
                   ],

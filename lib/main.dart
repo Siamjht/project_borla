@@ -16,7 +16,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final Locale savedLocale = await LanguageService.getLocale();
   await PrefsHelper.getAllPrefData();
-  SocketServices.connectToSocket();
+  if(PrefsHelper.token.isNotEmpty){
+    SocketServices.connectToSocket();
+  }
   runApp(MyApp(locale: savedLocale));
 }
 

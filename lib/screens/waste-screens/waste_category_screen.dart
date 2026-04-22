@@ -43,51 +43,52 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 68, 17, 22),
-            child: Column(
-              children: [
-
-                // ── Header ──────────────────────────────────────
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                              color: Colors.black.withAlpha(40),
-                            ),
-                          ],
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 68, 17, 22),
+              child: Column(
+                children: [
+            
+                  // ── Header ──────────────────────────────────────
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                                color: Colors.black.withAlpha(40),
+                              ),
+                            ],
+                          ),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            iconSize: 22,
+                            icon: const Icon(Icons.arrow_back),
+                            onPressed: () => Get.back(),
+                          ),
                         ),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          iconSize: 22,
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () => Get.back(),
+                        SizedBox(width: 40),
+                        Text(
+                          'Select Waste Category',
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                      SizedBox(width: 40),
-                      Text(
-                        'Select Waste Category',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-
-                SizedBox(height: 42),
-
-                // ── Category Grid ────────────────────────────────
-                Expanded(
-                  child: GridView.builder(
+            
+                  SizedBox(height: 42),
+            
+                  // ── Category Grid ────────────────────────────────
+                  GridView.builder(
+                    shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -107,26 +108,26 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                       );
                     },
                   ),
-                ),
-
-                SizedBox(height: 20),
-
-                // ── Continue Button ──────────────────────────────
-                Obx(() {
-                  final selected = wasteController.selectedIndex.value;
-                  return GradientButton(
-                    text: 'Continue',
-                    onPressed: selected == -1
-                        ? () => CustomSnackbar.error('Please select a waste category')
-                        : () {
-                      // Store selected category in booking controller
-                      bookingController.selectedWasteCategory.value = categories[selected]['label'].toString().toLowerCase();
-                      Get.to(() => WasteQtyScreen());
-                    },
-                  );
-                }),
-
-              ],
+            
+                  SizedBox(height: 60),
+            
+                  // ── Continue Button ──────────────────────────────
+                  Obx(() {
+                    final selected = wasteController.selectedIndex.value;
+                    return GradientButton(
+                      text: 'Continue',
+                      onPressed: selected == -1
+                          ? () => CustomSnackbar.error('Please select a waste category')
+                          : () {
+                        // Store selected category in booking controller
+                        bookingController.selectedWasteCategory.value = categories[selected]['label'].toString().toLowerCase();
+                        Get.to(() => WasteQtyScreen());
+                      },
+                    );
+                  }),
+            
+                ],
+              ),
             ),
           ),
         ],

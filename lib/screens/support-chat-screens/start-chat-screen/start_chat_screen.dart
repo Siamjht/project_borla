@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/commonBackButton/common_back_button.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
@@ -62,7 +61,8 @@ class StartChatScreen extends StatelessWidget {
                   onTap: (){
                     Get.to(()=>UserSupportChatScreen());
                   },
-                )
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           )

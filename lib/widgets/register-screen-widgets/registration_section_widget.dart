@@ -29,7 +29,7 @@ class RegistrationSection extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
         color: Colors.white,
       ),
-      height: 666,
+      height: 700,
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
@@ -162,7 +162,7 @@ class RegistrationSection extends StatelessWidget {
                 onTap: () async {
                   final success = await _authCtrl.createUser();
                   if(success){
-                    Get.to(() => OtpScreen(isSignup: true,));
+                    Get.offAll(() => OtpScreen(isSignup: true,));
                   }
                 },
               ),),
@@ -225,7 +225,7 @@ class RegistrationSection extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 70),
+              const SizedBox(height: 300),
             ],
           ),
         ),

@@ -77,7 +77,8 @@ class CustomerSupportScreen extends StatelessWidget {
                 onTap: () {
                   Get.to(()=> RiderSupportChatScreen());
                 },
-              )
+              ),
+              const SizedBox(height: 20),
 
             ],
           ),

@@ -33,6 +33,7 @@ class OngoingScreen extends StatelessWidget {
             key: ValueKey(booking.id),
             booking: booking,
             isDetailScreen: true,
+            isActivityScreen: true,
           );
         },
       );

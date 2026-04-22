@@ -1,11 +1,16 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/controllers/mapController/user_map_controller.dart';
 import 'package:project_borla/role/components/customSnackbar/custom_snackbar.dart';
+import 'package:project_borla/screens/activity-screens/user_activity_screen.dart';
+import 'package:project_borla/screens/activity-screens/user_schedule_detail_screen.dart';
 import 'package:project_borla/screens/booking-accepted-screen/booking_accepted_screen.dart';
 import 'package:project_borla/screens/booking-requested-screen/booking_requested_screen.dart';
+import 'package:project_borla/screens/home-screens/user_nav_bar.dart';
 import 'package:project_borla/screens/payment-success-screens/payment_success_screeen.dart';
 import 'package:project_borla/screens/rider-arrived-screens/rider_arrived_screen.dart';
 import 'package:project_borla/utils/app_urls.dart';
@@ -13,6 +18,7 @@ import '../../helpers/other_helper.dart';
 import '../../models/api_response_model.dart';
 import '../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../models/userModels/saved_place_model.dart';
+import '../../screens/activity-screens/activity-controller/user_activity_controller.dart';
 import '../../screens/activity-screens/user_history_screen.dart';
 import '../../screens/rider-arrived-screens/innerWidget/payment_dialogs.dart';
 import '../../services/api_service.dart';
@@ -313,9 +319,16 @@ class BookingController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final booking = UserBookingModel.fromJson(response.body['data']);
-        
-        // Route based on booking status
-        _routeBasedOnBookingStatus(booking);
+
+        log("${booking.isScheduled} && ${booking.status}" );
+
+        if(booking.isScheduled && booking.status == BookingStatus.accepted){
+          UserActivityController.instance.selectedBooking.value = booking;
+          Get.to(()=> UserScheduleDetailScreen());
+        }else{
+          // Route based on booking status
+          _routeBasedOnBookingStatus(booking);
+        }
       } else {
         CustomSnackbar.error(response.message);
       }
@@ -353,7 +366,10 @@ class BookingController extends GetxController {
       case BookingStatus.arrivedDropOff:
       case BookingStatus.completed:
       case BookingStatus.cancelled:
-        Get.to(()=> UserHistoryScreen());
+        UserActivityController.instance.selectedIndex.value = 2;
+        UserActivityController.instance.fetchHistory();
+        UserNavBarController.instance.tabIndex.value = 1;
+        Get.to(()=> UserNavBar());
         break;
     }
   }

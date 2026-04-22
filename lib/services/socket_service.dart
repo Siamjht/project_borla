@@ -18,12 +18,19 @@ import 'sound_service.dart';
 
 
 class SocketServices {
-  static late io.Socket socket;
+  static io.Socket? _socket;
+  static io.Socket get socket {
+    if (_socket == null) {
+      throw Exception("Socket not initialized. Call connectToSocket() first.");
+    }
+    return _socket!;
+  }
+  
   bool show = false;
 
   // <<<============ Connect with socket ====================>>>
   static void connectToSocket() {
-    socket = io.io(
+    _socket = io.io(
       AppUrls.socketUrl,
       io.OptionBuilder()
           .setTransports(['websocket'])
@@ -36,7 +43,9 @@ class SocketServices {
       listenForNewMessages();
       listenForNotificationEvents();
       if(PrefsHelper.myRole == 'rider'){
-        listenForNewBooking();
+        if (Get.isRegistered<DriverHomeController>() && DriverHomeController.instance.isOnline.value) {
+          listenForNewBooking();
+        }
         listenForPaymentEvents();
         listenForCashPaymentCompleted();
       }else if(PrefsHelper.myRole == 'user'){
@@ -470,15 +479,15 @@ class SocketServices {
   /// Disconnects the socket connection
   /// Should be called when logging out or closing the app
   static void disconnect() {
-    if (socket.connected) {
-      socket.disconnect();
+    if (isConnected) {
+      _socket!.disconnect();
       log('Socket disconnected');
     }
   }
 
   /// Checks if the socket is currently connected
   /// Returns: true if connected, false otherwise
-  static bool get isConnected => socket.connected;
+  static bool get isConnected => _socket != null && _socket!.connected;
 }
 
   /// Get Chat Messages

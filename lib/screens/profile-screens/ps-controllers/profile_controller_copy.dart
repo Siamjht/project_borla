@@ -43,7 +43,7 @@ class ProfileControllerCopy extends GetxController {
       context: context,
       initialDate: DateTime(1995),
       firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
+      lastDate: DateTime.now().subtract(const Duration(days: 1)),
     );
 
     if (picked != null) {

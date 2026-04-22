@@ -63,20 +63,37 @@ class OtherHelper {
   }
 
   static Future<String> openDatePicker(
-      TextEditingController controller,
-      ) async {
+    TextEditingController controller, {
+    DateTime? initialDate,
+    DateTime? firstDate,
+    DateTime? lastDate,
+  }) async {
+    final DateTime now = DateTime.now();
+    final DateTime first = firstDate ?? DateTime(1900);
+    final DateTime last = lastDate ?? now.subtract(const Duration(days: 1));
+
+    DateTime initial = initialDate ?? now.subtract(const Duration(days: 365 * 18));
+
+    if (initial.isAfter(last)) {
+      initial = last;
+    }
+
+    if (initial.isBefore(first)) {
+      initial = first;
+    }
+
     final DateTime? picked = await showDatePicker(
       builder: (context, child) => Theme(
           data: Theme.of(context).copyWith(
-            colorScheme:  const ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: AppColors.green500,
             ),
           ),
           child: child!),
       context: Get.context!,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      initialDate: initial,
+      firstDate: first,
+      lastDate: last,
     );
     if (picked != null) {
       controller.text = "${picked.year}-${picked.month}-${picked.day}";

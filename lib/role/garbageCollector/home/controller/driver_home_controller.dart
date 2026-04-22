@@ -58,18 +58,26 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     // Handle socket listeners when online status changes
     ever(isOnline, (bool online) {
       if (online) {
-        SocketServices.listenForNewBooking();
+        if (SocketServices.isConnected) {
+          SocketServices.listenForNewBooking();
+        }
         getAvailableBookings();
       } else {
-        SocketServices.socket.off(SocketEvents.bookingNewOn);
+        if (SocketServices.isConnected) {
+          SocketServices.socket.off(SocketEvents.bookingNewOn);
+        }
       }
     });
 
     // Ensure initial state is applied
     if (isOnline.value) {
-      SocketServices.listenForNewBooking();
+      if (SocketServices.isConnected) {
+        SocketServices.listenForNewBooking();
+      }
     } else {
-      SocketServices.socket.off(SocketEvents.bookingNewOn);
+      if (SocketServices.isConnected) {
+        SocketServices.socket.off(SocketEvents.bookingNewOn);
+      }
     }
   }
 

@@ -17,11 +17,13 @@ import '../user_schedule_detail_screen.dart';
 
 class UserActivityCard extends StatelessWidget {
   final bool isDetailScreen;
+  final bool isScheduled;
   final UserBookingModel booking;
 
   const UserActivityCard({
     super.key,
     this.isDetailScreen = false,
+    this.isScheduled = false,
     required this.booking,
   });
 
@@ -56,7 +58,7 @@ class UserActivityCard extends StatelessWidget {
           const Divider(color: AppColors.gray200, thickness: 1),
           const SizedBox(height: 10),
           paymentRow(),
-          if (isDetailScreen) ...[
+          if (isDetailScreen && !isScheduled) ...[
             const SizedBox(height: 20),
             _viewDetailsButton(),
           ],
@@ -226,7 +228,7 @@ class UserActivityCard extends StatelessWidget {
             ),
 
             CommonText(
-              text: booking.paymentMethod == 'cash' ? 'Cash' : 'Hubtel Pay',
+              text: booking.paymentMethod == 'cash' ? 'Cash' : 'MTN Momo Pay',
               fontSize: 16,
             ),
           ],

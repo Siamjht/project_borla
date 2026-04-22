@@ -103,13 +103,13 @@ class AuthController extends GetxController {
               loginModel.data.user.role
           );
         }
-        if(loginModel.data.user.role == "user"){
-          Get.to(()=>UserNavBar());
-        }else{
-          Get.to(()=>DriverNavbar());
-        }
         SocketServices.connectToSocket();
         CustomSnackbar.success(loginModel.message);
+        if(loginModel.data.user.role == "user"){
+          Get.offAll(()=>UserNavBar());
+        }else{
+          Get.offAll(()=>DriverNavbar());
+        }
         return true;
       } else {
         CustomSnackbar.error(response.message);

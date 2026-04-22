@@ -78,7 +78,7 @@ class UserScheduleDetailScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16,),
-                  UserActivityCard(booking: booking, isDetailScreen: true,)
+                  UserActivityCard(booking: booking, isDetailScreen: true, isScheduled: true,)
                 ],
               ),
             ),

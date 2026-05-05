@@ -11,11 +11,13 @@ class UserActivityController extends GetxController {
   final RxInt selectedIndex = 0.obs;
 
   // ── Loading States ─────────────────────────────────────
+  final RxBool isPendingLoading = false.obs;
   final RxBool isOngoingLoading = false.obs;
   final RxBool isScheduleLoading = false.obs;
   final RxBool isHistoryLoading = false.obs;
 
   // ── Data ───────────────────────────────────────────────
+  final RxList<UserBookingModel> pendingBookings = <UserBookingModel>[].obs;
   final RxList<UserBookingModel> ongoingBookings = <UserBookingModel>[].obs;
   final RxList<UserBookingModel> scheduledBookings = <UserBookingModel>[].obs;
   final RxList<UserBookingModel> historyBookings = <UserBookingModel>[].obs;
@@ -26,6 +28,25 @@ class UserActivityController extends GetxController {
 
   void changeTab(int index) {
     selectedIndex.value = index;
+  }
+
+  // ── Fetch Ongoing (accepted/arrived_pickup/in_progress) ───────────────────────────
+  Future<void> fetchPending() async {
+    isPendingLoading.value = true;
+    try {
+      final response = await ApiService.get(
+        AppUrls.getMyBookings(status: 'pending'),
+      );
+      if (response.statusCode == 200) {
+        final List data = response.body['data'] ?? [];
+        pendingBookings.value =
+            data.map((e) => UserBookingModel.fromJson(e)).toList();
+      } else {
+        CustomSnackbar.error(response.message);
+      }
+    } finally {
+      isPendingLoading.value = false;
+    }
   }
 
   // ── Fetch Ongoing (accepted/arrived_pickup/in_progress) ───────────────────────────

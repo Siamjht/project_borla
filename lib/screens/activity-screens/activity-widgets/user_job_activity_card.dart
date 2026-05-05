@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/models/userModels/bookingModels/user_booking_model.dart';
 import 'package:project_borla/theme/app_color.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../../../role/components/image/shimmer_image_loader.dart';
 import '../../../role/components/text/common_text.dart';
@@ -18,12 +20,14 @@ import '../user_schedule_detail_screen.dart';
 class UserActivityCard extends StatelessWidget {
   final bool isDetailScreen;
   final bool isScheduled;
+  final bool isPending;
   final UserBookingModel booking;
 
   const UserActivityCard({
     super.key,
     this.isDetailScreen = false,
     this.isScheduled = false,
+    this.isPending = false,
     required this.booking,
   });
 
@@ -49,7 +53,7 @@ class UserActivityCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          userRow(),
+          isPending? demoUserRowShimmer() : userRow(),
           const SizedBox(height: 10),
           const Divider(color: AppColors.gray200, thickness: 1),
           const SizedBox(height: 10),
@@ -107,7 +111,7 @@ class UserActivityCard extends StatelessWidget {
             ],
           ),
         ),
-        activityController.selectedIndex.value == 0
+        activityController.selectedIndex.value == 1
             ? Row(
           children: [
             InkWell(
@@ -156,6 +160,96 @@ class UserActivityCard extends StatelessWidget {
             color: AppColors.white,
             fontSize: 12,
             fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget demoUserRowShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Avatar circle
+          Container(
+            width: 56,
+            height: 56,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Name + rating
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 18,
+                  width: double.infinity * 0.55, // ~55% width
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Container(
+                      width: 14,
+                      height: 14,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      height: 14,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          12.horizontalSpace,
+          // Trailing — swap based on selectedIndex
+          _shimmerTrailing(),
+        ],
+      ),
+    );
+  }
+
+  Widget _shimmerTrailing() {
+    return Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Container(
+          width: 40,
+          height: 40,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
           ),
         ),
       ],
@@ -251,9 +345,9 @@ class UserActivityCard extends StatelessWidget {
         onPressed: () {
           activityController.selectedBooking.value = booking;
 
-          if (activityController.selectedIndex.value == 1) {
+          if (activityController.selectedIndex.value == 2) {
             Get.to(() => UserScheduleDetailScreen());
-          } else if (activityController.selectedIndex.value == 0) {
+          } else if (activityController.selectedIndex.value == 1) {
             _routeBasedOnBookingStatus(booking);
           }
         },

@@ -81,7 +81,7 @@ class _BookingRequestedScreenState extends State<BookingRequestedScreen> {
                       secondGradient: AppColors.transparent,
                       onTap: () {
                         navbarController.tabIndex.value = 0;
-                        Get.to(()=>UserNavBar());
+                        Get.to(()=> UserNavBar());
                         // Get.to(()=> BookingAcceptedScreen());
                       },
                     ),

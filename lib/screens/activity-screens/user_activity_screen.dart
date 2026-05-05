@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:project_borla/screens/activity-screens/user_pending_screen.dart';
 
 import 'package:project_borla/screens/activity-screens/user_schedule_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
@@ -28,7 +29,7 @@ class _UserActivityScreenState extends State<UserActivityScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      userActivityCtrl.fetchOngoing();
+      // userActivityCtrl.fetchPending();
     },);
   }
   @override
@@ -77,12 +78,15 @@ class _UserActivityScreenState extends State<UserActivityScreen> {
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
+        userActivityCtrl.fetchPending();
+        return UserPendingScreen(key: ValueKey(0),);
+      case 1:
         userActivityCtrl.fetchOngoing();
         return UserOngoingScreen(key: ValueKey(0),);
-      case 1:
+      case 2:
         userActivityCtrl.fetchScheduled();
         return const UserScheduleScreen(key: ValueKey(1));
-      case 2:
+      case 3:
         userActivityCtrl.fetchHistory();
         return const UserHistoryScreen(key: ValueKey(2));
       default:

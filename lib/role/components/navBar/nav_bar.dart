@@ -7,7 +7,7 @@ import 'controller/nav_bar_controller.dart';
 class DriverNavbar extends StatelessWidget {
   DriverNavbar({super.key});
 
-  final MainNavController controller = Get.put(MainNavController());
+  final MainNavController controller = Get.find<MainNavController>();
 
   @override
   Widget build(BuildContext context) {

@@ -59,7 +59,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
 
             Center(
               child: Text(
-                'Current location...',
+                'current_location'.tr,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
             ),
@@ -78,7 +78,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
               padding: const EdgeInsets.fromLTRB(22, 0, 22, 0),
               child: CustomTextField(
                 controller: _bookingCtrl.bookingLocationTextCtrl,
-                hint: 'Enter the Location...',
+                hint: 'enter_location_hint_two'.tr,
                 prefix: Image.asset('assets/images/fourth_pin.png'),
                 suffix: InkWell(
                   onTap: () => _bookingCtrl.bookingLocationTextCtrl.clear(),
@@ -104,7 +104,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
 
                           SizedBox(width: 8,),
 
-                          Text('Saved Places', style: TextStyle(
+                          Text('saved_places'.tr, style: TextStyle(
 
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -144,7 +144,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(22, 0, 22, 16),
                   child: Text(
-                    'No saved places yet',
+                    'no_saved_places'.tr,
                     style: TextStyle(
                       fontSize: 13,
                       color: AppColors.gray400,
@@ -216,7 +216,7 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
             GradientButton(
               height: 42,
               width: Get.width * 0.8,
-              text: "Next",
+              text: "next".tr,
               onPressed: () {
                 Get.to(()=> ConfirmLocationScreen());
                 },

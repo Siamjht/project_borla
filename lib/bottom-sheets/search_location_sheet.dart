@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:project_borla/theme/ripple.dart';
 
 class SearchLocationSheet extends StatefulWidget {
@@ -41,7 +42,7 @@ class _SearchLocationSheetState extends State<SearchLocationSheet> {
           const SizedBox(height: 16),
 
 
-          Text('Searching your location...', style: TextStyle(
+          Text('searching_location'.tr, style: TextStyle(
 
           fontSize: 22,
 

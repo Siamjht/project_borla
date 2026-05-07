@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/utils/app_dropdown.dart';
 
@@ -29,14 +26,14 @@ class WasteQtyScreen extends StatefulWidget {
 
 class _WasteQtyScreenState extends State<WasteQtyScreen> {
   final bookingCtrl = Get.find<BookingController>();
-  final dateTimeCtrl = Get.put(DateTimePickerController());
+  final dateTimeCtrl = Get.find<DateTimePickerController>();
 
   // Bin size map: display label → api value
   final List<Map<String, String>> binSizes = [
-    {'label': 'Small (50L)', 'value': 'small (50L)'},
-    {'label': 'Medium (120L)', 'value': 'medium (120L)'},
-    {'label': 'Large (240L)', 'value': 'large (240L)'},
-    {'label': 'Extra Large (360L)', 'value': 'extra large (360L)'},
+    {'label': 'bin_small'.tr, 'value': 'small (50L)'},
+    {'label': 'bin_medium'.tr, 'value': 'medium (120L)'},
+    {'label': 'bin_large'.tr, 'value': 'large (240L)'},
+    {'label': 'bin_extra_large'.tr, 'value': 'extra large (360L)'},
   ];
 
   final List<int> binQuantities = [0, 1, 2, 3, 4, 5];
@@ -47,19 +44,19 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
     final wasteSize = bookingCtrl.wasteSizeController.text.trim();
 
     if (binSize.isEmpty) {
-      CustomSnackbar.error('Please select a bin size');
+      CustomSnackbar.error('bin_size_required'.tr);
       return;
     }
     if (binQty == -1) {
-      CustomSnackbar.error('Please select a bin quantity');
+      CustomSnackbar.error('bin_qty_required'.tr);
       return;
     }
     if (wasteSize.isEmpty) {
-      CustomSnackbar.error('Please enter waste size');
+      CustomSnackbar.error('waste_size_required'.tr);
       return;
     }
     if (int.tryParse(wasteSize) == null) {
-      CustomSnackbar.error('Waste size must be a valid number');
+      CustomSnackbar.error('waste_size_invalid'.tr);
       return;
     }
     Get.to(() => ChoosePaymentScreen());
@@ -100,7 +97,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
 
                       // ── Bin Size ───────────────────────────
                       Text(
-                        'Bin Size',
+                        'bin_size'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
@@ -115,7 +112,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                             value: bookingCtrl.selectedBinSize.value.isEmpty
                                 ? null
                                 : bookingCtrl.selectedBinSize.value,
-                            hint: const Text('Select Bin Size'),
+                            hint: Text('select_bin_size'.tr),
                             isExpanded: true,
                             underline: Container(),
                             items: binSizes
@@ -137,7 +134,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
 
                       // ── Bin Quantity ───────────────────────
                       Text(
-                        'Bin Quantity',
+                        'bin_quantity'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
@@ -152,7 +149,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                             value: bookingCtrl.selectedBinQuantity.value == -1
                                 ? null
                                 : bookingCtrl.selectedBinQuantity.value,
-                            hint: const Text('Select Bin Quantity'),
+                            hint: Text('select_bin_quantity'.tr),
                             isExpanded: true,
                             underline: Container(),
                             items: binQuantities
@@ -160,7 +157,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                                   (qty) => DropdownMenuItem(
                                     value: qty,
                                     child: Text(
-                                      qty == 5 ? 'More than 5' : qty.toString(),
+                                      qty == 5 ? 'more_than_5'.tr : qty.toString(),
                                     ),
                                   ),
                                 )
@@ -177,7 +174,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
 
                       // ── Waste Size ─────────────────────────
                       Text(
-                        'Waste Size (KG)',
+                        'waste_size_kg'.tr,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
@@ -188,7 +185,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
 
                       CustomTextField(
                         controller: bookingCtrl.wasteSizeController,
-                        hint: 'Enter waste size in kg',
+                        hint: 'enter_waste_size_hint'.tr,
                         keyboardType: TextInputType.number,
                         prefix: Image.asset(
                           'assets/images/second_pin_2.png',
@@ -206,7 +203,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 CommonText(
-                                  text: "Waste Has Been Scheduled",
+                                  text: "waste_scheduled_success".tr,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
                                   padding: EdgeInsets.only(bottom: 10),
@@ -218,7 +215,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                                   },
                                   child: CommonText(
                                     fontSize: 18,
-                                    text: "Cancel",
+                                    text: "cancel".tr,
                                     underline: true,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.orange500,
@@ -233,7 +230,7 @@ class _WasteQtyScreenState extends State<WasteQtyScreen> {
                         children: [
                           Expanded(
                             child: GradientButton(
-                              text: 'Continue',
+                              text: 'continue'.tr,
                               isLoading: bookingCtrl.isCreateBookingLoading,
                               onPressed: _onContinue,
                             ),

@@ -119,9 +119,9 @@ class JobRequestCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CommonText(
+                  CommonText(
                     textAlign: TextAlign.start,
-                    text: 'Scheduled Pickup',
+                    text: 'scheduled_pickup'.tr,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textDark,

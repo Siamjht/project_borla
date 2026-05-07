@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 
 class WasteScreenHeader extends StatelessWidget {
   const WasteScreenHeader({
@@ -41,7 +40,7 @@ class WasteScreenHeader extends StatelessWidget {
 
           SizedBox(width: 70),
 
-          Text('Waste Quantity', style: TextStyle(
+          Text('waste_quantity'.tr, style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w500
           ),)
@@ -62,13 +61,13 @@ class WasteScreenSubHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Waste Image', style: TextStyle(
+        Text('waste_image'.tr, style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
             color: Colors.grey.shade700
         )),
         Spacer(),
-        Text('Helps estimate size accurately', style: TextStyle(
+        Text('helps_estimate_size'.tr, style: TextStyle(
 
           letterSpacing: 0.0001,
           color: Colors.grey.shade500,

@@ -20,7 +20,7 @@ class HistoryScreen extends StatelessWidget {
 
       if (ctrl.historyBookings.isEmpty) {
         return Center(
-          child: CommonText(text: 'No completed bookings', fontSize: 16),
+          child: CommonText(text: 'no_completed_bookings'.tr, fontSize: 16),
         );
       }
 

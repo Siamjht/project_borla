@@ -63,7 +63,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
                 SizedBox(width: 90),
 
-                Text('Add Place', style: TextStyle(
+                Text('add_place'.tr, style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500
                 ),)
@@ -84,7 +84,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
               children: [
                 IconLabelAction(
                     icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
-                    label: 'Home',
+                    label: 'home'.tr,
                     selected: _bookingCtrl.selectedPlaceType.value == 'Home',
                     onTap: () {
                       _bookingCtrl.selectedPlaceType.value = 'Home';
@@ -93,7 +93,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 ),
                 IconLabelAction(
                     icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
-                    label: 'Office',
+                    label: 'office'.tr,
                     selected: _bookingCtrl.selectedPlaceType.value == 'Office',
                     onTap: () {
                       _bookingCtrl.selectedPlaceType.value = 'Office';
@@ -102,7 +102,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 ),
                 IconLabelAction(
                     icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
-                    label: 'Shop',
+                    label: 'shop'.tr,
                     selected: _bookingCtrl.selectedPlaceType.value == 'Shop',
                     onTap: () {
                       _bookingCtrl.selectedPlaceType.value = 'Shop';
@@ -111,7 +111,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 ),
                 IconLabelAction(
                     icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
-                    label: 'Hotel',
+                    label: 'hotel'.tr,
                     selected: _bookingCtrl.selectedPlaceType.value == 'Hotel',
                     onTap: () {
                       _bookingCtrl.selectedPlaceType.value = 'Hotel';

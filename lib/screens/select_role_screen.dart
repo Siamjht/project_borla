@@ -20,7 +20,7 @@ class SelectRoleScreen extends StatefulWidget {
 class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
 
-  AuthController authController = Get.put(AuthController());
+  AuthController authController = Get.find<AuthController>();
 
   bool agree = false ;
   //RxString selectedRole = "".obs;

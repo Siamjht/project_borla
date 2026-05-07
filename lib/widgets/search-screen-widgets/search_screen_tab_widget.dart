@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 
 import '../../screens/search-place-screens/saved_places_screen.dart';
 
@@ -37,7 +36,7 @@ class SearchScreenTabButtons extends StatelessWidget {
             children: [
               Image.asset('assets/images/tab_icon_one_2.png', scale: 3.4,),
               SizedBox(width: 6,),
-              Text('Select from map', style: TextStyle(
+              Text('select_from_map'.tr, style: TextStyle(
 
                   fontSize: 15
 
@@ -70,7 +69,7 @@ class SearchScreenTabButtons extends StatelessWidget {
             children: [
               Image.asset('assets/images/saved_icon_2.png', scale: 4.8,),
               SizedBox(width: 6,),
-              Text('Saved Places', style: TextStyle(
+              Text('saved_places'.tr, style: TextStyle(
 
                   fontSize: 15
 

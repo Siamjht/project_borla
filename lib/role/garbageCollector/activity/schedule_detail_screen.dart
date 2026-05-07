@@ -28,7 +28,7 @@ class ScheduleDetailScreen extends StatelessWidget {
           child: CommonBackButton(),
         ),
         title: CommonText(
-          text: 'Ride Details',
+          text: 'ride_details'.tr,
           color: AppColors.textDark,
           fontSize: 18,
         ),
@@ -51,8 +51,8 @@ class ScheduleDetailScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const CommonText(
-                            text: 'Ride scheduled!',
+                          CommonText(
+                            text: 'ride_scheduled'.tr,
                             color: AppColors.green500,
                             fontSize: 20,
                           ),
@@ -101,7 +101,7 @@ class ScheduleDetailScreen extends StatelessWidget {
   }
 
   String _formatScheduledDate(String? isoDate) {
-    if (isoDate == null || isoDate.isEmpty) return 'Not scheduled';
+    if (isoDate == null || isoDate.isEmpty) return 'not_scheduled'.tr;
     try {
       final dt = DateTime.parse(isoDate).toLocal();
       final days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

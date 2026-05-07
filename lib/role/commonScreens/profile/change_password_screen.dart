@@ -15,7 +15,7 @@ class ChangePasswordScreen extends StatelessWidget {
   bool isUser;
   ChangePasswordScreen({super.key, this.isUser = false});
 
-  final _settingsCtrl = Get.put(SettingController());
+  final _settingsCtrl = Get.find<SettingController>();
 
   @override
   Widget build(BuildContext context) {

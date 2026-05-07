@@ -1,10 +1,8 @@
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/gen/custom_assets/assets.gen.dart';
-import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/garbageCollector/home/innerWidget/job_request_card.dart';
 
@@ -24,7 +22,7 @@ class DriverHomeScreen extends StatefulWidget {
 
 class _DriverHomeScreenState extends State<DriverHomeScreen> {
   final ProfileController _profileCtl = Get.find<ProfileController>();
-  final _driverHomeCtrl = Get.put(DriverHomeController());
+  final _driverHomeCtrl = Get.find<DriverHomeController>();
 
   @override
   void initState() {
@@ -122,9 +120,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                           activeThumbColor: AppColors.white,
                           inactiveThumbColor: AppColors.white,
                           inactiveTrackColor: AppColors.gray200,
-                          onChanged: _driverHomeCtrl.isToggleLoading.value
-                              ? null  // ✅ disable while loading
-                              : _driverHomeCtrl.toggleOnline,
+                          onChanged: (value) {},
+                          // onChanged: _driverHomeCtrl.isToggleLoading.value
+                          //     ? null  // ✅ disable while loading
+                          //     : _driverHomeCtrl.toggleOnline,
                         )),
                       ],
                     ),

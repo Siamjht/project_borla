@@ -53,7 +53,7 @@ class WasteContainer extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                'Capture Waste Photo',
+                'capture_waste_photo'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 17,
@@ -62,7 +62,7 @@ class WasteContainer extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                'Take a clear photo of the waste',
+                'take_clear_photo'.tr,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 12,

@@ -53,7 +53,6 @@ class DriverHomeController extends GetxController with GetTickerProviderStateMix
     );
     animation = AlwaysStoppedAnimation(1.0);
     isOnline.value = PrefsHelper.onlineStatus;
-    log("PrefsHelper.onlineStatus:${PrefsHelper.onlineStatus}");
 
     // Handle socket listeners when online status changes
     ever(isOnline, (bool online) {

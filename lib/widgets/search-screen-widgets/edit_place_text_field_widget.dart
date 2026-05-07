@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 import '../custom_text_field.dart';
@@ -22,7 +23,7 @@ class EditPlaceTextFields extends StatelessWidget {
 
         const SizedBox(height: 6),
 
-        Text('Place Title', style: TextStyle(
+        Text('place_title'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -31,13 +32,13 @@ class EditPlaceTextFields extends StatelessWidget {
 
         CustomTextField(
           controller: editPlaceController.titleController,
-          hint: 'Hotel',
+          hint: 'hotel'.tr,
           prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5,),
         ),
 
         const SizedBox(height: 14),
 
-        Text('Place Name', style: TextStyle(
+        Text('place_name'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -45,13 +46,13 @@ class EditPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 6),
 
         CustomTextField(
-          hint: 'Chittagong, Ghana',
+          hint: 'enter_place_name_hint'.tr,
           prefix: Image.asset('assets/images/second_pin_2.png' , scale: 3.5,),
         ),
 
         const SizedBox(height: 14),
 
-        Text('Address', style: TextStyle(
+        Text('address'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -59,7 +60,7 @@ class EditPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 6),
 
         CustomTextField(
-          hint: 'Studio 08 Jake Stream',
+          hint: 'enter_location_hint'.tr,
           prefix: Image.asset('assets/images/third_pin.png'),
           suffix: Padding(
             padding: const EdgeInsets.all(3.0),
@@ -79,7 +80,7 @@ class EditPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 48),
 
         GradientButton(
-          text: 'Save Place',
+          text: 'save_place'.tr,
           onPressed: () {
             Navigator.pop(context);
             //Get.to(OtpScreen());

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import '../../../../../models/riderModels/earnings_model.dart';
 
@@ -16,8 +17,8 @@ class RecentTransactionsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12,),
-        const CommonText(
-          text: 'Recent Transaction',
+        CommonText(
+          text: 'recent_transactions'.tr,
           fontSize: 18,
           fontWeight: FontWeight.w500,
           color: Colors.black,

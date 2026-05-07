@@ -38,7 +38,7 @@ class EarningsScreen extends StatelessWidget {
             children: [
               Center(
                 child: CommonText(
-                  text: 'Earning',
+                  text: 'earning'.tr,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textDark,
@@ -75,13 +75,13 @@ class EarningsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _StatCard(
-                          title: 'Total Earnings',
+                          title: 'total_earnings'.tr,
                           value: 'GH₵ ${data.totalEarnings}',
                           bgColor: AppColors.green50,
                           textColor: AppColors.green500,
                         ),
                         _StatCard(
-                          title: 'Ride Completed',
+                          title: 'ride_completed'.tr,
                           value: '${data.rideCompleted}',
                           bgColor: AppColors.blue50,
                           textColor: AppColors.deepBlue,
@@ -93,13 +93,13 @@ class EarningsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _StatCard(
-                          title: 'Commission',
+                          title: 'commission'.tr,
                           value: '-GH₵ ${data.commission}',
                           bgColor: AppColors.red50,
                           textColor: AppColors.red500,
                         ),
                         _StatCard(
-                          title: 'Cash Received',
+                          title: 'cash_received'.tr,
                           value: 'GH₵ ${data.cashReceived}',
                           bgColor: AppColors.yellow50,
                           textColor: AppColors.deepOlive,
@@ -181,9 +181,9 @@ class EarningsScreen extends StatelessWidget {
             /// Tabs
             Row(
               children: [
-                _TabItem(title: 'Today', index: 0, controller: controller),
-                _TabItem(title: 'Weekly', index: 1, controller: controller),
-                _TabItem(title: 'Monthly', index: 2, controller: controller),
+                _TabItem(title: 'today'.tr, index: 0, controller: controller),
+                _TabItem(title: 'weekly'.tr, index: 1, controller: controller),
+                _TabItem(title: 'monthly'.tr, index: 2, controller: controller),
               ],
             ),
           ],
@@ -227,8 +227,8 @@ class EarningsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CommonText(
-                  text: 'My Balance',
+                CommonText(
+                  text: 'my_balance'.tr,
                   color: AppColors.white,
                   fontSize: 16,
                 ),
@@ -251,7 +251,7 @@ class EarningsScreen extends StatelessWidget {
                         buttonRadius: 8,
                         firstGradient: AppColors.black200,
                         secondGradient: AppColors.black200,
-                        titleText: '+ Top Up',
+                        titleText: 'top_up'.tr,
                       ),
                     ),
                     Expanded(
@@ -262,7 +262,7 @@ class EarningsScreen extends StatelessWidget {
                         buttonRadius: 8,
                         firstGradient: AppColors.green300,
                         secondGradient: AppColors.green300,
-                        titleText: 'Withdraw',
+                        titleText: 'withdraw'.tr,
                       ),
                     ),
                   ],

@@ -29,7 +29,7 @@ class ChatListScreen extends StatefulWidget {
 
 class _ChatListScreenState extends State<ChatListScreen> {
 
-  final _ctrl = Get.put(ChatController());
+  final _ctrl = Get.find<ChatController>();
 
   @override
   void initState() {

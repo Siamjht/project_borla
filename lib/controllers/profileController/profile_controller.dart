@@ -41,27 +41,28 @@ class ProfileController extends GetxController {
   }
 
 //  ── Populate form fields from profile ──
-  void _populateFields(User user) {
-    nameController.text = user.name;
-    phoneController.text = user.phoneNumber;
-    addressController.text = user.locationName;
-    if(user.dateOfBirth.isNotEmpty){
-      dateOfBirthController.text = OtherHelper.formatDate(isoDate: user.dateOfBirth);
-      isoDateController.text = user.dateOfBirth;
-    }
-    imagePath.value = user.profilePicture;
-    if(user.ghanaCardId.isNotEmpty){
-      ghanaICard.value = user.ghanaCardId.first;
-    }
-    bool isOnline = user.onlineStatus == "online";
-    PrefsHelper.onlineStatus = isOnline;
-    
-    if (Get.isRegistered<DriverHomeController>()) {
-      Get.find<DriverHomeController>().isOnline.value = isOnline;
-    }
-    
-    log("user.onlineStatus: ${user.onlineStatus}");
-  }
+   void _populateFields(User user) {
+     nameController.text = user.name;
+     phoneController.text = user.phoneNumber;
+     addressController.text = user.locationName;
+     if(user.dateOfBirth.isNotEmpty){
+       dateOfBirthController.text = OtherHelper.formatDate(isoDate: user.dateOfBirth);
+       isoDateController.text = user.dateOfBirth;
+     }
+     imagePath.value = user.profilePicture;
+     if(user.ghanaCardId.isNotEmpty){
+       ghanaICard.value = user.ghanaCardId.first;
+     }
+     bool isOnline = user.onlineStatus == "online";
+     PrefsHelper.onlineStatus = isOnline;
+
+     if (Get.isRegistered<DriverHomeController>()) {
+       Get.find<DriverHomeController>().isOnline.value = isOnline;
+       log("isOnline.value ${Get.find<DriverHomeController>().isOnline.value}");
+     }
+     log("PrefsHelper.onlineStatus ${PrefsHelper.onlineStatus}");
+     log("user.onlineStatus: ${user.onlineStatus}");
+   }
 
   // ── Get Profile ──
   Future<void> getProfile() async {

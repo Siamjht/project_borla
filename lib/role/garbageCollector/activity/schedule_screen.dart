@@ -30,7 +30,7 @@ class ScheduleScreen extends StatelessWidget {
               imageSrc: 'assets/images/scheduleImg.png',
               imageType: ImageType.png,
             ),
-            const CommonText(text: 'No scheduled rides yet', fontSize: 18),
+            CommonText(text: 'no_scheduled_rides'.tr, fontSize: 18),
           ],
         );
       }

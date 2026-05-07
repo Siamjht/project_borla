@@ -15,7 +15,7 @@ class IncomingCallScreen extends StatefulWidget {
 }
 
 class _IncomingCallScreenState extends State<IncomingCallScreen> {
-  CallController controller = Get.put(CallController());
+  CallController controller = Get.find<CallController>();
 
   @override
   void initState() {
@@ -38,8 +38,8 @@ class _IncomingCallScreenState extends State<IncomingCallScreen> {
 
                 Obx(() => ShakeWidget(
                     isActive: controller.isRinging.value,
-                    child: const CommonText(
-                      text: 'Incoming Call',
+                    child: CommonText(
+                      text: 'incoming_call'.tr,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                     ),

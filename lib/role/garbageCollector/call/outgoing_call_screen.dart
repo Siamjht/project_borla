@@ -14,7 +14,7 @@ class OutgoingCallScreen extends StatefulWidget {
 }
 
 class _OutgoingCallScreenState extends State<OutgoingCallScreen> {
-  final CallController controller = Get.put(CallController());
+  final CallController controller = Get.find<CallController>();
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _OutgoingCallScreenState extends State<OutgoingCallScreen> {
                 /// CALLING TEXT WITH DOT ANIMATION
                 Obx(
                       () => CommonText(
-                    text: 'Calling${'.' * controller.callingDots.value}',
+                    text: '${'calling'.tr}${'.' * controller.callingDots.value}',
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   ),

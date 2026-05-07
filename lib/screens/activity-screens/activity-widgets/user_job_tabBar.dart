@@ -14,7 +14,7 @@ class UserJobsTabBar extends StatefulWidget {
 }
 
 class _UserJobsTabBarState extends State<UserJobsTabBar> {
-  final UserActivityController controller = Get.put(UserActivityController());
+  final UserActivityController controller = Get.find<UserActivityController>();
   final ScrollController _scrollController = ScrollController();
 
   @override

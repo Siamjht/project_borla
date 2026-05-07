@@ -20,7 +20,7 @@ class RegistrationSection extends StatelessWidget {
     super.key,
   });
 
-  final _authCtrl = Get.put(AuthController());
+  final _authCtrl = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

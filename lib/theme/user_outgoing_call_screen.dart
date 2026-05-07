@@ -15,7 +15,7 @@ class UserOutgoingCallScreen extends StatefulWidget {
 }
 
 class _UserOutgoingCallScreenState extends State<UserOutgoingCallScreen> {
-  final UserOutgoingCallController controller = Get.put(UserOutgoingCallController());
+  final UserOutgoingCallController controller = Get.find<UserOutgoingCallController>();
 
   @override
   void initState() {

@@ -55,7 +55,7 @@ Widget buildCategoryCard({
   required double scale,
 }) {
 
-  WasteCategoryController wasteController = Get.put(WasteCategoryController());
+  WasteCategoryController wasteController = Get.find<WasteCategoryController>();
 
   return Obx(() {
     final bool isSelected =
@@ -101,7 +101,7 @@ Widget buildCategoryCard({
               Image.asset(image, height: 105, width: 100,),
               const SizedBox(height: 6),
               Text(
-                label,
+                label.tr,
                 style: TextStyle(
                   color: isSelected
                       ? Colors.orange

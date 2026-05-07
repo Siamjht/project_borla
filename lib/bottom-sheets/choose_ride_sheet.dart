@@ -18,7 +18,7 @@ class ChooseRideSheet extends StatefulWidget {
 class _ChooseRideSheetState extends State<ChooseRideSheet> {
 
   // final RxInt selectedIndex = (-1).obs ;
-  final controller = Get.put(DateTimePickerController());
+  final controller = Get.find<DateTimePickerController>();
 
   @override
   Widget build(BuildContext context) {

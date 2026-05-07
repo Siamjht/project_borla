@@ -29,7 +29,7 @@ class DriverRegisterScreen extends StatefulWidget {
 
 class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
 
-  final _authCtrl = Get.put(AuthController());
+  final _authCtrl = Get.find<AuthController>();
   RxBool isOpeningGallery = false.obs;
 
   @override

@@ -15,7 +15,7 @@ class OngoingCallScreen extends StatefulWidget {
 
 class _OngoingCallScreenState extends State<OngoingCallScreen> {
 
-  final CallController controller = Get.put(CallController());
+  final CallController controller = Get.find<CallController>();
 
   @override
   void initState() {

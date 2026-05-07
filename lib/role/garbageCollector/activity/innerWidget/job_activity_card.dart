@@ -282,7 +282,7 @@ class ActivityCard extends StatelessWidget {
           ),
         ),
         child: CommonText(
-          text: "Start Ride",
+          text: "start_ride".tr,
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Colors.white,

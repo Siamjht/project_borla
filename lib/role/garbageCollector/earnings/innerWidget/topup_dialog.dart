@@ -42,9 +42,9 @@ class TopUpDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12,),
             /// Title
-            const Center(
+            Center(
               child: CommonText(
-                text: 'Top Up Balance',
+                text: 'top_up_balance'.tr,
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textDark,
@@ -54,8 +54,8 @@ class TopUpDialog extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// Label
-            const CommonText(
-              text: 'Top Up Amount',
+            CommonText(
+              text: 'top_up_amount'.tr,
               fontSize: 16,
               color: AppColors.textDark,
               fontWeight: FontWeight.w400,
@@ -66,7 +66,7 @@ class TopUpDialog extends StatelessWidget {
             /// Input
             CommonTextField(
               controller: topUpController,
-              hintText: 'Enter Amount',
+              hintText: 'enter_amount_hint'.tr,
               keyboardType: TextInputType.number,
               borderRadius: 4,
               borderColor: AppColors.gray150,
@@ -74,7 +74,7 @@ class TopUpDialog extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            const CommonText(text: "Minimum top up: GH₵ 50"),
+            CommonText(text: "min_top_up_amount".tr),
             const SizedBox(height: 12),
             /// Warning
             Row(
@@ -98,17 +98,17 @@ class TopUpDialog extends StatelessWidget {
               onTap: (){
                 final amountStr = topUpController.text.trim();
                 if (amountStr.isEmpty) {
-                  Get.snackbar('Error', 'Please enter amount');
+                  Get.snackbar('error'.tr, 'enter_amount_required'.tr);
                   return;
                 }
                 final amount = double.tryParse(amountStr);
                 if (amount == null || amount < 50) {
-                  Get.snackbar('Error', 'Minimum top up is GH₵ 50');
+                  Get.snackbar('error'.tr, 'min_top_up_required'.tr);
                   return;
                 }
                controller.topUp(amount: amount);
               },
-              titleText: "Continue",
+              titleText: "continue".tr,
               buttonRadius: 4,
             ))
           ],

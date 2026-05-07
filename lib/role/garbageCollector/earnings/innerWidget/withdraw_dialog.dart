@@ -42,9 +42,9 @@ class WithdrawDialog extends StatelessWidget {
             ),
             const SizedBox(height: 12,),
             /// Title
-            const Center(
+            Center(
               child: CommonText(
-                text: 'Withdraw',
+                text: 'withdraw'.tr,
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textDark,
@@ -54,8 +54,8 @@ class WithdrawDialog extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// Label
-            const CommonText(
-              text: 'Withdraw Amount',
+            CommonText(
+              text: 'withdraw_amount'.tr,
               fontSize: 16,
               color: AppColors.textDark,
               fontWeight: FontWeight.w400,
@@ -66,7 +66,7 @@ class WithdrawDialog extends StatelessWidget {
             /// Input
             CommonTextField(
               controller: withdrawController,
-              hintText: 'Enter Amount',
+              hintText: 'enter_amount_hint'.tr,
               keyboardType: TextInputType.number,
               borderRadius: 4,
               borderColor: AppColors.gray150,
@@ -85,11 +85,11 @@ class WithdrawDialog extends StatelessWidget {
                 spacing: 12,
                 children: [
                   const Icon(Icons.info_outline, color: AppColors.olive500),
-                  const Expanded(
+                  Expanded(
                     child: CommonText(
                       textAlign: TextAlign.start,
                       text:
-                      'Keep GH₵ 20 minimum for cash ride commissions',
+                      'min_withdraw_warning'.tr,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: AppColors.olive500,
@@ -107,12 +107,12 @@ class WithdrawDialog extends StatelessWidget {
               onTap: () async {
                 final amountStr = withdrawController.text.trim();
                 if (amountStr.isEmpty) {
-                  Get.snackbar('Error', 'Please enter amount');
+                  Get.snackbar('error'.tr, 'enter_amount_required'.tr);
                   return;
                 }
                 final amount = double.tryParse(amountStr);
                 if (amount == null || amount <= 0) {
-                  Get.snackbar('Error', 'Please enter a valid amount');
+                  Get.snackbar('error'.tr, 'valid_amount_required'.tr);
                   return;
                 }
                 
@@ -124,7 +124,7 @@ class WithdrawDialog extends StatelessWidget {
                   },);
                 }
               },
-              titleText: "Continue",
+              titleText: "continue".tr,
               buttonRadius: 4,
             ))
           ],

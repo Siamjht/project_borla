@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class UserHomeController extends GetxController
     with GetTickerProviderStateMixin {
-  static UserHomeController get instance => Get.put(UserHomeController());
+  static UserHomeController get instance => Get.find<UserHomeController>();
 
   final RxBool isOnline = false.obs;
   final RxBool isScheduleRequest = true.obs;

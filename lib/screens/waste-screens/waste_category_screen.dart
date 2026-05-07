@@ -18,15 +18,15 @@ class WasteCategoryScreen extends StatefulWidget {
 }
 
 class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
-  final WasteCategoryController wasteController = Get.put(WasteCategoryController());
+  final WasteCategoryController wasteController = Get.find<WasteCategoryController>();
   final BookingController bookingController = Get.find<BookingController>();
 
   final List<Map<String, dynamic>> categories = [
-    {'index': 0, 'image': 'assets/images/organic_2.png', 'label': 'Organic', 'scale': 4.3},
-    {'index': 1, 'image': 'assets/images/metal_2.png', 'label': 'Metal', 'scale': 4.3},
-    {'index': 2, 'image': 'assets/images/plastic_2.png', 'label': 'Plastic', 'scale': 4.3},
-    {'index': 3, 'image': 'assets/images/general_2.png', 'label': 'General', 'scale': 4.3},
-    {'index': 4, 'image': 'assets/images/paper_2.png', 'label': 'Paper', 'scale': 7.5},
+    {'index': 0, 'image': 'assets/images/organic_2.png', 'label': 'organic', 'scale': 4.3},
+    {'index': 1, 'image': 'assets/images/metal_2.png', 'label': 'metal', 'scale': 4.3},
+    {'index': 2, 'image': 'assets/images/plastic_2.png', 'label': 'plastic', 'scale': 4.3},
+    {'index': 3, 'image': 'assets/images/general_2.png', 'label': 'general', 'scale': 4.3},
+    {'index': 4, 'image': 'assets/images/paper_2.png', 'label': 'paper', 'scale': 7.5},
   ];
 
   @override
@@ -77,7 +77,7 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                         ),
                         SizedBox(width: 40),
                         Text(
-                          'Select Waste Category',
+                          'select_waste_category'.tr,
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -115,9 +115,9 @@ class _WasteCategoryScreenState extends State<WasteCategoryScreen> {
                   Obx(() {
                     final selected = wasteController.selectedIndex.value;
                     return GradientButton(
-                      text: 'Continue',
+                      text: 'continue'.tr,
                       onPressed: selected == -1
-                          ? () => CustomSnackbar.error('Please select a waste category')
+                          ? () => CustomSnackbar.error('waste_category_required'.tr)
                           : () {
                         // Store selected category in booking controller
                         bookingController.selectedWasteCategory.value = categories[selected]['label'].toString().toLowerCase();

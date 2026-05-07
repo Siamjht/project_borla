@@ -19,7 +19,7 @@ class UserNavBarController extends GetxController {
 class UserNavBar extends StatelessWidget {
   UserNavBar({super.key});
 
-  final UserNavBarController controller = Get.put(UserNavBarController());
+  final UserNavBarController controller = Get.find<UserNavBarController>();
 
   final List<Widget> widgetOptions = [
     HomeMapScreen(),

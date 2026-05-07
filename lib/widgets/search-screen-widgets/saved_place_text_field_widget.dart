@@ -25,7 +25,7 @@ class SavedPlaceTextFields extends StatelessWidget {
       children: [
         const SizedBox(height: 6),
 
-        Text('Place Title', style: TextStyle(
+        Text('place_title'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -34,13 +34,13 @@ class SavedPlaceTextFields extends StatelessWidget {
 
         CustomTextField(
           controller: bookingCtrl.placeTitleController,
-          hint: 'Enter place title',
+          hint: 'enter_place_title_hint'.tr,
           prefix: Image.asset('assets/images/second_pin_2.png', scale: 3.5,),
         ),
 
         const SizedBox(height: 14),
 
-        Text('Place Name', style: TextStyle(
+        Text('place_name'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -49,13 +49,13 @@ class SavedPlaceTextFields extends StatelessWidget {
 
         CustomTextField(
           controller: bookingCtrl.placeNameController,
-          hint: 'Enter place name',
+          hint: 'enter_place_name_hint'.tr,
           prefix: Image.asset('assets/images/second_pin_2.png' , scale: 3.5,),
         ),
 
         const SizedBox(height: 14),
 
-        Text('Address', style: TextStyle(
+        Text('address'.tr, style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14
         ),),
@@ -88,7 +88,7 @@ class SavedPlaceTextFields extends StatelessWidget {
         const SizedBox(height: 48),
 
         GradientButton(
-          text: 'Save',
+          text: 'save'.tr,
           isLoading: bookingCtrl.isPlaceSaving,
           onPressed: () async {
             await bookingCtrl.saveOrUpdatePlace();

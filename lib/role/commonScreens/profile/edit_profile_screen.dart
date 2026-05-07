@@ -18,7 +18,7 @@ class EditProfileScreen extends StatelessWidget {
   bool isUser;
   EditProfileScreen({super.key, this.isUser = false});
 
-  final ProfileController controller = Get.put(ProfileController());
+  final ProfileController controller = Get.find<ProfileController>();
 
   // late final PhoneController _phoneController;
   // final TextEditingController _passController = TextEditingController();

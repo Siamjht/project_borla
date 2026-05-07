@@ -20,7 +20,7 @@ import '../../utils/app_urls.dart';
 
 class AuthController extends GetxController {
 
-  static AuthController get instance => Get.put(AuthController());
+  static AuthController get instance => Get.find<AuthController>();
 
   // static String otpTokenKey = 'otpToken';
   // ── Form & Controllers ──

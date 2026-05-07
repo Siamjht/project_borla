@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:project_borla/screens/search-place-screens/search-address-controllers/location_search_controller.dart';
 
 import '../../gen/custom_assets/assets.gen.dart';
@@ -23,7 +19,7 @@ class EditPlace extends StatefulWidget {
 class _EditPlaceState extends State<EditPlace> {
 
 
-  EditPlaceController editPlaceController = Get.put(EditPlaceController());
+  EditPlaceController editPlaceController = Get.find<EditPlaceController>();
 
   bool isHome = false;
   bool isOffice = false;
@@ -80,7 +76,7 @@ class _EditPlaceState extends State<EditPlace> {
 
                   SizedBox(width: 90),
 
-                  Text('Edit Place', style: TextStyle(
+                  Text('edit_place'.tr, style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500
                   ),)
@@ -101,7 +97,7 @@ class _EditPlaceState extends State<EditPlace> {
                 children: [
                   IconLabelAction(
                       icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
-                      label: 'Home',
+                      label: 'home'.tr,
                       selected: editPlaceController.selectedPlace.value == 'Home' ? true : false,
                       onTap: (){
                         editPlaceController.titleController.text = 'Home';
@@ -110,7 +106,7 @@ class _EditPlaceState extends State<EditPlace> {
                   ),
                   IconLabelAction(
                       icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
-                      label: 'Office',
+                      label: 'office'.tr,
                       selected: editPlaceController.selectedPlace.value == 'Office' ? true : false,
                       onTap: (){
                         editPlaceController.titleController.text = 'Office';
@@ -119,7 +115,7 @@ class _EditPlaceState extends State<EditPlace> {
                   ),
                   IconLabelAction(
                       icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
-                      label: 'Shop',
+                      label: 'shop'.tr,
                       selected: editPlaceController.selectedPlace.value == 'Shop' ? true : false,
                       onTap: (){
                         editPlaceController.titleController.text = 'Shop';
@@ -128,14 +124,13 @@ class _EditPlaceState extends State<EditPlace> {
                   ),
                   IconLabelAction(
                       icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: editPlaceController.selectedPlace.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
-                      label: 'Hotel',
+                      label: 'hotel'.tr,
                       selected: editPlaceController.selectedPlace.value == 'Hotel' ? true : false,
                       onTap: (){
                         editPlaceController.titleController.text = 'Hotel';
                         editPlaceController.selectedPlace.value = 'Hotel';
                       }
                   ),
-
                 ],
 
               ),

@@ -253,17 +253,23 @@ class DriverMapController extends BaseMapController {
   Future<void> _placeDriverSelfMarker(LatLng position) async {
     log("Driver position: $position");
 
-    // ✅ icon changes based on trip phase
-    final iconPath = tripPhase.value == DriverTripPhase.idle
-        ? 'assets/icons/driverIconWithDottedCircle.png'  // before accept
-        : 'assets/icons/tryCycleIcon.png';               // after accept
+    final isIdle = tripPhase.value == DriverTripPhase.idle;
+
+    final iconPath = isIdle
+        ? 'assets/icons/driverIconWithDottedCircle.png'
+        : 'assets/icons/tryCycleIcon.png';
+
+    // ✅ rotation only when not idle
+    final rotation = isIdle
+        ? 20.0
+        : calculateBearing(position, _firstStepEnd); // ✅ default double, not null
 
     await placeMarker(
       id: 'driver_self',
       position: position,
       iconPath: iconPath,
-      rotation: calculateBearing(position, _firstStepEnd),
-      iconWidthPx: tripPhase.value == DriverTripPhase.idle? 620 : 60,
+      rotation: rotation,
+      iconWidthPx: isIdle ? 550 : 60,
     );
   }
 

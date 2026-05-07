@@ -19,7 +19,7 @@ class FindingDriverScreen extends StatefulWidget {
 class _FindingDriverScreenState extends State<FindingDriverScreen> {
 
   // final DriverHomeController controller =
-  // Get.put(DriverHomeController());
+  // Get.find<DriverHomeController>();
 
   void ShowFindingRiderSheet (BuildContext context) {
 

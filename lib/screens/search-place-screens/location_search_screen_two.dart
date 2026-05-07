@@ -62,7 +62,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Recent Places',
+                      'recent_places'.tr,
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w600,
@@ -72,7 +72,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                     InkWell(
                       onTap: _locationSearchCtrl.clearAll,
                       child: Text(
-                        'Clear All',
+                        'clear_all'.tr,
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.w600,
@@ -98,7 +98,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                       if (_locationSearchCtrl.suggestions.isEmpty) {
                         return Center(
                           child: CommonText(
-                            text: 'No results found',
+                            text: 'no_results_found'.tr,
                             color: AppColors.gray400,
                             fontSize: 14,
                           ),
@@ -155,7 +155,7 @@ class _LocationSearchScreenTwoState extends State<LocationSearchScreenTwo> {
                     if (_locationSearchCtrl.recentSearches.isEmpty) {
                       return Center(
                         child: CommonText(
-                          text: 'No recent searches',
+                          text: 'no_recent_searches'.tr,
                           color: AppColors.gray400,
                           fontSize: 14,
                         ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/custom_text_field.dart';
 
@@ -66,7 +65,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
                       SizedBox(width: 66),
 
-                      Text('Search Address', style: TextStyle(
+                      Text('search_address'.tr, style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w500
                       ),)
@@ -113,7 +112,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                           children: [
                             Image.asset('assets/images/tab_icon_one_2.png', scale: 3,),
                             SizedBox(width: 6,),
-                            Text('Select from map', style: TextStyle(
+                            Text('select_from_map'.tr, style: TextStyle(
 
                                 fontSize: 15
 
@@ -147,7 +146,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                           children: [
                             Image.asset('assets/images/saved_icon_2.png', scale: 3,),
                             SizedBox(width: 6,),
-                            Text('Saved Places', style: TextStyle(
+                            Text('saved_places'.tr, style: TextStyle(
 
                                 fontSize: 15
 
@@ -163,7 +162,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
                 Row(
                   children: [
-                    Text('Results for', style: TextStyle(
+                    Text('results_for'.tr, style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.w600,
                       color: Colors.black54
@@ -176,7 +175,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
                     SizedBox(width: 26),
 
-                    Text('0 Found', style: TextStyle(
+                    Text('zero_found'.tr, style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w600,
                         color: Colors.amber,

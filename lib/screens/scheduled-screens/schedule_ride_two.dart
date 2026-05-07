@@ -41,7 +41,7 @@ class ScheduleRideTwo extends StatelessWidget {
 class TimePickerBottomSheet extends StatelessWidget {
   TimePickerBottomSheet({super.key});
 
-  final controller = Get.put(DateTimePickerController());
+  final controller = Get.find<DateTimePickerController>();
 
   @override
   Widget build(BuildContext context) {

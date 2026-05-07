@@ -78,7 +78,7 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
             
                         SizedBox(width: 74),
             
-                        Text('Saved Address', style: TextStyle(
+                        Text('saved_address'.tr, style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w500
                         ),)
@@ -99,25 +99,25 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                       children: [
                         IconLabelAction(
                             icon: Assets.icons.homeIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Home' ? AppColors.orange300 : AppColors.gray300,),
-                            label: 'Home',
+                            label: 'home'.tr,
                             selected: _bookingCtrl.selectedPlaceType.value == 'Home',
                             onTap: () => _bookingCtrl.selectPlaceType('home'),
                         ),
                         IconLabelAction(
                             icon: Assets.icons.officeIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Office' ? AppColors.orange300 : AppColors.gray300,),
-                            label: 'Office',
+                            label: 'office'.tr,
                             selected: _bookingCtrl.selectedPlaceType.value == 'Office',
                             onTap: () => _bookingCtrl.selectPlaceType('office'),
                         ),
                         IconLabelAction(
                             icon: Assets.icons.shopIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Shop' ? AppColors.orange300 : AppColors.gray300,),
-                            label: 'Shop',
+                            label: 'shop'.tr,
                             selected: _bookingCtrl.selectedPlaceType.value == 'Shop',
                             onTap: () => _bookingCtrl.selectPlaceType('shop'),
                         ),
                         IconLabelAction(
                             icon: Assets.icons.hotelIcon.image(height: 26, width: 26, color: _bookingCtrl.selectedPlaceType.value == 'Hotel' ? AppColors.orange300 : AppColors.gray300),
-                            label: 'Hotel',
+                            label: 'hotel'.tr,
                             selected: _bookingCtrl.selectedPlaceType.value == 'Hotel',
                             onTap: () => _bookingCtrl.selectPlaceType('hotel'),
                         ),
@@ -137,7 +137,7 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('Already Added', style: TextStyle(
+                      child: Text('already_added'.tr, style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black500
@@ -154,9 +154,9 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                     }
 
                     if (_bookingCtrl.savedPlaces.isEmpty) {
-                      return const Padding(
+                      return Padding(
                         padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Text('No saved places yet', style: TextStyle(color: AppColors.gray400),),
+                        child: Text('no_saved_places'.tr, style: TextStyle(color: AppColors.gray400),),
                       );
                     }
 

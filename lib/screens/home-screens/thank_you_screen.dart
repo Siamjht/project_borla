@@ -94,7 +94,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
   }
 
-  final navbarController = Get.put(UserNavBarController());
+  final navbarController = Get.find<UserNavBarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -123,23 +123,21 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
 
             ),
 
-           Text('Thank you for your review!', style: TextStyle(
-             fontSize: 24,
+           Text('thank_you_review'.tr, style: TextStyle(             fontSize: 24,
              fontWeight: FontWeight.w600,
              color: Colors.grey.shade700
            ),),
 
             SizedBox(height: 16,),
 
-            Text("You help fellow users find what's good out \n there in discovering the best experience.", style: TextStyle(
-                fontSize: 18,
+            Text("review_subtitle".tr, style: TextStyle(                fontSize: 18,
                 fontWeight: FontWeight.w500,
                 color: Colors.grey.shade500
             ),),
            Padding(
               padding:  EdgeInsets.fromLTRB(20,140,20,0),
               child: GradientButton(
-                text: 'Back To Home',
+                text: 'back_to_home'.tr,
                 onPressed: () {
                   navbarController.tabIndex.value =0 ;
                   Get.offAll(UserNavBar());

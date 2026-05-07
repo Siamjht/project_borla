@@ -1,17 +1,17 @@
 
 class AppUrls {
-  // static const baseUrl = "https://api.borlaborla.com/api/v1";
-  // static const deployedBaseUrl = "https://api.borlaborla.com/api/v1";
-  // static const imageBase = "http://10.10.10.70:5000/";
-  // static String imageUrl({required String imagePath}) => "https://api.borlaborla.com/$imagePath";
-  // static const socketUrl = "https://api.borlaborla.com/";
-
-
-  static const baseUrl = "http://10.10.10.70:5000/api/v1";
-  static const deployedBaseUrl = "http://10.10.10.70:5000/api/v1";
+  static const baseUrl = "https://api.borlaborla.com/api/v1";
+  static const deployedBaseUrl = "https://api.borlaborla.com/api/v1";
   static const imageBase = "http://10.10.10.70:5000/";
-  static String imageUrl({required String imagePath}) => "http://10.10.10.70:5000/$imagePath";
-  static const socketUrl = "http://10.10.10.70:5000/";
+  static String imageUrl({required String imagePath}) => "https://api.borlaborla.com/$imagePath";
+  static const socketUrl = "https://api.borlaborla.com/";
+
+
+  // static const baseUrl = "http://10.10.10.70:5000/api/v1";
+  // static const deployedBaseUrl = "http://10.10.10.70:5000/api/v1";
+  // static const imageBase = "http://10.10.10.70:5000/";
+  // static String imageUrl({required String imagePath}) => "http://10.10.10.70:5000/$imagePath";
+  // static const socketUrl = "http://10.10.10.70:5000/";
 
   static const signUp = "$baseUrl/auth/signup";
   static const signIn = "$baseUrl/auth/login";

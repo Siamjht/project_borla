@@ -1,8 +1,11 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/gen/custom_assets/assets.gen.dart';
+import 'package:project_borla/helpers/prefs_helper.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/garbageCollector/home/innerWidget/job_request_card.dart';
 
@@ -33,7 +36,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
         if(_profileCtl.profile.value.documents.first.status == 'pending'){
           showDialog(
             context: context,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder: (_) => const ApplicationReviewDialog(),
           );
         }
@@ -70,7 +73,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
             left: 20,
             right: 20,
             child: Obx(
-                  () => CustomContainer(
+                  () {
+                    _driverHomeCtrl.isOnline.value = PrefsHelper.onlineStatus;
+                    log("driverHomeCtrl.isOnline.value ${_driverHomeCtrl.isOnline.value}");
+                    return CustomContainer(
                     borderRadius: 38,
                     color: AppColors.white,
                     padding: EdgeInsets.all(12),
@@ -127,7 +133,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                         )),
                       ],
                     ),
-                  ),
+                  );},
             ),
           ),
 

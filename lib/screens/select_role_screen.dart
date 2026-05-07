@@ -77,11 +77,11 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
                         Obx(() => userSelectionWidget(
                             onTap: () {
-                              authController.selectedRole.value = 'User';
+                              AuthController.selectedRole.value = 'User';
                             },
-                            gradientColor1: authController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
-                            gradientColor2: authController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
-                            borderWidth: authController.selectedRole.value == "User"? 2.0 : 1.0,
+                            gradientColor1: AuthController.selectedRole.value == "User"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: AuthController.selectedRole.value == "User"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: AuthController.selectedRole.value == "User"? 2.0 : 1.0,
                             assetImage: Assets.images.user1.image(height: 145.h, width: 208.w,),
                             role: 'user_role'.tr
                         ),),
@@ -90,11 +90,11 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
 
                         Obx(() => userSelectionWidget(
                             onTap: () {
-                              authController.selectedRole.value = 'Rider';
+                              AuthController.selectedRole.value = 'Rider';
                             },
-                            gradientColor1: authController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
-                            gradientColor2: authController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
-                            borderWidth: authController.selectedRole.value == "Rider"? 2.0 : 1.0,
+                            gradientColor1: AuthController.selectedRole.value == "Rider"? AppColors.orange200 : AppColors.gray200,
+                            gradientColor2: AuthController.selectedRole.value == "Rider"? AppColors.orange500 : AppColors.gray200,
+                            borderWidth: AuthController.selectedRole.value == "Rider"? 2.0 : 1.0,
                             assetImage: Assets.images.rider.image(height: 145.h, width: 208.w,),
                             role: 'rider_role'.tr
                         ),),
@@ -104,8 +104,8 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
                         GradientButton(
                           text: 'join_now'.tr,
                           onPressed: () {
-                            if(authController.selectedRole.value != ""){
-                              if(authController.selectedRole.value == "User"){
+                            if(AuthController.selectedRole.value != ""){
+                              if(AuthController.selectedRole.value == "User"){
                                 Get.to(()=> RegisterScreen());
                               }else{
                                 Get.to(()=> DriverRegisterScreen());

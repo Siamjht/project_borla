@@ -56,10 +56,12 @@ class ProfileController extends GetxController {
      bool isOnline = user.onlineStatus == "online";
      PrefsHelper.onlineStatus = isOnline;
 
-     if (Get.isRegistered<DriverHomeController>()) {
-       Get.find<DriverHomeController>().isOnline.value = isOnline;
-       log("isOnline.value ${Get.find<DriverHomeController>().isOnline.value}");
-     }
+     PrefsHelper.setBool('onlineStatus', isOnline);
+
+     // if (Get.isRegistered<DriverHomeController>()) {
+     //   Get.find<DriverHomeController>().isOnline.value = isOnline;
+     //   log("isOnline.value ${Get.find<DriverHomeController>().isOnline.value}");
+     // }
      log("PrefsHelper.onlineStatus ${PrefsHelper.onlineStatus}");
      log("user.onlineStatus: ${user.onlineStatus}");
    }

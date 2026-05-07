@@ -43,9 +43,7 @@ class SocketServices {
       listenForNewMessages();
       listenForNotificationEvents();
       if(PrefsHelper.myRole == 'rider'){
-        if (Get.isRegistered<DriverHomeController>() && DriverHomeController.instance.isOnline.value) {
-          listenForNewBooking();
-        }
+        listenForNewBooking();
         listenForPaymentEvents();
         listenForCashPaymentCompleted();
       }else if(PrefsHelper.myRole == 'user'){

@@ -243,17 +243,17 @@ class EarningsScreen extends StatelessWidget {
                 Row(
                   spacing: 16,
                   children: [
-                    Expanded(
-                      child: CommonButton(
-                        onTap: () {
-                          showWithdrawDialog(context, TopUpDialog());
-                        },
-                        buttonRadius: 8,
-                        firstGradient: AppColors.black200,
-                        secondGradient: AppColors.black200,
-                        titleText: 'top_up'.tr,
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: CommonButton(
+                    //     onTap: () {
+                    //       showWithdrawDialog(context, TopUpDialog());
+                    //     },
+                    //     buttonRadius: 8,
+                    //     firstGradient: AppColors.black200,
+                    //     secondGradient: AppColors.black200,
+                    //     titleText: 'top_up'.tr,
+                    //   ),
+                    // ),
                     Expanded(
                       child: CommonButton(
                         onTap: () {

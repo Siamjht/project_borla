@@ -20,6 +20,9 @@ class _SetPassScreenState extends State<SetPassScreen> {
   final _authCtrl = Get.find<AuthController>();
   final formKey = GlobalKey<FormState>();
 
+  // helper
+  bool get isRider => AuthController.selectedRole.value == 'Rider';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,29 +31,33 @@ class _SetPassScreenState extends State<SetPassScreen> {
         children: [
 
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(255, 214, 0, 1),
-                  Color.fromRGBO(255, 149, 0, 1),
+                colors: isRider
+                    ? [AppColors.green300, AppColors.green500] // rider
+                    : [
+                  const Color.fromRGBO(255, 214, 0, 1),
+                  const Color.fromRGBO(255, 149, 0, 1),
                 ],
               ),
             ),
             child: AuthHeader(
-              title: 'set_pass_title'.tr,       // ← .tr
-              subtitle: 'set_pass_subtitle'.tr, // ← .tr
+              title: 'set_pass_title'.tr,
+              subtitle: 'set_pass_subtitle'.tr,
             ),
           ),
 
           Positioned(
             top: 0,
             right: -60,
-            child: Assets.images.backgroundShadow.image(height: 300, width: 400),
+            child: Assets.images.backgroundShadow
+                .image(height: 300, width: 400),
           ),
 
           Container(
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+              borderRadius:
+              BorderRadius.vertical(top: Radius.circular(34)),
               color: Colors.white,
             ),
             height: 630,
@@ -65,7 +72,7 @@ class _SetPassScreenState extends State<SetPassScreen> {
                     const SizedBox(height: 20),
 
                     Text(
-                      'new_password'.tr,   // ← .tr
+                      'new_password'.tr,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
 
@@ -73,16 +80,19 @@ class _SetPassScreenState extends State<SetPassScreen> {
 
                     CommonTextField(
                       controller: _authCtrl.passController,
-                      hintText: 'new_password_hint'.tr,   // ← .tr
+                      hintText: 'new_password_hint'.tr,
                       isPassword: true,
                       borderRadius: 14,
-                      borderColor: AppColors.primaryColor,
+                      // ✅ rider uses green border
+                      borderColor: isRider
+                          ? AppColors.green500
+                          : AppColors.primaryColor,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'password_required'.tr;       // ← .tr
+                          return 'password_required'.tr;
                         }
                         if (value.length < 6) {
-                          return 'password_min_length'.tr;     // ← .tr
+                          return 'password_min_length'.tr;
                         }
                         return null;
                       },
@@ -91,7 +101,7 @@ class _SetPassScreenState extends State<SetPassScreen> {
                     const SizedBox(height: 20),
 
                     Text(
-                      'confirm_password'.tr,   // ← .tr
+                      'confirm_password'.tr,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
 
@@ -99,16 +109,19 @@ class _SetPassScreenState extends State<SetPassScreen> {
 
                     CommonTextField(
                       controller: _authCtrl.confirmPassController,
-                      hintText: 'confirm_password_hint'.tr,   // ← .tr
+                      hintText: 'confirm_password_hint'.tr,
                       isPassword: true,
                       borderRadius: 14,
-                      borderColor: AppColors.primaryColor,
+                      // ✅ rider uses green border
+                      borderColor: isRider
+                          ? AppColors.green500
+                          : AppColors.primaryColor,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'confirm_password_required'.tr;   // ← .tr
+                          return 'confirm_password_required'.tr;
                         }
                         if (value != _authCtrl.passController.text) {
-                          return 'passwords_not_match'.tr;          // ← .tr
+                          return 'passwords_not_match'.tr;
                         }
                         return null;
                       },
@@ -118,13 +131,20 @@ class _SetPassScreenState extends State<SetPassScreen> {
 
                     GradientButton(
                       isLoading: _authCtrl.isLoading,
-                      text: 'save'.tr,   // ← .tr
+                      text: 'save'.tr,
+                      // ✅ rider uses green gradient
+                      firstGradient:
+                      isRider ? AppColors.green300 : null,
+                      secondGradient:
+                      isRider ? AppColors.green500 : null,
                       onPressed: () async {
                         if (!formKey.currentState!.validate()) return;
 
-                        final bool success = await _authCtrl.resetPassword(
+                        final bool success =
+                        await _authCtrl.resetPassword(
                           newPassword: _authCtrl.passController.text,
-                          confirmPassword: _authCtrl.confirmPassController.text,
+                          confirmPassword:
+                          _authCtrl.confirmPassController.text,
                         );
 
                         if (success) {

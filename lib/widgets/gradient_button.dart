@@ -8,6 +8,8 @@ class GradientButton extends StatelessWidget {
   final RxBool? isLoading;
   final double? height;
   final double? width;
+  final Color? firstGradient;  // ✅ new
+  final Color? secondGradient; // ✅ new
 
   const GradientButton({
     super.key,
@@ -16,6 +18,8 @@ class GradientButton extends StatelessWidget {
     this.isLoading,
     this.height,
     this.width,
+    this.firstGradient,  // ✅ new
+    this.secondGradient, // ✅ new
   });
 
   @override
@@ -25,10 +29,11 @@ class GradientButton extends StatelessWidget {
         height: height ?? 52,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [
-              Color.fromRGBO(255, 214, 0, 1),
-              Color.fromRGBO(255, 149, 0, 1),
+              // ✅ use custom colors if provided, else default orange
+              firstGradient ?? const Color.fromRGBO(255, 214, 0, 1),
+              secondGradient ?? const Color.fromRGBO(255, 149, 0, 1),
             ],
           ),
           borderRadius: BorderRadius.circular(16),

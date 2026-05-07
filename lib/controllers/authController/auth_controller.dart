@@ -48,7 +48,7 @@ class AuthController extends GetxController {
   final RxString ghanaICard = ''.obs;
   final Rx<User> profile = User.fromJson({}).obs;
 
-  RxString selectedRole = "".obs;
+  static RxString selectedRole = "".obs;
 
 
   // @override

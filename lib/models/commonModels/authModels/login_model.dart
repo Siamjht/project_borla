@@ -54,6 +54,10 @@ class User {
   String? customerId;
   bool riderVerified;
   String zoneId;
+
+  // ADD THIS
+  Zone? zone;
+
   String? expireAt;
   bool isDeleted;
   Location location;
@@ -78,6 +82,10 @@ class User {
     this.customerId,
     this.riderVerified = false,
     this.zoneId = '',
+
+    // ADD THIS
+    this.zone,
+
     this.expireAt,
     this.isDeleted = false,
     Location? location,
@@ -95,6 +103,7 @@ class User {
       if (value is Map) return value['\$date'] ?? '';
       return value.toString();
     }
+
     return User(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -104,26 +113,63 @@ class User {
       onlineStatus: json['onlineStatus'] ?? '',
       role: json['role'] ?? '',
       profilePicture: json['profilePicture'] ?? '',
-      phoneNumber: json['phoneNumber'] ?? '',
+
+      // UPDATE THIS
+      phoneNumber: json['phoneNumber']?.toString() ?? '',
+
       dateOfBirth: parseDate(json['dateOfBirth']),
+
       ghanaCardId: (json['ghanaCardId'] as List<dynamic>?)
           ?.map((e) => e.toString())
           .toList() ??
           [],
+
       customerId: json['customerId'],
+
       riderVerified: json['riderVerified'] ?? false,
+
       zoneId: json['zoneId'] ?? '',
+
+      // ADD THIS
+      zone: json['zone'] != null
+          ? Zone.fromJson(json['zone'])
+          : null,
+
       expireAt: json['expireAt'],
+
       isDeleted: json['isDeleted'] ?? false,
+
       location: Location.fromJson(json['location'] ?? {}),
+
       locationName: json['locationName'] ?? '',
+
       createdAt: parseDate(json['createdAt']),
+
       updatedAt: parseDate(json['updatedAt']),
+
       verification: Verification.fromJson(json['verification'] ?? {}),
+
       documents: (json['documents'] as List<dynamic>?)
           ?.map((e) => DocumentModel.fromJson(e))
           .toList() ??
           [],
+    );
+  }
+}
+
+class Zone {
+  final String id;
+  final String name;
+
+  Zone({
+    this.id = '',
+    this.name = '',
+  });
+
+  factory Zone.fromJson(Map<String, dynamic> json) {
+    return Zone(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
     );
   }
 }

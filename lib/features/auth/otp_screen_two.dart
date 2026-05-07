@@ -24,20 +24,25 @@ class _OtpScreenState extends State<OtpScreen> {
   final _authCtrl = Get.find<AuthController>();
   String otp = '';
 
+  // ✅ helper
+  bool get isRider => AuthController.selectedRole.value == 'Rider';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false, // ← prevents whole screen from resizing
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: AlignmentDirectional.bottomStart,
         children: [
           Container(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromRGBO(255, 214, 0, 1),
-                  Color.fromRGBO(255, 149, 0, 1),
+              gradient: LinearGradient(
+                colors: isRider
+                    ? [AppColors.green300, AppColors.green500] // ✅ rider
+                    : [
+                  const Color.fromRGBO(255, 214, 0, 1),
+                  const Color.fromRGBO(255, 149, 0, 1),
                 ],
               ),
             ),
@@ -50,30 +55,30 @@ class _OtpScreenState extends State<OtpScreen> {
           Positioned(
             top: 0,
             right: -60,
-            child: Assets.images.backgroundShadow.image(height: 300, width: 400),
+            child: Assets.images.backgroundShadow
+                .image(height: 300, width: 400),
           ),
 
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(34)),
+              borderRadius:
+              BorderRadius.vertical(top: Radius.circular(34)),
               color: Colors.white,
             ),
             height: 650,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
-              // ↓ Wrap only the inner column with SingleChildScrollView
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 child: Padding(
-                  // ↓ Add bottom padding equal to keyboard height so content
-                  //   shifts up just enough when keyboard opens
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 26.0),
                         child: PinCodeTextField(
                           controller: _authCtrl.otpController,
                           cursorColor: AppColors.black100,
@@ -83,7 +88,8 @@ class _OtpScreenState extends State<OtpScreen> {
                           length: 4,
                           pinTheme: appOTPStyle(),
                           animationType: AnimationType.fade,
-                          animationDuration: const Duration(milliseconds: 300),
+                          animationDuration:
+                          const Duration(milliseconds: 300),
                           enableActiveFill: true,
                           hintCharacter: '-',
                           hintStyle: const TextStyle(
@@ -109,48 +115,52 @@ class _OtpScreenState extends State<OtpScreen> {
                             ),
                           ),
                           const SizedBox(height: 6),
-                          Obx(
-                                () => _authCtrl.isOtpSending.value
-                                ? Center(
-                              child: FlutterAnimatedLoader.staggerWave(
-                                color: AppColors.orange500,
-                                size: 20,
-                              ),
-                            )
-                                : GestureDetector(
-                              onTap: () {
-                                _authCtrl.resendOtp(
-                                    _authCtrl.emailController.text);
-                              },
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    const LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(255, 214, 0, 1),
-                                        Color.fromRGBO(255, 149, 0, 1),
-                                      ],
-                                    ).createShader(bounds),
-                                child: Container(
-                                  padding:
-                                  const EdgeInsets.only(bottom: 0.3),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.white, width: 3),
+                          Obx(() => _authCtrl.isOtpSending.value
+                              ? Center(
+                            child: FlutterAnimatedLoader.staggerWave(
+                              // ✅ rider uses green
+                              color: isRider
+                                  ? AppColors.green500
+                                  : AppColors.orange500,
+                              size: 20,
+                            ),
+                          )
+                              : GestureDetector(
+                            onTap: () => _authCtrl.resendOtp(
+                              _authCtrl.emailController.text,
+                            ),
+                            child: ShaderMask(
+                              shaderCallback: (bounds) =>
+                                  LinearGradient(
+                                    colors: isRider
+                                        ? [AppColors.green500, AppColors.green500] // ✅ rider
+                                        : [
+                                      const Color.fromRGBO(255, 214, 0, 1),
+                                      const Color.fromRGBO(255, 149, 0, 1),
+                                    ],
+                                  ).createShader(bounds),
+                              child: Container(
+                                padding:
+                                const EdgeInsets.only(bottom: 0.3),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.white,
+                                      width: 3,
                                     ),
                                   ),
-                                  child: Text(
-                                    "resend_code".tr,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                ),
+                                child: Text(
+                                  "resend_code".tr,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                          )),
                         ],
                       ),
 
@@ -159,16 +169,23 @@ class _OtpScreenState extends State<OtpScreen> {
                       GradientButton(
                         isLoading: _authCtrl.isLoading,
                         text: "verify".tr,
+                        // ✅ rider uses green gradient
+                        firstGradient:
+                        isRider ? AppColors.green300 : null,
+                        secondGradient:
+                        isRider ? AppColors.green500 : null,
                         onPressed: () async {
                           if (widget.isSignup) {
-                            final success = await _authCtrl.verifyEmailOTP(
+                            final success =
+                            await _authCtrl.verifyEmailOTP(
                               _authCtrl.otpController.text,
                             );
                             if (success) {
                               Get.offAll(() => LoginScreen());
                             }
                           } else {
-                            final success = await _authCtrl.verifyEmailOTP(
+                            final success =
+                            await _authCtrl.verifyEmailOTP(
                               _authCtrl.otpController.text,
                             );
                             if (success) {

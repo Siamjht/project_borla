@@ -357,7 +357,11 @@ class ActivityController extends GetxController {
         Get.to(() => CustomerInfoScreen(booking: booking,));
         break;
       case 'arrived_pickup':
-        Get.to(() => ArrivedScreen(bookingModel: booking));
+        if(booking.isPaidByCustomer){
+          Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
+        }else{
+          Get.to(() => ArrivedScreen(bookingModel: booking));
+        }
         break;
       case 'payment_collected':
         Get.to(() => NavigateStationScreen(booking: booking));
@@ -367,7 +371,11 @@ class ActivityController extends GetxController {
         break;
       case 'in_progress':
       case 'awaiting_payment':
-        Get.to(()=> CustomerInfoScreen(booking: booking,));
+        if(booking.isPaidByCustomer){
+          Get.to(()=> PaymentReceiveScreen(bookingModel: booking));
+        }else{
+          Get.to(() => ArrivedScreen(bookingModel: booking));
+        }
         break;
       case 'arrived_dropoff':
       case 'completed':

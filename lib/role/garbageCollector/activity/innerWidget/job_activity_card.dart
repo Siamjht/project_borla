@@ -5,18 +5,14 @@ import 'package:project_borla/helpers/other_helper.dart';
 import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/controller/activity_controller.dart';
 import 'package:project_borla/role/garbageCollector/activity/schedule_detail_screen.dart';
-import 'package:project_borla/role/garbageCollector/home/navigate_destination_screen.dart';
-import 'package:project_borla/role/garbageCollector/home/navigate_station_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../../../theme/custom_container_copy.dart';
 import '../../../commonScreens/chat/chatting_screen.dart';
-import '../../../components/dotted_line.dart';
 import '../../../components/image/shimmer_image_loader.dart';
 import '../../../components/text/common_text.dart';
-import '../../call/ongoing_call_screen.dart';
 import '../../home/arrived_screen.dart';
 import '../../home/innerWidget/waste_details_widget.dart';
 import 'common_widgets.dart';
@@ -58,9 +54,10 @@ class ActivityCard extends StatelessWidget {
           userRow(),
           const SizedBox(height: 10),
           const Divider(color: AppColors.gray200, thickness: 1),
-          // WasteDetailsWidget(job: booking),
+          WasteDetailsWidget(job: booking),
           const SizedBox(height: 10),
           locationSection(),
+
           const SizedBox(height: 10),
           const Divider(color: AppColors.gray200, thickness: 1),
           const SizedBox(height: 10),

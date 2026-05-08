@@ -1,18 +1,31 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../controllers/mapController/driver_map_controller.dart';
 import '../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../components/commonBackButton/common_back_button.dart';
 import '../map/driver_common_map.dart';
 import 'innerWidget/arrived_bottom_sheet.dart';
 
 class PaymentReceiveScreen extends StatelessWidget {
-  RiderBookingModel bookingModel;
+  final RiderBookingModel bookingModel;
   PaymentReceiveScreen({super.key, required this.bookingModel});
 
 
   @override
   Widget build(BuildContext context) {
+    final DriverMapController mapCtrl = Get.find<DriverMapController>();
+
+    // start route to pickup when screen opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      mapCtrl.startToPickupPhase(
+        LatLng(bookingModel.pickupLatitude, bookingModel.pickupLongitude),
+        id: bookingModel.id,
+      );
+    });
+
     return Scaffold(
       body: Stack(
         children: [
@@ -22,7 +35,12 @@ class PaymentReceiveScreen extends StatelessWidget {
           Positioned(
             top: 60,
             left: 20,
-            child: CommonBackButton(),
+            child: CommonBackButton(
+              onPressed: () {
+                mapCtrl.endTrip();
+                Get.back();
+              },
+            ),
           ),
 
           /// BottomSheet

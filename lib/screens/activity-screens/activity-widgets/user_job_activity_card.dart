@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../role/commonScreens/chat/innerController/chat_controller.dart';
 import '../../../role/components/image/shimmer_image_loader.dart';
 import '../../../role/components/text/common_text.dart';
+import '../../../role/garbageCollector/home/innerWidget/waste_details_widget.dart';
 import '../../../theme/user_outgoing_call_screen.dart';
 import '../../booking-accepted-screen/booking_accepted_screen.dart';
 import '../../chat-screen/user_chat_screen.dart';
@@ -56,6 +57,7 @@ class UserActivityCard extends StatelessWidget {
           isPending? demoUserRowShimmer() : userRow(),
           const SizedBox(height: 10),
           const Divider(color: AppColors.gray200, thickness: 1),
+          WasteDetailsWidget(job: booking),
           const SizedBox(height: 10),
           locationSection(),
           const SizedBox(height: 10),

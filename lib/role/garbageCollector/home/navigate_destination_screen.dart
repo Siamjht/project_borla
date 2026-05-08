@@ -3,12 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_borla/role/components/button/common_button.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/components/text/common_text.dart';
 import 'package:project_borla/role/garbageCollector/home/arrived_screen.dart';
 import 'package:project_borla/theme/app_color.dart';
 
+import '../../../controllers/mapController/driver_map_controller.dart';
 import '../../../gen/custom_assets/assets.gen.dart';
 import '../../../models/riderModels/bookingModels/rider_booking_model.dart';
 import '../../components/commonBackButton/common_back_button.dart';
@@ -16,12 +18,22 @@ import '../map/driver_common_map.dart';
 
 
 class NavigateDestinationScreen extends StatelessWidget {
-  RiderBookingModel booking;
+  final RiderBookingModel booking;
   NavigateDestinationScreen({super.key, required this.booking});
 
 
   @override
   Widget build(BuildContext context) {
+    final DriverMapController mapCtrl = Get.find<DriverMapController>();
+
+    // start route to pickup when screen opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      mapCtrl.startToPickupPhase(
+        LatLng(booking.pickupLatitude, booking.pickupLongitude),
+        id: booking.id,
+      );
+    });
+
     return Scaffold(
       body: Stack(
         children: [
@@ -31,7 +43,12 @@ class NavigateDestinationScreen extends StatelessWidget {
           Positioned(
             top: 60,
             left: 20,
-            child: CommonBackButton(),
+            child: CommonBackButton(
+              onPressed: () {
+                mapCtrl.endTrip();
+                Get.back();
+              },
+            ),
           ),
 
           // ── Pickup Address Card ─────────────────────────

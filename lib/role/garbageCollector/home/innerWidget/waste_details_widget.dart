@@ -4,22 +4,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
-import 'package:project_borla/role/garbageCollector/home/controller/driver_home_controller.dart';
 import 'package:project_borla/theme/app_color.dart';
 
 import '../../../../gen/custom_assets/assets.gen.dart';
-import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
 import '../../../components/text/common_text.dart';
 
-class WasteDetailsWidget extends StatelessWidget {
-  final AvailableBookingModel job;
-  WasteDetailsWidget({super.key, required this.job});
+class WasteDetailsWidget extends StatefulWidget {
+  final dynamic job;
+  const WasteDetailsWidget({super.key, required this.job});
 
-  final controller = Get.find<DriverHomeController>();
+  @override
+  State<WasteDetailsWidget> createState() => _WasteDetailsWidgetState();
+}
+
+class _WasteDetailsWidgetState extends State<WasteDetailsWidget> {
+  bool isExpanded = false;
+
+  void toggle() {
+    setState(() {
+      isExpanded = !isExpanded;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => AnimatedSize(
+    return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       child: CustomContainer(
@@ -49,7 +58,7 @@ class WasteDetailsWidget extends StatelessWidget {
                         const SizedBox(height: 4),
                         CommonText(
                           // ✅ real data
-                          text: '${job.wasteSize} Kg • ${job.binSize}',
+                          text: '${widget.job.wasteSize} Kg • ${widget.job.binSize}',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Colors.grey,
@@ -58,10 +67,10 @@ class WasteDetailsWidget extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: controller.toggle,
+                    onTap: toggle,
                     borderRadius: BorderRadius.circular(16),
                     child: Icon(
-                      controller.isExpanded.value
+                      isExpanded
                           ? Icons.keyboard_arrow_up
                           : Icons.keyboard_arrow_down,
                       color: Colors.green,
@@ -71,11 +80,11 @@ class WasteDetailsWidget extends StatelessWidget {
                 ],
               ),
             ),
-            if (controller.isExpanded.value) _expandedContent(),
+            if (isExpanded) _expandedContent(),
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget _iconBox() {
@@ -97,11 +106,11 @@ class WasteDetailsWidget extends StatelessWidget {
         children: [
 
           // ✅ show first waste image if available
-          if (job.wasteImages.isNotEmpty)
+          if (widget.job.wasteImages.isNotEmpty)
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: ShimmerImageLoader(
-                  url: job.wasteImages.first,
+                  url: widget.job.wasteImages.first,
                   width: double.infinity,
                   height: 160),
             ),
@@ -115,7 +124,7 @@ class WasteDetailsWidget extends StatelessWidget {
                 child: _StatItem(
                   icon: Assets.icons.weightIcon.image(
                       height: 20, width: 20, color: AppColors.green500),
-                  value: '${job.wasteSize} Kg',  // ✅ real data
+                  value: '${widget.job.wasteSize} Kg',  // ✅ real data
                   label: 'Weight',
                 ),
               ),
@@ -124,7 +133,7 @@ class WasteDetailsWidget extends StatelessWidget {
                 child: _StatItem(
                   icon: Assets.icons.wasteBoxIcon.image(
                       height: 20, width: 20, color: AppColors.green500),
-                  value: '${job.binQuantity}',   // ✅ real data
+                  value: '${widget.job.binQuantity}',   // ✅ real data
                   label: 'Bins',
                 ),
               ),
@@ -133,7 +142,7 @@ class WasteDetailsWidget extends StatelessWidget {
                 child: _StatItem(
                   icon: Assets.icons.wasteBoxIcon.image(
                       height: 20, width: 20, color: AppColors.green500),
-                  value: job.binSize,             // ✅ real data
+                  value: widget.job.binSize,             // ✅ real data
                   label: 'Size',
                 ),
               ),
@@ -222,4 +231,3 @@ class _StatItem extends StatelessWidget {
     );
   }
 }
-

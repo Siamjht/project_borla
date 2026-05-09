@@ -26,7 +26,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   void initState() {
     super.initState();
-    activityController.fetchOngoing();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      activityController.fetchOngoing();
+    });
   }
 
   @override

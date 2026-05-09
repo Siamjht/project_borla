@@ -19,8 +19,10 @@ class _UserOutgoingCallScreenState extends State<UserOutgoingCallScreen> {
 
   @override
   void initState() {
-    controller.startCallingDots();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.startCallingDots();
+    });
   }
 
   @override

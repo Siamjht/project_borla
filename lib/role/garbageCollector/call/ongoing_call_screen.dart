@@ -19,8 +19,10 @@ class _OngoingCallScreenState extends State<OngoingCallScreen> {
 
   @override
   void initState() {
-    controller.startCallTimer();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.startCallTimer();
+    });
   }
 
   @override

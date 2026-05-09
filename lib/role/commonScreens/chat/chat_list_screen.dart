@@ -34,7 +34,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   void initState() {
     super.initState();
-    _ctrl.fetchChatList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _ctrl.fetchChatList();
+    });
   }
 
   @override

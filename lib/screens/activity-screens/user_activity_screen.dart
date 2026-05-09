@@ -28,9 +28,9 @@ class _UserActivityScreenState extends State<UserActivityScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // userActivityCtrl.fetchPending();
-    },);
+    });
   }
   @override
   Widget build(BuildContext context) {

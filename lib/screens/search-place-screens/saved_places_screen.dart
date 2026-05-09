@@ -21,10 +21,10 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _bookingCtrl.getPlaces();
       _bookingCtrl.selectPlaceType('home');
-    },);
+    });
   }
 
   @override

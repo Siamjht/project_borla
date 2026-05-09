@@ -44,7 +44,9 @@ class _ProfileScreenUserState extends State<ProfileScreenUser> {
   @override
   void initState() {
     super.initState();
-    _profileCtrl.getProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _profileCtrl.getProfile();
+    });
   }
 
   @override

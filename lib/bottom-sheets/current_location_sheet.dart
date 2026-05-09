@@ -27,7 +27,9 @@ class _CurrentLocationSheetState extends State<CurrentLocationSheet> {
   @override
   void initState() {
     super.initState();
-     Future.microtask(() =>  _bookingCtrl.getPlaces());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _bookingCtrl.getPlaces();
+    });
   }
 
   @override

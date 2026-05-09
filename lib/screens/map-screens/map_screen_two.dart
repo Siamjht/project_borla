@@ -101,11 +101,10 @@ class _MapScreenTwoState extends State<MapScreenTwo> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    ShowCurrentLocationSheet(context);
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ShowCurrentLocationSheet(context);
+    });
   }
 
 

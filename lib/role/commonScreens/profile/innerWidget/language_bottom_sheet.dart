@@ -29,7 +29,9 @@ class _LanguageSelectionBottomSheetState extends State<LanguageSelectionBottomSh
   @override
   void initState() {
     super.initState();
-    _loadCurrentLanguage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadCurrentLanguage();
+    });
   }
 
   Future<void> _loadCurrentLanguage() async {

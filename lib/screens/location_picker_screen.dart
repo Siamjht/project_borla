@@ -24,8 +24,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   @override
   void initState() {
     super.initState();
-    _loadMapStyle();
-    _getCurrentLocation();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadMapStyle();
+      _getCurrentLocation();
+    });
   }
 
   Future<void> _loadMapStyle() async {

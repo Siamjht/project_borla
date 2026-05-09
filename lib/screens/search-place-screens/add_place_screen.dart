@@ -22,9 +22,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _bookingCtrl.clearPlaceForm();
-    },);
+    });
   }
 
   @override

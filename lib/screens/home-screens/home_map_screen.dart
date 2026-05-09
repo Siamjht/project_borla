@@ -32,11 +32,11 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _bookingCtrl.fetchCurrentLocation();
       _profileCtl.getProfile();
       UserMapController.instance.refreshUserMarker();
-    },);
+    });
   }
 
   @override

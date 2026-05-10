@@ -327,6 +327,7 @@ class BookingController extends GetxController {
           Get.to(()=> UserScheduleDetailScreen());
         }else{
           // Route based on booking status
+          log("User Booking status: ${booking.status}");
           _routeBasedOnBookingStatus(booking);
         }
       } else {
@@ -352,11 +353,7 @@ class BookingController extends GetxController {
         Get.to(()=> RiderArrivedScreen(booking: booking,));
         break;
       case BookingStatus.paymentCollected:
-        Get.to(()=> RiderArrivedScreen(booking: booking,));
-        Get.dialog(
-          barrierDismissible: false,
-          buildPaymentSuccessDialog(booking: booking),
-        );
+        Get.to(()=> PaymentSuccessScreen(booking: booking,));
         break;
       case BookingStatus.inProgress:
       case BookingStatus.awaitingPayment:

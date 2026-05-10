@@ -23,15 +23,37 @@ class UserActivityScreen extends StatefulWidget {
 }
 
 class _UserActivityScreenState extends State<UserActivityScreen> {
-  final UserActivityController userActivityCtrl = Get.find<UserActivityController>();
+  final UserActivityController userActivityCtrl =
+  Get.find<UserActivityController>();
 
   @override
   void initState() {
     super.initState();
+
+    // ✅ fetch first tab on init
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // userActivityCtrl.fetchPending();
+      userActivityCtrl.fetchPending();
+
+      // ✅ refetch when tab changes
+      ever(userActivityCtrl.selectedIndex, (int index) {
+        switch (index) {
+          case 0:
+            userActivityCtrl.fetchPending();
+            break;
+          case 1:
+            userActivityCtrl.fetchOngoing();
+            break;
+          case 2:
+            userActivityCtrl.fetchScheduled();
+            break;
+          case 3:
+            userActivityCtrl.fetchHistory();
+            break;
+        }
+      });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return UserGradientScaffold(
@@ -40,34 +62,27 @@ class _UserActivityScreenState extends State<UserActivityScreen> {
           children: [
             20.verticalSpace,
             CommonText(
-              text: "Activity",
+              text: 'Activity',
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: AppColors.textDark,
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20),
             UserJobsTabBar(),
 
-            /// Animated content
             Expanded(
-              child: Obx(
-                    () => AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  switchInCurve: Curves.easeIn,
-                  switchOutCurve: Curves.easeOut,
-                  transitionBuilder: (child, animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-
-                  /// IMPORTANT: key changes when tab changes
-                  child: _buildTabContent(
-                    userActivityCtrl.selectedIndex.value,
-                  ),
+              child: Obx(() => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeOut,
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: child,
                 ),
-              ),
+                child: _buildTabContent(
+                  userActivityCtrl.selectedIndex.value,
+                ),
+              )),
             ),
           ],
         ),
@@ -75,20 +90,17 @@ class _UserActivityScreenState extends State<UserActivityScreen> {
     );
   }
 
+  // ✅ no fetch calls here — only return widgets
   Widget _buildTabContent(int index) {
     switch (index) {
       case 0:
-        userActivityCtrl.fetchPending();
-        return UserPendingScreen(key: ValueKey(0),);
+        return UserPendingScreen(key: const ValueKey(0));
       case 1:
-        userActivityCtrl.fetchOngoing();
-        return UserOngoingScreen(key: ValueKey(0),);
+        return UserOngoingScreen(key: const ValueKey(1));
       case 2:
-        userActivityCtrl.fetchScheduled();
-        return const UserScheduleScreen(key: ValueKey(1));
+        return const UserScheduleScreen(key: ValueKey(2));
       case 3:
-        userActivityCtrl.fetchHistory();
-        return const UserHistoryScreen(key: ValueKey(2));
+        return const UserHistoryScreen(key: ValueKey(3));
       default:
         return const SizedBox();
     }

@@ -1,41 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:project_borla/screens/map-screens/user_common_map.dart';
-import 'package:project_borla/theme/app_color.dart';
+import '../../models/userModels/bookingModels/user_booking_model.dart';
 import '../../role/components/commonBackButton/common_back_button.dart';
-import '../../role/garbageCollector/map/driver_common_map.dart';
-import '../../widgets/gradient_button.dart';
-import '../rider-review-screen/rider_review_screen.dart';
-
-class PaymentSuccessScreeen extends StatefulWidget {
-  const PaymentSuccessScreeen({super.key});
-
-  @override
-  State<PaymentSuccessScreeen> createState() => _PaymentSuccessScreeenState();
-}
-
-class _PaymentSuccessScreeenState extends State<PaymentSuccessScreeen> {
+import '../rider-arrived-screens/rider_arrived_sheet.dart';
 
 
-  @override
-  void initState() {
-    super.initState();
+class PaymentSuccessScreen extends StatelessWidget {
+  UserBookingModel booking;
+  PaymentSuccessScreen({super.key,  required this.booking});
 
+  void ShowRiderArrivedSheet (BuildContext context) {
+
+    showModalBottomSheet(
+
+      context: context,
+      barrierColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      //showDragHandle: true,
+      useSafeArea: true,
+      builder: (context) => RiderArrivedSheet(booking: booking,),
+
+    );
 
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(child: UserCommonMap()),
+            Positioned.fill(child: UserCommonMap(booking: booking,)),
             Positioned(
                 left: 20,
                 top: 60,
                 child: CommonBackButton()),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: RiderArrivedSheet(booking: booking,)
+            )
           ],
         )
     );

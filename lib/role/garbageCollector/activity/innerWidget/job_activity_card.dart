@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/helpers/other_helper.dart';
@@ -242,9 +244,15 @@ class ActivityCard extends StatelessWidget {
 
           // Route based on booking status for active tab (index == 0)
           if (activityController.selectedIndex.value == 0) {
+            log("Driver Booking status: ${booking.status}");
+            log("Driver Booking status: ${booking.isPaid}");
             activityController.routeBasedOnBookingStatus(booking: booking);
           } else if (activityController.selectedIndex.value == 1) {
-            Get.to(() => ScheduleDetailScreen());
+            if(booking.isScheduled && booking.scheduledDate.isNotEmpty){
+              Get.to(() => ScheduleDetailScreen());
+            }else{
+              activityController.routeBasedOnBookingStatus(booking: booking);
+            }
           }
         },
         style: ElevatedButton.styleFrom(

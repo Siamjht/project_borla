@@ -237,14 +237,14 @@ Widget paymentRow(AvailableBookingModel job) {
           ),
 
           CommonText(
-            text: job.paymentMethod == 'cash' ? 'cash'.tr : 'hubtel_pay'.tr,
+            text: job.paymentMethod == 'cash' ? 'cash'.tr : 'momo_pay'.tr,
             fontSize: 16,
           ),
         ],
       ),
       const Spacer(),
       CommonText(
-        text: job.price != null ? 'GH₵ ${job.price!.toStringAsFixed(0)}' : 'TBD',
+        text: 'GH₵ ${job.price.toStringAsFixed(0)}',
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: AppColors.primaryColor,

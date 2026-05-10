@@ -210,12 +210,13 @@ class DriverMapController extends BaseMapController {
           '&key=${MapApiKey.mapKey.trim()}',
     );
 
+    debugPrint("Routing uri: $uri");
     final response = await http.get(uri);
     if (response.statusCode != 200) {
       log('[DriverMapController] Directions API error: ${response.body}');
       return;
     }
-
+    debugPrint("Routing response: ${response.statusCode}: ${response.body}");
     final data = jsonDecode(response.body) as Map<String, dynamic>;
     final routes = data['routes'] as List?;
     if (routes == null || routes.isEmpty) {

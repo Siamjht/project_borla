@@ -215,10 +215,6 @@ class AppRoute {
         name: bookRequest,
         page: () => BookingRequestedScreen(),
         transition: Transition.rightToLeftWithFade),
-    GetPage(
-        name: paymentSuccess,
-        page: () => PaymentSuccessScreeen(),
-        transition: Transition.rightToLeftWithFade),
 
     GetPage(
         name: chooseRide,

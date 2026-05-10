@@ -28,11 +28,25 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
   void initState() {
     super.initState();
     log("widget.booking.isPaid: ${widget.booking.isPaid}");
-    if(widget.booking.isPaid){
+    if(widget.booking.isPaid && widget.booking.status == BookingStatus.paymentCollected){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.dialog(
           barrierDismissible: false,
           buildPaymentReceivedDialog(),
+        );
+      });
+    }else if(widget.booking.isPaid && widget.booking.status == BookingStatus.arrivedPickup){
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        Get.dialog(
+          barrierDismissible: false,
+          buildPaymentSuccessDialog(),
+        );
+      });
+    }else if(widget.booking.isPaidByCustomer && widget.booking.status == BookingStatus.arrivedPickup){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.dialog(
+          barrierDismissible: false,
+          buildPaymentSuccessDialog(),
         );
       });
     }

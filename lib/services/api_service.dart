@@ -4,10 +4,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import "package:http/http.dart" as http;
 import 'package:http/http.dart';
 import 'package:mime/mime.dart';
-
+import 'package:project_borla/features/auth/login_screen.dart';
 import '../helpers/prefs_helper.dart';
 import '../models/api_response_model.dart';
 import '../utils/app_texts.dart';
@@ -88,8 +89,8 @@ class ApiService {
         return ApiResponseModel(200, message, data);
 
       case 401:
-      // Uncomment if you want to redirect to login
-      // Get.offAllNamed(AppRoutes.signInScreen);
+        PrefsHelper.removeAllPrefData();
+        Get.offAll(LoginScreen());
         return ApiResponseModel(response.statusCode, message, data);
 
       case 400:

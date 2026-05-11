@@ -285,6 +285,9 @@ class AuthController extends GetxController {
           "newPassword": newPassword,
           "confirmPassword": confirmPassword,
         },
+        headers: {
+          'token' : PrefsHelper.token
+        }
       );
 
       if (response.statusCode == 200) {

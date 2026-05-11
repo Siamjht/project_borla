@@ -1,20 +1,14 @@
 // ---------------- ACTION BUTTONS ----------------
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:project_borla/role/commonScreens/chat/innerController/chat_controller.dart';
 import 'package:project_borla/role/components/custom_container.dart';
 import 'package:project_borla/role/components/image/shimmer_image_loader.dart';
-import 'package:project_borla/role/garbageCollector/call/incoming_call_screen.dart';
-import 'package:project_borla/role/garbageCollector/call/outgoing_call_screen.dart';
-import 'package:project_borla/role/garbageCollector/home/customer_info_screen.dart';
-
 import '../../../../gen/custom_assets/assets.gen.dart';
 import '../../../../models/riderModels/bookingModels/available_bookings_model.dart';
 import '../../../../theme/app_color.dart';
 import '../../../commonScreens/chat/chatting_screen.dart';
 import '../../../components/button/common_button.dart';
-import '../../../components/dotted_line.dart';
 import '../../../components/text/common_text.dart';
 import '../controller/driver_home_controller.dart';
 

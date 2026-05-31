@@ -391,22 +391,25 @@ class _RiderArrivedSheetState extends State<RiderArrivedSheet> {
             ],
           ),
           Container(height: 40, width: 1, color: Colors.grey),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const CommonText(
-                text: 'Avg. Time',
-                fontSize: 13,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 4),
-              CommonText(
-                text: booking.estimatedTime,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const CommonText(
+                  text: 'Avg. Time',
+                  fontSize: 13,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 4),
+                CommonText(
+                  text: booking.estimatedTime,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  maxLines: 1,
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -329,12 +329,15 @@ class UserActivityCard extends StatelessWidget {
             ),
           ],
         ),
-        const Spacer(),
-        CommonText(
-          text:'GH₵ ${booking.price.toStringAsFixed(2)}',
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.orange300,
+        Expanded(
+          child: CommonText(
+            text:'GH₵ ${booking.price.toStringAsFixed(2)}',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.orange300,
+            textAlign: TextAlign.right,
+            maxLines: 1,
+          ),
         ),
       ],
     );

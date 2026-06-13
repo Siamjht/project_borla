@@ -11,7 +11,8 @@ import 'language/app_translation.dart';
 import 'language/language_service.dart';
 import 'services/socket_service.dart';
 
-
+// Bundle ID -com.23itconsult.borlaborla
+// App Store Connect API- WU2PSY9N68
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final Locale savedLocale = await LanguageService.getLocale();

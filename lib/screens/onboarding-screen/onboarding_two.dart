@@ -27,53 +27,60 @@ class OnboardingTwo extends StatelessWidget {
             ],
           ),
         ),
-        child: Column(
-          children: [
-            Expanded(
-              child: VideoOnboardingPage(
-                imagePath: onboardingData2["image"]!,
-                titlePath1: onboardingData2["title"]!.tr,
-                subtitlePath1: onboardingData2["subtitle"]!.tr,
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CommonButton(
-                    titleText: "sign_in".tr,
-                    firstGradient: const Color(0xFFFFD600),
-                    secondGradient: const Color(0xFFFF9500),
-                    useGradientBackground: true,
-                    buttonRadius: 12,
-                    onTap: () {
-                      Get.to(() => LoginScreen());
-                    },
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      VideoOnboardingPage(
+                        imagePath: onboardingData2["image"]!,
+                        titlePath1: onboardingData2["title"]!.tr,
+                        subtitlePath1: onboardingData2["subtitle"]!.tr,
+                        isScrollable: false,
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CommonButton(
+                              titleText: "sign_in".tr,
+                              firstGradient: const Color(0xFFFFD600),
+                              secondGradient: const Color(0xFFFF9500),
+                              useGradientBackground: true,
+                              buttonRadius: 12,
+                              onTap: () {
+                                Get.to(() => LoginScreen());
+                              },
+                            ),
+                            const SizedBox(height: 15),
+                            CommonButton(
+                              titleText: "sign_up".tr,
+                              firstGradient: const Color(0xFFFFD600),
+                              secondGradient: const Color(0xFFFF9500),
+                              useGradientBorder: true,
+                              useGradientBackground: false,
+                              backgroundColor: Colors.white,
+                              useGradientText: true,
+                              buttonRadius: 16,
+                              onTap: () {
+                                Get.to(() => SelectRoleScreen());
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      60.verticalSpace,
+                    ],
                   ),
-
-                  const SizedBox(height: 15),
-
-                  CommonButton(
-                    titleText: "sign_up".tr,
-                    firstGradient: const Color(0xFFFFD600),
-                    secondGradient: const Color(0xFFFF9500),
-                    useGradientBorder: true,
-                    useGradientBackground: false,
-                    backgroundColor: Colors.white,
-                    useGradientText: true,
-                    buttonRadius: 16,
-                    onTap: () {
-                      Get.to(() => SelectRoleScreen());
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
-
-            40.verticalSpace,
-          ],
+            );
+          },
         ),
       ),
     );

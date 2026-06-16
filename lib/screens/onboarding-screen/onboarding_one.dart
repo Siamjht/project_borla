@@ -21,7 +21,6 @@ class _OnboardingOneState extends State<OnboardingOne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

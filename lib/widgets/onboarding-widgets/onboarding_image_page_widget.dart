@@ -11,12 +11,14 @@ class VideoOnboardingPage extends StatefulWidget {
   final String imagePath;
   final String titlePath1;
   final String subtitlePath1;
+  final bool isScrollable;
 
   const VideoOnboardingPage({
     Key? key,
     required this.imagePath,
     required this.titlePath1,
     required this.subtitlePath1,
+    this.isScrollable = true,
   }) : super(key: key);
 
   @override
@@ -36,61 +38,61 @@ class _VideoOnboardingPageState extends State<VideoOnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: SizedBox(
-                  width: Get.width,
-                  height: 489.h,
-                  child: Image.asset(
-                    widget.imagePath,
-                    fit: BoxFit.cover,
-                  ),
+    Widget content = Column(
+      children: [
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SizedBox(
+                width: Get.width,
+                height: 489.h,
+                child: Image.asset(
+                  widget.imagePath,
+                  fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
-                top: 60,
-                right: 30,
-                child: InkWell(
-                  onTap: () {
-                    showLanguageBottomSheet(context);
-                  },
-                  child: Icon(Icons.language, color: AppColors.orange300,),),)
+            ),
+            Positioned(
+              top: 60,
+              right: 30,
+              child: InkWell(
+                onTap: () {
+                  showLanguageBottomSheet(context);
+                },
+                child: Icon(Icons.language, color: AppColors.orange300,),),)
+          ],
+        ),
+
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Column(
+            children: [
+              CommonText(
+                text: widget.titlePath1,
+                fontSize: 28,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+              ),
+
+              SizedBox(height: 8.h),
+
+              CommonText(
+                text: widget.subtitlePath1,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.gray500,
+                textAlign: TextAlign.center,
+                maxLines: 5,
+              ),
             ],
           ),
-
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: Column(
-              children: [
-                CommonText(
-                  text: widget.titlePath1,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                ),
-
-                SizedBox(height: 8.h),
-
-                CommonText(
-                  text: widget.subtitlePath1,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.gray500,
-                  textAlign: TextAlign.center,
-                  maxLines: 5,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
+
+    return widget.isScrollable ? SingleChildScrollView(child: content) : content;
   }
 }
